@@ -140,12 +140,21 @@ async function fit(rawFile, outFile, item) {
     mat.setNormalTexture(null).setOcclusionTexture(null).setMetallicRoughnessTexture(null).setEmissiveTexture(null);
     mat.setMetallicFactor(0).setRoughnessFactor(0.9).setEmissiveFactor([0, 0, 0]);
   }
-  // Optional quarter turns, for a model that came out facing the wrong way for its slot.
-  if (item.turn) {
+  // Lux3D returns models at their predicted real-world size (a wall segment comes back 12 units long). The realm
+  // stretches every model into its slot anyway, and it bakes the model's transform into quantized positions, which
+  // only hold values from -1 to 1. So bring every model to the same small size, centred on the origin.
+  // An optional turn is for a model that came out facing the wrong way for its slot.
+  {
     const scene = doc.getRoot().listScenes()[0];
-    const pivot = doc.createNode('turn').setRotation([0, Math.sin((item.turn * Math.PI) / 360), 0, Math.cos((item.turn * Math.PI) / 360)]);
-    for (const child of scene.listChildren()) pivot.addChild(child);
-    scene.addChild(pivot);
+    const b = getBounds(scene);
+    const k = 1.8 / Math.max(b.max[0] - b.min[0], b.max[1] - b.min[1], b.max[2] - b.min[2], 1e-6);
+    const c = [0, 1, 2].map((i) => (b.max[i] + b.min[i]) / 2);
+    const half = ((item.turn || 0) * Math.PI) / 360;
+    const scaleNode = doc.createNode('fit').setScale([k, k, k]).setTranslation([-c[0] * k, -c[1] * k, -c[2] * k]);
+    for (const child of scene.listChildren()) scaleNode.addChild(child);
+    const turnNode = doc.createNode('turn').setRotation([0, Math.sin(half), 0, Math.cos(half)]);
+    turnNode.addChild(scaleNode);
+    scene.addChild(turnNode);
   }
 
   const ratio = Math.min(1, item.tris / Math.max(1, before.triangles));
