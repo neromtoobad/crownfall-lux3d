@@ -49,13 +49,13 @@ The handbook asks for the project name, one sentence, and a video with real runn
 
 > Crownfall, rebuilt with Aholo Lux3D
 >
-> A playable 3D medieval realm where every castle, wall, tower, house and hall was generated from text. Six Lux3D models, 13 minutes of generation, and a switch to compare with the old ones.
+> Every castle, wall, tower and house in this playable 3D realm was generated from text. 6 Lux3D models, 13 minutes.
 >
 > Play it, no sign-in: https://crownfall-lux3d.vercel.app
 >
-> Which kingdom should the next six prompts build?
->
 > #Manycorehackathon #GameDev #AI3D
+
+(233 characters with the link counted the way X counts it, so it fits a standard account.)
 
 ## Tools used (if the form asks)
 
