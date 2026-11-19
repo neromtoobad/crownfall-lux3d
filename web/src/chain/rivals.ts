@@ -2,6 +2,7 @@
 // ordinary transactions on the contract; their reasons come from the rivals' feed, polled here while the race card
 // is open. If the feed can't be reached the card simply shows no rivals.
 import { useSyncExternalStore } from 'react';
+import { OFFLINE } from '../realm/offline.ts';
 
 export const RIVALS_URL = (import.meta.env.VITE_RIVALS as string | undefined) ?? 'https://crownfall-rivals-production.up.railway.app';
 
@@ -14,6 +15,7 @@ const subs = new Set<() => void>();
 let timer: ReturnType<typeof setInterval> | undefined, users = 0;
 
 async function pull() {
+  if (OFFLINE) return;
   try {
     const r = await fetch(`${RIVALS_URL}/feed`, { signal: AbortSignal.timeout(6000) });
     if (r.ok) { store.feed = await r.json(); store.v++; subs.forEach((f) => f()); }

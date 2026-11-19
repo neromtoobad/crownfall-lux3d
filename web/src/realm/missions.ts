@@ -1,6 +1,6 @@
 // The story of a new lord in Vael. The old king is dead and the Ashen Throne stands empty for one season; by the old
 // law it goes to whoever earns the seals of the SEVEN WARDENS. The Wardens are the realm's judges, named for the
-// judges of the NEAR HACKATHON: names and roles only (drawn from their work), our own figures, no likeness.
+// judges of the gold HACKATHON: names and roles only (drawn from their work), our own figures, no likeness.
 // Walk into a Warden's yellow marker to hear their trial; the objective shows at the bottom, the radar shows the way.
 import './bridges.ts'; // sets the Lazzarin Bridge's position before the Wardens are placed
 import { BRIDGES } from './bridges.ts';
@@ -91,7 +91,7 @@ export const GIVERS: Giver[] = [
   { id: 'garg', name: 'Avichal Garg', title: 'Keeper of the Lighthouse', real: 'Electric Capital', letter: 'A', body: 'peasant-m', tint: '#3f6f8f', at: [lhx - 14, lhz - 10], face: Math.atan2(-14, -10) + Math.PI },
   { id: 'qureshi', name: 'Haseeb Qureshi', title: 'Keeper of the Library', real: 'Dragonfly', letter: 'Q', body: 'peasant-m', tint: '#6a4a7a', at: [libx + Math.cos(QA) * 18, libz + Math.sin(QA) * 18], face: Math.atan2(Math.cos(QA), Math.sin(QA)) },
   { id: 'mumtaz', name: 'Mert Mumtaz', title: 'Master of the Hippodrome', real: 'Helius', letter: 'M', body: 'soldier', tint: '#c06a2a', at: [STABLES[0] - 8, STABLES[1] - 4], face: 2.6 },
-  { id: 'polosukhin', name: 'Illia Polosukhin', title: 'Founder of the Reach', real: 'NEAR', letter: 'I', body: 'peasant-m', tint: '#2f9e75', at: [38, -12], face: Math.PI * 0.95 },
+  { id: 'polosukhin', name: 'Illia Polosukhin', title: 'Founder of the Reach', real: 'gold', letter: 'I', body: 'peasant-m', tint: '#2f9e75', at: [38, -12], face: Math.PI * 0.95 },
   { id: 'ysolde', name: 'Ysolde of the Rookery', letter: 'Y', body: 'peasant-f', at: [72, -31], face: 0 },
   { id: 'brannoc', name: 'Captain Brannoc', letter: 'B', body: 'soldier', at: [60, 86], face: 0.52 + Math.PI },
 ];
@@ -133,7 +133,7 @@ export const MISSIONS: Mission[] = [
     brief: () => `Buy $${mine().coin} at the Mint, then enter your own hall and play its game once.`,
     intro: () => [
       { who: 'Kain Warwick', text: 'A seat is a chair until there’s coin under it.' },
-      { who: 'Kain Warwick', text: 'Every house strikes its own coin here, on NEAR, and every house is a merchant. Rush to buy and it’s dear; flood it with selling and it’s cheap. Buy some of your house’s coin.' },
+      { who: 'Kain Warwick', text: 'Every house strikes its own coin here, and every house is a merchant. Rush to buy and it’s dear; flood it with selling and it’s cheap. Buy some of your house’s coin.' },
       { who: 'Kain Warwick', text: 'Then go home. Every hall in Vael has a game, and every round played burns that house’s coin. Play yours once. That’s how a coin earns its price here.' },
     ],
     steps: [
@@ -171,7 +171,7 @@ export const MISSIONS: Mission[] = [
   },
   {
     id: 'library', title: 'Read the Table', giver: G('qureshi'), needs: () => hasSeal('Mint'), seal: 'Library',
-    brief: () => (onChain() ? 'Go into Qureshi’s Library and win a bid against Haseeb’s cup (0.1 NEAR, settled by the contract).' : 'Go into Qureshi’s Library and beat Haseeb at Liar’s Dice (stake 1 NEAR).'),
+    brief: () => (onChain() ? 'Go into Qureshi’s Library and win a bid against Haseeb’s cup (0.1 gold, settled by the contract).' : 'Go into Qureshi’s Library and beat Haseeb at Liar’s Dice (stake 1 gold).'),
     intro: () => [
       { who: 'Haseeb Qureshi', text: 'Sit down. Every lord in Vael bluffs. Very few do it well, and I’ve watched most of them try.' },
       { who: 'Haseeb Qureshi', text: 'Liar’s Dice. Five each, under the cup. Come inside, sit across from me, and beat me. Then the Library’s seal is yours.' },
@@ -190,8 +190,8 @@ export const MISSIONS: Mission[] = [
     steps: [{ text: () => `Drive at the **Hippodrome** (the stables) and finish in the **top four**`, target: () => STABLES,
       check: (s) => since(flags.race, s) && flags.race!.place <= 4,
       fail: (s) => (since(flags.race, s) && flags.race!.place > 4 ? `You finished ${nth(flags.race!.place)}. The crowd wants better.` : undefined) },
-      // On NEAR the seal needs what the contract can see: a bet on one of its races. (The practice purse skips this.)
-      { text: () => 'Now back a team in a race **on NEAR**, from the stands at the **Hippodrome**', target: () => STABLES,
+      // On gold the seal needs what the contract can see: a bet on one of its races. (The practice purse skips this.)
+      { text: () => 'Now back a team in a race, from the stands at the **Hippodrome**', target: () => STABLES,
         check: () => !onChain() || !!chain.me?.raced }],
     outro: () => [{ who: 'Mert Mumtaz', text: `${nth(flags.race?.place ?? 4)}. They were chanting a name up there. The seal of the Hippodrome.` }],
     reward: { near: 5, renown: 2 },
@@ -254,7 +254,7 @@ export const MISSIONS: Mission[] = [
 export const PROLOGUE: Line[] = [
   { who: 'The Chronicle', text: 'The old king of Vael is dead, and the Ashen Throne stands empty.' },
   { who: 'The Chronicle', text: 'By the old law, the crown goes to whoever earns the seals of the Seven Wardens before the season ends.' },
-  { who: 'The Chronicle', text: 'Eight houses want it. Each strikes its own coin on NEAR, and every coin a house burns is a vote for it.' },
+  { who: 'The Chronicle', text: 'Eight houses want it. Each strikes its own coin, and every coin a house burns is a vote for it.' },
   { who: 'The Chronicle', text: 'You are new here: a name, a seat, a borrowed chariot. The Warden of the Gate is waiting. Follow the yellow light.' },
 ];
 
@@ -367,11 +367,11 @@ function pass(m: Mission) {
   saved.renown += m.reward.renown;
   if (m.reward.title) saved.titles.push(m.reward.title);
   persist();
-  // On NEAR the seal is taken on chain (the contract checks what it can see). The mission's NEAR is a practice reward.
+  // On gold the seal is taken on chain (the contract checks what it can see). The mission's gold is a practice reward.
   const live = onChain();
   if (live && m.seal) void takeSeal(SEALS.indexOf(m.seal));
   else pay(m.reward.near, `Mission passed: ${m.title}`);
-  story.card = { kind: 'passed', title: m.seal ? `Seal of the ${m.seal}` : 'Mission passed', sub: `${m.title}${live ? (m.seal ? ` · sealed on NEAR${m.seal === 'Gate' ? ' (0.01 NEAR toll)' : ''}` : '') : ` · +${m.reward.near} NEAR`} · renown +${m.reward.renown}${m.reward.title ? ` · ${m.reward.title}` : ''}`, t: performance.now() };
+  story.card = { kind: 'passed', title: m.seal ? `Seal of the ${m.seal}` : 'Mission passed', sub: `${m.title}${live ? (m.seal ? ` · sealed${m.seal === 'Gate' ? ' (0.01 gold toll)' : ''}` : '') : ` · +${m.reward.near} gold`} · renown +${m.reward.renown}${m.reward.title ? ` · ${m.reward.title}` : ''}`, t: performance.now() };
   emitPlay();
 }
 export function fail(reason: string) {

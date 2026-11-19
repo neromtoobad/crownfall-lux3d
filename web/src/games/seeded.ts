@@ -27,7 +27,7 @@ export const hallPlay = {
   seed: undefined as number | undefined,
   moves: [] as number[],
 };
-/** A generator for the round about to start: the chain's seed on NEAR, a random one in practice. */
+/** A generator for the round about to start: the chain's seed, a random one in practice. */
 export function roundRng(): Rng {
   hallPlay.moves = [];
   return new Rng(hallPlay.seed ?? Math.floor(Math.random() * 4294967296));

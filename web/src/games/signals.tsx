@@ -398,7 +398,7 @@ function Play({ room, end }: { room: Room; end: (r: Result) => void }) {
     look: LOOK.clone(), echo: -1, echoT: 0, placed: false, warn: 9, early: false, shipI: 160,
   });
   useMemo(() => { ui.reset(); }, []);
-  // Every ship's sequence comes from the round's generator: on NEAR the contract's seed, so it can replay every lamp you
+  // Every ship's sequence comes from the round's generator: the contract's seed, so it can replay every lamp you
   // answered and judge the night itself (chain/src/halls.rs, `sig_ship`).
   const rng = useMemo(() => roundRng(), []);
   if (import.meta.env.DEV) Object.assign(window, { __sig: { st, press: (i: number) => press(i) } });

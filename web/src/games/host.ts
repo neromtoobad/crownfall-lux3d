@@ -2,7 +2,7 @@
 //   intro card (what it is, the keys, the entry) → play (the game owns the camera and the keys) → result card.
 // The entry is paid in the house's own coin and BURNED: if you hold none, the entry is bought on the house's curve
 // first. So every round played in a hall raises the price for that house's holders: play-to-burn, the memecoin
-// mechanic as gameplay. On NEAR the burn is the favour; a win counts for the seals. On the practice purse a win pays
+// mechanic as gameplay. On gold the burn is the favour; a win counts for the seals. On the practice purse a win pays
 // from the house treasury.
 import { useSyncExternalStore, type FC } from 'react';
 import { ledger, note, pay, playBurn } from '../realm/ledger.ts';
@@ -19,9 +19,9 @@ export interface Result {
   score: number;
   /** One line for the card: what happened. */
   line: string;
-  /** How good the win was, 0..1: scales the payout between 1 and 4 NEAR. */
+  /** How good the win was, 0..1: scales the payout between 1 and 4 gold. */
   grade?: number;
-  /** In the Library on NEAR: what the contract paid (NEAR), the round already settled by the bid. */
+  /** In the Library: what the contract paid (gold), the round already settled by the bid. */
   paid?: number;
 }
 
@@ -32,7 +32,7 @@ export interface GameDef {
   pitch: string;
   /** Controls, as [keys, what they do]. */
   keys: [string, string][];
-  /** Coins burned to play one round (or, in the Library, NEAR staked on the table). */
+  /** Coins burned to play one round (or, in the Library, gold staked on the table). */
   entry: number;
   /** The game's furniture, always standing in the hall (local frame: x right, z toward the door, y up). */
   Station: FC<{ room: Room }>;
@@ -58,14 +58,14 @@ export const session = {
   /** The house stands you your first round in each hall. */
   free: false,
   error: '',
-  /** On NEAR: the round the contract opened for this play, and whether we're waiting on the chain. */
+  /** On gold: the round the contract opened for this play, and whether we're waiting on the chain. */
   chainRound: undefined as number | undefined,
   busy: false,
-  /** NEAR put on the Library table this round (0 when Haseeb stood you the game). */
+  /** gold put on the Library table this round (0 when Haseeb stood you the game). */
   staked: 0,
-  /** This round is on NEAR (its entry burned or staked there). */
+  /** This round is (its entry burned or staked there). */
   live: false,
-  /** On NEAR, in the Library: the bank, the odds and your five dice, rolled on chain when you staked. */
+  /** On gold, in the Library: the bank, the odds and your five dice, rolled on chain when you staked. */
   lib: undefined as Library | undefined,
   /** Esc was pressed mid-round: leaving needs a second Esc (until this time, ms). */
   leaving: 0,
@@ -80,7 +80,7 @@ export function startGame(house: number) {
   const room = roomOf(house);
   if (!gameDef(room.game)) return;
   session.room = room; session.phase = 'intro'; session.result = undefined; session.error = '';
-  // The house stands you your first round on the practice purse. On NEAR every round is a real burn.
+  // The house stands you your first round on the practice purse. On gold every round is a real burn.
   session.free = !onChain() && !freeUsed().includes(house);
   play.game = { id: room.game, house, t: performance.now() };
   document.exitPointerLock?.();
@@ -109,7 +109,7 @@ export function beginRound() {
       // Cups and Signals are played from the seed the contract rolled, so it can replay the round and judge it.
       if (JUDGED.includes(r.house)) hallPlay.seed = await hallSeed(id);
       session.busy = false; session.chainRound = id;
-      note(lib ? `Staked ${LIB_STAKE} NEAR at ${def.name} in Qureshi's Library, on NEAR.` : `Played ${def.name} in the hall of House ${hallHouse(r.house).name}: ${def.entry} $${hallHouse(r.house).coin} burned on NEAR.`, lib ? undefined : r.house);
+      note(lib ? `Staked ${LIB_STAKE} gold at ${def.name} in Qureshi's Library.` : `Played ${def.name} in the hall of House ${hallHouse(r.house).name}: ${def.entry} $${hallHouse(r.house).coin} burned.`, lib ? undefined : r.house);
       session.phase = 'play'; session.round++;
       takePressed();
       emitPlay();
@@ -117,11 +117,11 @@ export function beginRound() {
     return;
   }
   if (!session.free && r.house === LIBRARY) {
-    if (ledger.near < def.entry) { session.error = `You need ${def.entry} NEAR for the stake.`; emitPlay(); return; }
-    ledger.near -= def.entry; note(`Staked ${def.entry} NEAR at ${def.name} in Qureshi's Library.`);
+    if (ledger.near < def.entry) { session.error = `You need ${def.entry} gold for the stake.`; emitPlay(); return; }
+    ledger.near -= def.entry; note(`Staked ${def.entry} gold at ${def.name} in Qureshi's Library.`);
   } else if (!session.free) {
     const ok = playBurn(r.house, def.entry, def.name);
-    if (!ok) { session.error = `You need about ${(def.entry * 0.0011).toFixed(2)} NEAR for the entry.`; emitPlay(); return; }
+    if (!ok) { session.error = `You need about ${(def.entry * 0.0011).toFixed(2)} gold for the entry.`; emitPlay(); return; }
   } else {
     try { localStorage.setItem(freeKey, JSON.stringify([...freeUsed(), r.house])); } catch { /* private window */ }
   }
@@ -139,12 +139,12 @@ export function endRound(res: Result) {
   const r = session.room!, h = hallHouse(r.house);
   session.result = res; session.phase = 'result';
   sting(res.won);
-  // On the practice purse a hall win pays 1–4 NEAR from the house treasury, and a Library win hands the stake back (a
+  // On the practice purse a hall win pays 1–4 gold from the house treasury, and a Library win hands the stake back (a
   // free first game pays the stake's worth).
   const g = Math.min(1, Math.max(0, res.grade ?? 0.5));
   session.payout = !res.won ? 0 : r.house === LIBRARY ? (session.staked === 0 ? gameDef(r.game)!.entry : session.staked) : Math.round((1 + 3 * g) * 10) / 10;
   if (session.live) {
-    // On NEAR the round is closed on chain. The chain can't see a hall game, so a win moves no money and no favour
+    // On gold the round is closed on chain. The chain can't see a hall game, so a win moves no money and no favour
     // (the entry's burn already was the favour): it marks the hall won for the seals. The Library's bid was already
     // settled by the contract, which paid what it paid.
     const round = session.chainRound;
@@ -167,7 +167,7 @@ export function endRound(res: Result) {
 
 /** Leave the game (Esc), back to walking the hall. */
 export function quitGame() {
-  // Walking out mid-round on NEAR: close the round as lost now (the contract would after an hour anyway).
+  // Walking out mid-round: close the round as lost now (the contract would after an hour anyway).
   if (session.phase === 'play' && session.chainRound !== undefined) {
     const round = session.chainRound;
     session.chainRound = undefined;

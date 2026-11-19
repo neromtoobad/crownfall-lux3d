@@ -4,8 +4,8 @@
   --panel: rgba(18, 14, 11, 0.72);
   --edge: rgba(214, 178, 110, 0.35);
   --gold: #d6b26e;
-  --near: #00ec97;
-  --near-dim: rgba(0, 236, 151, 0.14);
+  --near: #d6b26e;
+  --near-dim: rgba(214, 178, 110, 0.14);
   --display: 'Cinzel', 'Trajan Pro', serif;
   --serif: 'EB Garamond', Georgia, serif;
   --sans: 'Inter', system-ui, sans-serif;

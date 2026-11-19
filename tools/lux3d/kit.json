@@ -7,7 +7,7 @@
       "prompt": "A square medieval castle keep with four round corner towers topped with conical terracotta-red tiled roofs, crenellated battlements, an arched wooden gate and arrow slits, pale weathered limestone, single isolated building, game asset",
       "style": "photorealistic",
       "faceCount": 30000,
-      "tris": 8000,
+      "tris": 20000,
       "tex": 1024
     },
     {
@@ -52,7 +52,7 @@
       "prompt": "A grand medieval great hall, a long pale limestone building with tall arched windows, buttresses and a steep dark slate roof, single isolated building, game asset",
       "style": "photorealistic",
       "faceCount": 30000,
-      "tris": 10000,
+      "tris": 20000,
       "tex": 1024
     }
   ]

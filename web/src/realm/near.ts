@@ -1,11 +1,10 @@
-// NEAR's mark and colours, and the cloth textures the realm hangs them on (drawn once on a canvas, no image files).
+// The realm's crown mark and colours, and the cloth textures the realm hangs them on (drawn once on a canvas, no image files).
 import * as THREE from 'three';
 import { wind } from './wind.ts';
 
-export const NEAR_GREEN = '#00ec97';
-/** The NEAR logomark on a 90×90 box. */
-export const NEAR_MARK =
-  'M72.2 4.6L53.4 32.5c-1.3 1.9 1.2 4.2 3 2.6L74.9 19c.5-.4 1.2-.1 1.2.6v50.3c0 .7-.9 1-1.3.5l-56-67C17 1.2 14.4 0 11.5 0h-2C4.3 0 0 4.3 0 9.6v70.8C0 85.7 4.3 90 9.6 90c3.3 0 6.4-1.7 8.2-4.6l18.8-27.9c1.3-1.9-1.2-4.2-3-2.6L15.1 70.9c-.5.4-1.2.1-1.2-.6V20.1c0-.7.9-1 1.3-.5l56 67c1.8 2.2 4.5 3.4 7.3 3.4h2c5.3 0 9.6-4.3 9.6-9.6V9.6c0-5.3-4.3-9.6-9.6-9.6-3.4 0-6.5 1.7-8.3 4.6z';
+export const NEAR_GREEN = '#d6b26e';
+/** The realm's crown on a 90×90 box. */
+export const NEAR_MARK = 'M8 72 L14 24 L31 44 L45 14 L59 44 L76 24 L82 72 Z M8 78 H82 V86 H8 Z';
 
 function mark(g: CanvasRenderingContext2D, cx: number, cy: number, size: number, color: string) {
   g.save();
@@ -43,7 +42,7 @@ export const bannerTexture = () => once('banner', () => {
   g.fillStyle = '#0b0b0b'; g.fillRect(0, 0, W, H);
   g.fillStyle = NEAR_GREEN; g.fillRect(0, 0, W, 30); g.fillRect(0, 0, 14, H); g.fillRect(W - 14, 0, 14, H);
   mark(g, W / 2, 200, 148, '#ffffff');
-  word(g, 'NEAR', W / 2, 372, 66, '#ffffff');
+  word(g, 'VAEL', W / 2, 372, 66, '#ffffff');
   g.fillStyle = NEAR_GREEN; g.fillRect(W / 2 - 40, 430, 80, 6);
   return texture(c);
 });
@@ -65,7 +64,7 @@ export const stripTexture = () => once('strip', () => {
   g.fillStyle = '#0b0b0b'; g.fillRect(0, 0, W, H);
   g.fillStyle = NEAR_GREEN; g.fillRect(0, 0, W, 7); g.fillRect(0, H - 7, W, 7);
   mark(g, 150, H / 2, 54, NEAR_GREEN);
-  word(g, 'NEAR', 290, H / 2 + 2, 48, '#ffffff');
+  word(g, 'VAEL', 290, H / 2 + 2, 48, '#ffffff');
   return texture(c, true);
 });
 
@@ -81,7 +80,7 @@ export const coinTexture = () => once('coin', () => {
   mark(g, S / 2, S / 2, 190, '#7a561a');
   g.save();
   g.font = `700 34px Cinzel, Georgia, serif`; g.fillStyle = '#6e4e16'; g.textAlign = 'center'; g.textBaseline = 'middle';
-  const legend = 'THE WARWICK MINT  ·  STRUCK ON NEAR  ·  ';
+  const legend = 'THE WARWICK MINT  ·  STRUCK IN VAEL  ·  ';
   for (let i = 0; i < legend.length; i++) {
     const a = (i / legend.length) * Math.PI * 2 - Math.PI / 2;
     g.save(); g.translate(S / 2 + Math.cos(a) * S * 0.43, S / 2 + Math.sin(a) * S * 0.43); g.rotate(a + Math.PI / 2); g.fillText(legend[i], 0, 0); g.restore();

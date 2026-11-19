@@ -30,7 +30,7 @@ export function GameHud() {
       {session.leaving > performance.now() && (
         <div className="game-leave" style={style}>
           <b>Leave the table?</b>
-          <span>{lib ? (session.staked > 0 ? `The round counts as lost and your ${session.staked} NEAR stake ${live ? 'goes to the Library’s bank, on NEAR' : 'stays on the table'}.` : 'The game counts as lost.') : `The round counts as lost. The ${fmt(def.entry)} $${h.coin} is already burned${live ? ' on NEAR' : ''}.`}</span>
+          <span>{lib ? (session.staked > 0 ? `The round counts as lost and your ${session.staked} gold stake ${live ? 'goes to the Library’s bank' : 'stays on the table'}.` : 'The game counts as lost.') : `The round counts as lost. The ${fmt(def.entry)} $${h.coin} is already burned${live ? '' : ''}.`}</span>
           {TOUCH ? <span className="leave-keys">Tap Leave again to go · Keep playing to stay</span> : <span className="leave-keys"><kbd>Esc</kbd> again to leave · any other key to keep playing</span>}
         </div>
       )}
@@ -46,37 +46,37 @@ export function GameHud() {
       <div className="entry">
         {live
           ? (lib
-            ? <><b>Stake: {LIB_STAKE} NEAR on the table, on NEAR.</b><span>{signsHere() ? 'It signs from your NEAR account here.' : 'Your wallet asks for it.'} The contract rolls your five dice from that block; you make one bid, and Haseeb’s five are rolled from the block that takes it. A true bid pays fair odds less 5% from the Library’s bank; a short one goes to the bank. No browser can report this win.</span></>
+            ? <><b>Stake: {LIB_STAKE} gold on the table.</b><span>{signsHere() ? 'It signs from your account here.' : 'Your wallet asks for it.'} The contract rolls your five dice from that block; you make one bid, and Haseeb’s five are rolled from the block that takes it. A true bid pays fair odds less 5% from the Library’s bank; a short one goes to the bank. No browser can report this win.</span></>
             : closed
-            ? <><b>The hall is shut. House {h.name} went broke.</b><span>A run of selling drained its purse to {q!.reserve.toFixed(3)} NEAR, under 70% of its peak. Buying ${h.coin} invests in it, and the hall reopens once the purse is back to {q!.reopenAt.toFixed(3)} NEAR. It sells at ×{q!.factor.toFixed(2)} fair value right now.</span></>
-            : <><b>Entry: {fmt(def.entry)} ${h.coin}, burned on NEAR.</b><span>{short ? `You hold ${fmt(held(room.house))}: buy some first.` : `You hold ${fmt(held(room.house))}.`} The burn raises ${h.coin} for every holder and counts as favour with House {h.name}.</span></>)
+            ? <><b>The hall is shut. House {h.name} went broke.</b><span>A run of selling drained its purse to {q!.reserve.toFixed(3)} gold, under 70% of its peak. Buying ${h.coin} invests in it, and the hall reopens once the purse is back to {q!.reopenAt.toFixed(3)} gold. It sells at ×{q!.factor.toFixed(2)} fair value right now.</span></>
+            : <><b>Entry: {fmt(def.entry)} ${h.coin}, burned.</b><span>{short ? `You hold ${fmt(held(room.house))}: buy some first.` : `You hold ${fmt(held(room.house))}.`} The burn raises ${h.coin} for every holder and counts as favour with House {h.name}.</span></>)
           : lib
-          ? (session.free ? <><b>Haseeb stands you the first game.</b><span>Win it and he pays you {def.entry} NEAR. After this the stake is {def.entry} NEAR: a win hands it back.</span></> : <><b>Stake: {def.entry} NEAR on the table.</b><span>Win and it comes back to you. Lose and Haseeb keeps it.</span></>)
+          ? (session.free ? <><b>Haseeb stands you the first game.</b><span>Win it and he pays you {def.entry} gold. After this the stake is {def.entry} gold: a win hands it back.</span></> : <><b>Stake: {def.entry} gold on the table.</b><span>Win and it comes back to you. Lose and Haseeb keeps it.</span></>)
           : session.free
           ? <><b>The house stands you this round.</b><span>After this, a round burns {fmt(def.entry)} ${h.coin}.</span></>
           : <><b>Entry: {fmt(def.entry)} ${h.coin}, burned.</b><span>{ledger.held[room.house] >= def.entry ? `You hold ${fmt(ledger.held[room.house])}.` : 'Bought on the curve for you first.'} Every round played here raises ${h.coin} for its holders.</span></>}
       </div>
       {live && !lib && (judged
-        ? <div className="verdict on">Judged on NEAR: the contract rolls this round’s seed when you enter and replays your moves to decide the win.</div>
-        : <div className="verdict">Score on your word: the chain can’t watch this game, so a win here moves no NEAR and no favour. It counts for the seals. The burn is real either way.</div>)}
+        ? <div className="verdict on">Judged: the contract rolls this round’s seed when you enter and replays your moves to decide the win.</div>
+        : <div className="verdict">Score on your word: the chain can’t watch this game, so a win here moves no gold and no favour. It counts for the seals. The burn is real either way.</div>)}
       {session.error && <div className="err">{session.error}</div>}
-      {session.busy && <div className="err ok">{c.busy || 'Waiting for NEAR'}…</div>}
-      {closed && <div className="go"><button className="ghost" disabled={!!c.busy} onClick={() => void buyCoin(room.house, 0.05)}>Invest 0.05 NEAR in House {h.name}</button></div>}
-      {short && !closed && <div className="go"><button className="ghost" disabled={!!c.busy} onClick={() => void buyCoin(room.house, 0.05)}>Buy 0.05 NEAR of ${h.coin}</button></div>}
+      {session.busy && <div className="err ok">{c.busy || 'Waiting for gold'}…</div>}
+      {closed && <div className="go"><button className="ghost" disabled={!!c.busy} onClick={() => void buyCoin(room.house, 0.05)}>Invest 0.05 gold in House {h.name}</button></div>}
+      {short && !closed && <div className="go"><button className="ghost" disabled={!!c.busy} onClick={() => void buyCoin(room.house, 0.05)}>Buy 0.05 gold of ${h.coin}</button></div>}
       <div className="go"><button disabled={session.busy || short || closed} onClick={beginRound}><kbd>E</kbd> Play</button><button className="ghost" onClick={quitGame}><kbd>Esc</kbd> Not now</button></div>
     </div>
   );
   const r = session.result!;
-  if (session.busy) return <div className="game-card result" style={style}><small>{def.name}</small><h2>One moment</h2><p>{c.busy || 'Waiting for NEAR'}…</p></div>;
+  if (session.busy) return <div className="game-card result" style={style}><small>{def.name}</small><h2>One moment</h2><p>{c.busy || 'Waiting for gold'}…</p></div>;
   return (
     <div className={`game-card result ${r.won ? 'won' : 'lost'}`} style={style}>
       <small>{def.name}</small>
       <h2>{r.won ? 'Won' : 'Lost'}</h2>
       <p>{r.line}</p>
-      {r.won && live && <div className="entry"><b>{lib ? `+${session.payout.toFixed(3)} NEAR from the Library’s bank, paid on NEAR` : judged ? `A win for House ${h.name}, judged on NEAR` : `A win for House ${h.name}, recorded on NEAR`}</b><span>{lib ? 'The contract rolled both cups and paid the bid. It counts for the Library’s seal.' : judged ? 'The contract replayed your moves against the seed it rolled at the door and judged the win itself. It counts toward the Wardens’ seals and the house’s tally of wins.' : 'It counts toward the Wardens’ seals and the house’s tally of wins. The favour was your burn: at the season’s end the house with the most favour is crowned and its players share the crown pool. (The chain can’t watch this game, so a reported win pays nothing.)'}</span></div>}
-      {!r.won && live && <div className="entry"><b>{lib ? 'The stake goes to the Library’s bank' : `The ${h.coin} you burned still counts as favour`}</b><span>The round is closed on NEAR.</span></div>}
-      {r.won && !live && <div className="entry"><b>+{session.payout} NEAR {lib ? 'from the Library’s table' : `from the treasury of House ${h.name}`}</b><span>{lib ? 'Haseeb nods. That one he’ll remember.' : `Favour with House ${h.name}: ${ledger.favour[room.house]}`}</span></div>}
-      <div className="go"><button disabled={session.busy} onClick={beginRound}><kbd>E</kbd> Again ({lib ? `${live ? LIB_STAKE : def.entry} NEAR` : `${fmt(def.entry)} $${h.coin}`})</button><button className="ghost" onClick={quitGame}><kbd>Esc</kbd> Done</button></div>
+      {r.won && live && <div className="entry"><b>{lib ? `+${session.payout.toFixed(3)} gold from the Library’s bank, paid` : judged ? `A win for House ${h.name}, judged` : `A win for House ${h.name}, recorded`}</b><span>{lib ? 'The contract rolled both cups and paid the bid. It counts for the Library’s seal.' : judged ? 'The contract replayed your moves against the seed it rolled at the door and judged the win itself. It counts toward the Wardens’ seals and the house’s tally of wins.' : 'It counts toward the Wardens’ seals and the house’s tally of wins. The favour was your burn: at the season’s end the house with the most favour is crowned and its players share the crown pool. (The chain can’t watch this game, so a reported win pays nothing.)'}</span></div>}
+      {!r.won && live && <div className="entry"><b>{lib ? 'The stake goes to the Library’s bank' : `The ${h.coin} you burned still counts as favour`}</b><span>The round is closed.</span></div>}
+      {r.won && !live && <div className="entry"><b>+{session.payout} gold {lib ? 'from the Library’s table' : `from the treasury of House ${h.name}`}</b><span>{lib ? 'Haseeb nods. That one he’ll remember.' : `Favour with House ${h.name}: ${ledger.favour[room.house]}`}</span></div>}
+      <div className="go"><button disabled={session.busy} onClick={beginRound}><kbd>E</kbd> Again ({lib ? `${live ? LIB_STAKE : def.entry} gold` : `${fmt(def.entry)} $${h.coin}`})</button><button className="ghost" onClick={quitGame}><kbd>Esc</kbd> Done</button></div>
     </div>
   );
 }

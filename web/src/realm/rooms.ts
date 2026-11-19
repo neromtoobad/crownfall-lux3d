@@ -62,11 +62,11 @@ export const THRONE_HALL: Room = {
   station: [0, 0], folk: [],
 };
 /** Who a room belongs to, for its name and colours: a house, the Library or the throne hall. */
-export const LIB_HOUSE = { id: LIBRARY, name: 'the Library', colors: ['#5b3f6e', '#d6b26e'] as [string, string], coin: 'NEAR', seat: 'Emberfall' };
+export const LIB_HOUSE = { id: LIBRARY, name: 'the Library', colors: ['#5b3f6e', '#d6b26e'] as [string, string], coin: 'gold', seat: 'Emberfall' };
 /** Where the throne stands in its hall (room frame): its scale, its dais centre, the front of its stair (the model's
  * stair reaches 9.8 m in front of the dais centre; Throne.tsx THRONE_SIZE). */
 export const THRONE_SEAT = { scale: 1.2, z: -100 / 2 + 17, stair: -100 / 2 + 17 + 9.8 * 1.2 };
-export const THRONE_HOUSE = { id: THRONE_ROOM, name: 'the Ashen Throne', colors: ['#6a0f17', '#d4a849'] as [string, string], coin: 'NEAR', seat: 'Emberfall' };
+export const THRONE_HOUSE = { id: THRONE_ROOM, name: 'the Ashen Throne', colors: ['#6a0f17', '#d4a849'] as [string, string], coin: 'gold', seat: 'Emberfall' };
 export const hallHouse = (i: number) => (i === LIBRARY ? LIB_HOUSE : i === THRONE_ROOM ? THRONE_HOUSE : HOUSES[i]);
 export const roomOf = (i: number) => (i === LIBRARY ? LIB_ROOM : i === THRONE_ROOM ? THRONE_HALL : ROOMS[i]);
 export const ALL_ROOMS = [...ROOMS, LIB_ROOM, THRONE_HALL];

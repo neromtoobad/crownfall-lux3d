@@ -153,7 +153,9 @@ async function fit(rawFile, outFile, item) {
     flatten(),
     join(),
     weld(),
-    simplify({ simplifier: MeshoptSimplifier, ratio, error: 0.05 }),
+    // Each model is drawn hundreds of times, so simplify hard. Edge collapse keeps the UVs intact; very dense
+    // models stop at about half their triangles, which is fine for the few-of-a-kind keep and hall.
+    simplify({ simplifier: MeshoptSimplifier, ratio, error: Number(process.env.SIMPLIFY_ERROR || 1), lockBorder: false }),
     prune(),
     dedup(),
     textureCompress({ encoder: sharp, targetFormat: 'webp', resize: [item.tex, item.tex], quality: 82 }),

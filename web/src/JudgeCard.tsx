@@ -47,8 +47,8 @@ export function JudgeCard() {
   const lines: { claim: string; how: string; expect: string; done: boolean; act?: [string, () => void] }[] = [
     {
       claim: 'Every house is a coin you can buy',
-      how: `Buys 0.05 NEAR of House ${h.name} at the Mint`,
-      expect: `${h.coin} lands in your purse; the house's NEAR reserve rises; 2% goes to the crown pool`,
+      how: `Buys 0.05 gold of House ${h.name} at the Mint`,
+      expect: `${h.coin} lands in your purse; the house's gold reserve rises; 2% goes to the crown pool`,
       done: coins > 0,
       act: ['Buy now', () => { void buyCoin(house, 0.05).catch(() => {}); }],
     },
@@ -62,14 +62,14 @@ export function JudgeCard() {
     {
       claim: 'Races are run and settled by the contract',
       how: 'At the Hippodrome, bet on a house (or drive)',
-      expect: 'your NEAR goes into the pool; after the race the contract runs the same race you watched and pays the winners',
+      expect: 'your gold goes into the pool; after the race the contract runs the same race you watched and pays the winners',
       done: !!me?.raced,
       act: ['Route to the Hippodrome', () => route([STABLES[0], STABLES[1]])],
     },
     {
       claim: 'Seals are kept on chain',
       how: 'Meet Stepan Gershuni at the Gate and drive the reins course',
-      expect: 'the Gate seal is written to your account (a 0.01 NEAR toll goes to the crown pool)',
+      expect: 'the Gate seal is written to your account (a 0.01 gold toll goes to the crown pool)',
       done: (me?.seals?.length ?? 0) > 0,
       act: ['Route to the Gate', () => route(gate)],
     },
@@ -86,8 +86,8 @@ export function JudgeCard() {
         <>
           <p className="judge-acct">
             {acct
-              ? <>Signed in as <a href={`${EXPLORER}/address/${acct}`} target="_blank" rel="noreferrer">{acct}</a>, made just now with testnet NEAR in it. Every transaction is listed there.</>
-              : busy || 'Making your judge account on NEAR…'}
+              ? <>Signed in as <a href={`${EXPLORER}/address/${acct}`} target="_blank" rel="noreferrer">{acct}</a>, made just now with testnet gold in it. Every transaction is listed there.</>
+              : busy || 'Making your judge account…'}
           </p>
           <ol>{lines.map((l) => (
             <li key={l.claim} className={l.done ? 'done' : ''}>

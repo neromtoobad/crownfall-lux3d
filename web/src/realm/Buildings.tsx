@@ -162,7 +162,7 @@ export function Buildings({ fallen = [] as number[] }) {
     kit.hall.push({ x: cx + 35, y, z: cz - 40, ry: 0, sx: 66, sy: 47, sz: 23 }); // the Ashen Throne's hall
     town(cx + 20, cz + 10, 22, 92, 300, 5, kit, undefined, [[...LANDMARKS[4].pos, 36], [...LANDMARKS[5].pos, 19], [...ROOKERY, 13]]);
     stone.push(...bridgeGeometry()); // the Lazzarin Bridge and every other river crossing
-    // NEAR colours over Emberfall: a flag on every tower of the city wall, a banner down every stretch of it,
+    // gold colours over Emberfall: a flag on every tower of the city wall, a banner down every stretch of it,
     // and two great banners on the throne hall.
     const ring = (p: Place) => Math.abs(Math.hypot(p.x - (cx + 20), p.z - cz) - 100) < 9;
     const nearFlags: Cloth[] = kit.tower.filter(ring).map((p) => ({ x: p.x, y: p.y + p.sy - 0.5, z: p.z, ry: 0, w: 7, h: 4.4 }));

@@ -1,14 +1,15 @@
-// Top left in play: play on NEAR testnet (connect), who you are, and what is being signed right now.
+// Top left in play: play testnet (connect), who you are, and what is being signed right now.
 import { useEffect, useState } from 'react';
 import { NearMark } from '../NearMark.tsx';
 import { CONTRACT, EXPLORER, chain, disconnect, onChain, openSignIn, refresh, restore, useChain } from './near.ts';
 import { startRacePolling } from './races.ts';
 import { TOUCH, wallet } from '../realm/play.ts';
+import { OFFLINE } from '../realm/offline.ts';
 
 let started = false;
 /** Bring back a wallet signed in on an earlier visit, and start following the races. Safe to call more than once. */
 export function startChain() {
-  if (started) return;
+  if (OFFLINE || started) return;
   started = true;
   wallet.connected = onChain;
   void restore();
@@ -16,6 +17,7 @@ export function startChain() {
 }
 export function ChainBar() {
   const c = useChain();
+  if (OFFLINE) return null;
   const [, tick] = useState(0);
   useEffect(() => {
     startChain();
@@ -27,19 +29,19 @@ export function ChainBar() {
   return (
     <div className="chainbar">
       {c.account ? (
-        <div className="who" title={`Signed in on NEAR testnet. Realm contract: ${CONTRACT}`}>
+        <div className="who" title={`Signed in testnet. Realm contract: ${CONTRACT}`}>
           <NearMark size={13} /><b>{c.account.length > 22 ? `${c.account.slice(0, 10)}…${c.account.slice(-9)}` : c.account}</b><span>{c.via === 'google' ? 'Google · testnet' : 'testnet'}</span>
           <button onClick={() => void disconnect()} aria-label="Sign out">×</button>
         </div>
       ) : (
-        <button className="connect practice" onClick={() => openSignIn()}><span className="tag">Practice</span><NearMark size={13} />{TOUCH ? 'Sign in' : 'Sign in to play on NEAR'}</button>
+        <button className="connect practice" onClick={() => openSignIn()}><span className="tag">Practice</span><NearMark size={13} />{TOUCH ? 'Sign in' : 'Sign in to play'}</button>
       )}
       {c.busy && <div className="busy"><i />{c.busy}…</div>}
       {!c.busy && c.error && <div className="err">{c.error}</div>}
       {!c.busy && !c.error && fresh && c.lastTx && (
         c.lastTx.hash
-          ? <a className="done" href={`${EXPLORER}/txns/${c.lastTx.hash}`} target="_blank" rel="noreferrer">✓ {c.lastTx.what} · on NEAR</a>
-          : <a className="done" href={`${EXPLORER}/address/${CONTRACT}`} target="_blank" rel="noreferrer">✓ {c.lastTx.what} · on NEAR</a>
+          ? <a className="done" href={`${EXPLORER}/txns/${c.lastTx.hash}`} target="_blank" rel="noreferrer">✓ {c.lastTx.what} ·</a>
+          : <a className="done" href={`${EXPLORER}/address/${CONTRACT}`} target="_blank" rel="noreferrer">✓ {c.lastTx.what} ·</a>
       )}
     </div>
   );

@@ -30,7 +30,7 @@ export interface ChainRaceView {
   startMs?: number;
   whips: [number, number][];
   settled: boolean; order: number[]; finishMs: number[];
-  /** NEAR backed on each house, and what the winners share once settled. */
+  /** gold backed on each house, and what the winners share once settled. */
   pools: number[]; payout: number;
   ticket?: { bets: number[]; whips: number; claimed: boolean };
 }

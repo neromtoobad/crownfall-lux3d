@@ -23,6 +23,7 @@ import { CONTRACT, EXPLORER, ensureKey, onChain, openSignIn, signsHere, units, u
 import { SignIn } from './chain/SignIn.tsx';
 import { JUDGE, JudgeCard } from './JudgeCard.tsx';
 import { WeekPanel } from './WeekPanel.tsx';
+import { OFFLINE } from './realm/offline.ts';
 import { musicOn, setMusic } from './realm/music.ts';
 import './realm/cues.ts'; // doors, pages, clicks and the Mint clerk follow play from here
 
@@ -33,8 +34,8 @@ export function PlayHud() {
   return (
     <>
       {p.picking && <SeatPicker />}
-      {c.signingIn && <SignIn suggest={c.signInHint || play.seat?.name} />}
-      {JUDGE && <JudgeCard />}
+      {!OFFLINE && c.signingIn && <SignIn suggest={c.signInHint || play.seat?.name} />}
+      {!OFFLINE && JUDGE && <JudgeCard />}
       {p.mode === 'play' && p.seat && !p.picking && (
         <>
           {p.racing && <DriveHud />}
@@ -111,6 +112,7 @@ function SeatPicker() {
   // With a wallet: approve the game key now, once, so the first hall round doesn't stop for a popup. If it's
   // declined you still go in, and the key is asked for again at your first round.
   const enter = async () => {
+    if (OFFLINE) { practise(); takeSeat(seat()); return; }
     if (!c.account) { openSignIn(name); return; }
     setEntering(true);
     try { await ensureKey(); } catch { /* asked again later */ }
@@ -124,18 +126,18 @@ function SeatPicker() {
         onSubmit={(e) => { e.preventDefault(); void enter(); }}>
         <div className="eyebrow">The realm of Vael</div>
         <h1>Take your seat</h1>
-        <div className={`wallet-step ${c.account ? 'on' : ''}`}>
+        {!OFFLINE && <div className={`wallet-step ${c.account ? 'on' : ''}`}>
           <NearMark size={22} />
           {c.account ? (
             <div><b>{short(c.account)}</b><span>{signsHere()
-              ? 'Your NEAR testnet account. Coins, hall rounds, seals and bets all sign in this browser, with no popups.'
-              : `Connected on NEAR testnet. ${c.keyed ? 'Game key ready: hall rounds, seals and whips sign without a popup.' : 'On the way in your wallet asks once for a game key, so hall rounds and seals sign without a popup.'}`}</span></div>
+              ? 'Your account. Coins, hall rounds, seals and bets all sign in this browser, with no popups.'
+              : `Connected testnet. ${c.keyed ? 'Game key ready: hall rounds, seals and whips sign without a popup.' : 'On the way in your wallet asks once for a game key, so hall rounds and seals sign without a popup.'}`}</span></div>
           ) : (
-            <div><b>Sign in to play on NEAR</b><span>With Google or just a name, and the realm makes you a NEAR testnet account with a little NEAR in it. No wallet needed. Your coin, rounds, seals and bets live in the realm contract.</span></div>
+            <div><b>Sign in to play</b><span>With Google or just a name, and the realm makes you a account with a little gold in it. No wallet needed. Your coin, rounds, seals and bets live in the realm contract.</span></div>
           )}
           {!c.account && <button type="button" className="near-btn" onClick={() => openSignIn(name)} disabled={!!c.busy}>Sign in</button>}
           {c.error && !c.busy && <p className="err">{c.error}</p>}
-        </div>
+        </div>}
         <label>Who walks for you</label>
         <div className="chips">{BODIES.map((b) => <button type="button" key={b.id} className={b.id === body ? 'on' : ''} onClick={() => setBody(b.id)}>{b.name}</button>)}</div>
         <label>Your house</label>
@@ -150,8 +152,8 @@ function SeatPicker() {
         </div>
         <div className="actions">
           <button type="button" className="ghost" onClick={() => { play.picking = false; setMode('map'); }}>Not now</button>
-          {!c.account && <button type="button" className="link practise" onClick={() => { practise(); takeSeat(seat()); }}>Practice without signing in</button>}
-          <button type="submit" className="go" disabled={entering}>{entering ? 'Approve the game key in your wallet…' : c.account ? `Enter the realm as House ${h.name}` : 'Sign in to enter'}</button>
+          {!OFFLINE && !c.account && <button type="button" className="link practise" onClick={() => { practise(); takeSeat(seat()); }}>Practice without signing in</button>}
+          <button type="submit" className="go" disabled={entering}>{entering ? 'Approve the game key in your wallet…' : c.account || OFFLINE ? `Enter the realm as House ${h.name}` : 'Sign in to enter'}</button>
         </div>
       </form>
     </div>
@@ -207,35 +209,35 @@ function MintPanel() {
   const [why, setWhy] = useState(false);
   return (
     <>
-      <div className="eyebrow">The Warwick Mint · {live ? 'on NEAR testnet' : 'practice purse'}</div>
+      <div className="eyebrow">The Warwick Mint · {live ? 'on practice' : 'practice purse'}</div>
       <h2>Buy and sell house coin</h2>
       <p className="lede">{live
-        ? 'Each house is a merchant: its coin is worth a share of its NEAR purse, and it asks more when buyers rush in and pays less when sellers flood it. Every round played in a hall burns coin, which raises every holder’s share.'
-        : 'A house coin is worth its house’s NEAR reserve divided by its supply. Every round played in a hall burns coin, so the price only climbs while people play. A 5% fee on each trade: 3 points stay in the reserve, 2 go to the crown pool.'}</p>
+        ? 'Each house is a merchant: its coin is worth a share of its gold purse, and it asks more when buyers rush in and pays less when sellers flood it. Every round played in a hall burns coin, which raises every holder’s share.'
+        : 'A house coin is worth its house’s gold reserve divided by its supply. Every round played in a hall burns coin, so the price only climbs while people play. A 5% fee on each trade: 3 points stay in the reserve, 2 go to the crown pool.'}</p>
       <div className="chips">{HOUSES.map((y) => <button key={y.id} className={y.id === h ? 'on' : ''} onClick={() => setH(y.id)}>${y.coin}</button>)}</div>
       <dl className="stats">
         {q ? <>
-          <div title={q.why.join('\n')}><dt>Buy at</dt><dd>{q.buy.toPrecision(3)} NEAR{q.factor !== 1 && <small className={q.factor > 1 ? 'up' : 'down'}> ×{q.factor.toFixed(2)}</small>}</dd></div>
-          <div title={q.why.join('\n')}><dt>Sell at</dt><dd>{q.shut ? 'shut' : <>{q.sell.toPrecision(3)} NEAR{q.sellFactor !== 1 && <small className="down"> ×{q.sellFactor.toFixed(2)}</small>}</>}</dd></div>
-        </> : <div><dt>Price</dt><dd>{price(h).toPrecision(3)} NEAR</dd></div>}
+          <div title={q.why.join('\n')}><dt>Buy at</dt><dd>{q.buy.toPrecision(3)} gold{q.factor !== 1 && <small className={q.factor > 1 ? 'up' : 'down'}> ×{q.factor.toFixed(2)}</small>}</dd></div>
+          <div title={q.why.join('\n')}><dt>Sell at</dt><dd>{q.shut ? 'shut' : <>{q.sell.toPrecision(3)} gold{q.sellFactor !== 1 && <small className="down"> ×{q.sellFactor.toFixed(2)}</small>}</>}</dd></div>
+        </> : <div><dt>Price</dt><dd>{price(h).toPrecision(3)} gold</dd></div>}
         <div><dt>Supply</dt><dd>{fmt(supply(h))}</dd></div>
         {live && <div><dt>Burned</dt><dd>{fmt(burned(h))}</dd></div>}
         <div><dt>You hold</dt><dd>{fmt(held(h))} ${x.coin}</dd></div>
       </dl>
       {q && <div className={`merchant${q.shut ? ' shut' : ''}`}>
-        {q.shut && <b>House {x.name} is shut. A run drained its purse to {q.reserve.toFixed(3)} NEAR. Buying ${x.coin} invests in it: the hall reopens at {q.reopenAt.toFixed(3)} NEAR.</b>}
+        {q.shut && <b>House {x.name} is shut. A run drained its purse to {q.reserve.toFixed(3)} gold. Buying ${x.coin} invests in it: the hall reopens at {q.reopenAt.toFixed(3)} gold.</b>}
         <button className="link" onClick={() => setWhy(!why)}>{why ? 'Hide' : 'Why this price?'}</button>
         {why && <ul>{q.why.map((w) => <li key={w}>{w}</li>)}</ul>}
       </div>}
       <div className="trade">
-        <input value={amt} inputMode="decimal" onChange={(e) => setAmt(e.target.value)} aria-label="NEAR to spend" />
-        <button className="go" disabled={n <= 0 || n > purse || !!c.busy} onClick={() => void buyCoin(h, n)}>{q?.shut ? 'Invest' : 'Buy with'} {n || 0} NEAR</button>
+        <input value={amt} inputMode="decimal" onChange={(e) => setAmt(e.target.value)} aria-label="gold to spend" />
+        <button className="go" disabled={n <= 0 || n > purse || !!c.busy} onClick={() => void buyCoin(h, n)}>{q?.shut ? 'Invest' : 'Buy with'} {n || 0} gold</button>
         <button className="ghost" disabled={held(h) <= 0 || !!c.busy || !!q?.shut} onClick={() => void sellCoin(h, held(h) / 2)}>Sell half</button>
       </div>
-      <button className="ff" onClick={() => openPanel({ id: 'week', verb: 'Watch', what: 'a week at the Mint', panel: 'week' })}>▶▶ Fast-forward a week <span>Watch these prices move under the same rule</span></button>
+      {!OFFLINE && <button className="ff" onClick={() => openPanel({ id: 'week', verb: 'Watch', what: 'a week at the Mint', panel: 'week' })}>▶▶ Fast-forward a week <span>Watch these prices move under the same rule</span></button>}
       {live
-        ? <p className="honest">Live on NEAR testnet: <a href={`${EXPLORER}/address/${CONTRACT}`} target="_blank" rel="noreferrer">{CONTRACT}</a>. {signsHere() ? 'Buying, selling and hall rounds all sign in this browser.' : 'Buying asks your wallet; selling and hall rounds use the game key.'}</p>
-        : <p className="honest">Practice purse in this browser. <button className="link" onClick={() => openSignIn()}>Play on NEAR testnet</button> to trade the real coins.</p>}
+        ? <p className="honest">Live testnet: <a href={`${EXPLORER}/address/${CONTRACT}`} target="_blank" rel="noreferrer">{CONTRACT}</a>. {signsHere() ? 'Buying, selling and hall rounds all sign in this browser.' : 'Buying asks your wallet; selling and hall rounds use the game key.'}</p>
+        : <p className="honest">Your purse is kept in this browser.</p>}
     </>
   );
 }
@@ -267,7 +269,7 @@ function GateOf({ house }: { house: number }) {
       <div className="eyebrow">{x.seat} · {x.land}</div>
       <h2>The gate of House {x.name}</h2>
       <p className="lede">The guards will not let a lord of another house in. Talk to their lord on the green, send a raven, or muster a march at the Gershuni Gate.</p>
-      <dl className="stats"><div><dt>People</dt><dd>{ledger.people[house]}</dd></div><div><dt>${x.coin}</dt><dd>{priceAt(ledger.supply[house]).toFixed(5)} NEAR</dd></div></dl>
+      <dl className="stats"><div><dt>People</dt><dd>{ledger.people[house]}</dd></div><div><dt>${x.coin}</dt><dd>{priceAt(ledger.supply[house]).toFixed(5)} gold</dd></div></dl>
     </>
   );
 }
@@ -283,7 +285,7 @@ function LordPanel({ house }: { house: number }) {
       <h2>{own ? 'Your steward' : `The lord of House ${x.name}`}</h2>
       <blockquote>{lines[i % lines.length]}</blockquote>
       <div className="actions"><button className="ghost" onClick={() => setI(i + 1)}>Ask another thing</button></div>
-      <p className="honest">Set lines for now. The lords will speak for themselves through NEAR AI.</p>
+      <p className="honest">Set lines for now.</p>
     </>
   );
 }
@@ -308,13 +310,13 @@ function Council() {
   const share = past ? units(past.share) : 0;
   return (
     <>
-      <div className="eyebrow">Emberfall · the hall of the Ashen Throne{live ? ' · on NEAR testnet' : ''}</div>
+      <div className="eyebrow">Emberfall · the hall of the Ashen Throne{live ? ' · testnet' : ''}</div>
       <h2>Season {season} of the Ashen Throne</h2>
       <p className="lede">When a season ends, the house with the most favour takes the throne, and the crown pool goes to the players who won it that favour, each by their own share. Favour comes from rounds played in the halls, and more from rounds won.</p>
       {live ? (
         <dl className="stats">
           <div><dt>Season</dt><dd>{clock}</dd></div>
-          <div><dt>Crown pool</dt><dd>{units(realm!.pool).toFixed(4)} NEAR</dd></div>
+          <div><dt>Crown pool</dt><dd>{units(realm!.pool).toFixed(4)} gold</dd></div>
         </dl>
       ) : null}
       {live && left <= 0 && (
@@ -322,11 +324,11 @@ function Council() {
       )}
       {live && past && (
         <div className="throne-past">
-          <b>Season {past.season}: {past.crowned === null ? 'nobody earned favour, so nobody was crowned.' : `House ${HOUSES[past.crowned].name} took the throne, with a pool of ${units(past.pool).toFixed(4)} NEAR.`}</b>
+          <b>Season {past.season}: {past.crowned === null ? 'nobody earned favour, so nobody was crowned.' : `House ${HOUSES[past.crowned].name} took the throne, with a pool of ${units(past.pool).toFixed(4)} gold.`}</b>
           {past.crowned !== null && (past.claimed
-            ? <span>You took your share: {share.toFixed(4)} NEAR.</span>
+            ? <span>You took your share: {share.toFixed(4)} gold.</span>
             : share > 0
-              ? <button className="go" disabled={busy || !!c.busy} onClick={() => void act(() => claimCrown(past.season, share))}>Take your share: {share.toFixed(4)} NEAR</button>
+              ? <button className="go" disabled={busy || !!c.busy} onClick={() => void act(() => claimCrown(past.season, share))}>Take your share: {share.toFixed(4)} gold</button>
               : <span>You earned no favour with House {HOUSES[past.crowned].name} that season, so there is no share for you.</span>)}
         </div>
       )}
@@ -341,7 +343,7 @@ function Council() {
       })}</div>
       {live
         ? <p className="honest">Read from <a href={`${EXPLORER}/address/${CONTRACT}`} target="_blank" rel="noreferrer">{CONTRACT}</a>. Anyone can crown the house once the season is over (<code>end_season</code>); each player takes their own share (<code>claim_crown</code>).</p>
-        : <p className="honest">This is your practice favour, kept in this browser. <button className="link" onClick={() => openSignIn()}>Play on NEAR testnet</button> to see the real season and its crown pool.</p>}
+        : <p className="honest">This is your practice favour, kept in this browser.</p>}
     </>
   );
 }
@@ -407,9 +409,9 @@ function RacePanel({ onGo }: { onGo: () => void }) {
       <ul className="keys"><li><kbd>A</kbd><kbd>D</kbd> change lane</li><li><kbd>Space</kbd> whip (three cracks, each burns 10 ${mine.coin})</li></ul>
       <div className="actions">
         <button className="go" onClick={() => { startDrive(); onGo(); }}>{race.chain ? 'Drive in a practice heat' : run ? 'Take the reins in the next race' : 'Take the reins'}</button>
-        <button className="ghost" onClick={() => { setWatch(true); onGo(); }}>{onChain() ? 'Watch and bet on NEAR' : 'Watch from the stands'}</button>
+        <button className="ghost" onClick={() => { setWatch(true); onGo(); }}>{onChain() ? 'Watch and bet' : 'Watch from the stands'}</button>
       </div>
-      {onChain() && <p className="honest">The races on NEAR are run by the contract: you bet real testnet NEAR and crack whips that burn house coin, but you can’t drive them. Driving is a practice heat.</p>}
+      {onChain() && <p className="honest">The races are run by the contract: you bet real testnet gold and crack whips that burn house coin, but you can’t drive them. Driving is a practice heat.</p>}
       <p className="honest">Each move is logged with its tick, so the contract can replay the race and check the result.</p>
       {live.race.backed !== undefined && <p className="slip">You have backed House {HOUSES[live.race.backed].name} in this race.</p>}
     </>
@@ -437,7 +439,7 @@ function Pause() {
           <dt>{TOUCH ? 'Map' : 'M'}</dt><dd>the map · click it to set a waypoint</dd>
           {!TOUCH && <><dt>N</dt><dd>music on or off</dd></>}
         </dl>
-        <footer><NearPill /><span>{onChain() ? `Playing on NEAR testnet · ${CONTRACT}` : 'Practice purse. Sign in (top left) to play on NEAR testnet.'}</span></footer>
+        <footer><NearPill /><span>{onChain() ? `Playing testnet · ${CONTRACT}` : 'Your purse and seals are kept in this browser.'}</span></footer>
       </nav>
     </div>
   );
@@ -475,7 +477,7 @@ function SealBook() {
           <li key={g.id} className={done ? 'done' : open ? 'open' : 'locked'}>
             <span className="wax"><SealGlyph seal={m.seal!} /></span>
             <div><b>{g.name}</b><em>{g.title}</em><p>{m.brief()}</p></div>
-            <span className="state">{done ? (sealedOnChain(m.seal) ? 'Sealed · on NEAR' : 'Sealed') : open ? (story.run?.id === m.id ? 'Under way' : 'Open') : m.seal === 'Throne' ? 'Needs six seals' : 'After the Mint'}</span>
+            <span className="state">{done ? (sealedOnChain(m.seal) ? 'Sealed ·' : 'Sealed') : open ? (story.run?.id === m.id ? 'Under way' : 'Open') : m.seal === 'Throne' ? 'Needs six seals' : 'After the Mint'}</span>
           </li>
         );
       })}</ul>
@@ -485,7 +487,6 @@ function SealBook() {
           <b>{r.gameName}</b>{HOUSES[r.house].seat} · House {HOUSES[r.house].name}<br />{c.me ? <>Favour {fmt(favour(r.house))} · {c.me.halls_won.includes(r.house) ? 'won' : 'not won yet'}</> : <>Favour {ledger.favour[r.house] ?? 0}</>}
         </div>
       ))}</div>
-      <p className="honest">The Wardens are named for the NEAR HACKATHON judges, with roles drawn from their work. Names and roles only: the figures are our own.</p>
     </>
   );
 }

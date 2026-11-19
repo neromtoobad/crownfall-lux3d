@@ -69,7 +69,7 @@ type Phase = 'show' | 'shuffle' | 'choose' | 'lift' | 'between' | 'close';
 interface Swap { a: number; b: number; t0: number; dur: number; feint: boolean; started: boolean; done: boolean }
 const ui = gameUi({ round: 1, cleared: 0, phase: 'show' as Phase, line: 'Watch the ram.', sel: 1 });
 
-// Every shuffle comes from the round's generator: on NEAR that's the seed the contract rolled at entry, so it can replay
+// Every shuffle comes from the round's generator: that's the seed the contract rolled at entry, so it can replay
 // the round from the cups you lifted and judge it (chain/src/halls.rs, `cup_round`: same draws, same order).
 function plan(rng: Rng, round: number, start: number) {
   const n = 3 + round * 2, dur = Math.max(0.2, 0.62 - round * 0.08);

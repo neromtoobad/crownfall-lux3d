@@ -28,7 +28,7 @@ const RULES: Rule[] = [
   { ev: 'greet', when: (c) => c.home, lines: [(c) => `Welcome home, m’lord. ${c.house} hasn’t burned down while you were out.`, (c) => `${c.house}’s own! Back from the capital?`, 'The steward’s been asking after you.'] },
   { ev: 'greet', when: (c) => c.renown >= 4, lines: ['That’s the one from the Stakes!', 'Make way, a lord of some renown.', 'My cousin won three coin on you. Thank you, my lord.'] },
   { ev: 'greet', who: 'lord', when: (c) => c.renown >= 4, lines: ['So the whole realm knows your name now. Enjoy it while it lasts.', 'Renown is a loan, friend. The Throne collects.'] },
-  // The realm as it stands on NEAR: people talk about what is actually happening.
+  // The realm as it stands: people talk about what is actually happening.
   { ev: 'greet', when: (c) => !!c.shut, lines: [(c) => `Did you hear? House ${c.shut} shut its doors. A run on the coin.`, (c) => `They say ${c.shut}’s purse is near empty. Somebody ought to buy in.`, (c) => `${c.shut}’s hall is dark tonight. Shame. Good bread there.`] },
   { ev: 'greet', who: 'lord', when: (c) => !!c.shut, lines: [(c) => `${c.shut} shut? Good. One fewer at the table.`, (c) => `Buy into ${c.shut} now and you own the reopening. Not that I’m telling you.`] },
   { ev: 'greet', when: (c) => !!c.dear, lines: [(c) => `Everyone’s buying ${c.dear} coin this morning. Dear as gold.`, (c) => `${c.dear} coin’s up again. My sister swears she sold too early.`] },

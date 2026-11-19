@@ -18,6 +18,7 @@ import { ledger } from './realm/ledger.ts';
 import { startChain } from './chain/ChainBar.tsx';
 import { useChain } from './chain/near.ts';
 import { KIT, LUX3D_COUNT, switchKit } from './realm/kit.ts';
+import { OFFLINE } from './realm/offline.ts';
 
 const DEMO_MARCH: MarchOrder = { id: 'demo', from: 1, to: 2, started: 0 };
 
@@ -72,7 +73,7 @@ function Game() {
         {LUX3D_COUNT > 0 && <button className="ghost kit-switch" onClick={() => switchKit(KIT === 'lux3d' ? 'original' : 'lux3d')}>{KIT === 'lux3d' ? 'Show the original models' : 'Show the Lux3D models'}</button>}
         <div className="top-actions">
           {mode === 'map' && <button className="ghost" onClick={() => { setPicked(undefined); setFocus({ x: 0, z: 60, dist: 980 }); }}>The whole realm</button>}
-          <button className="seat-btn" onClick={() => setMode('play')}>{account ? 'Take your seat' : 'Sign in & take your seat'}</button>
+          <button className="seat-btn" onClick={() => setMode('play')}>{account || OFFLINE ? 'Take your seat' : 'Sign in & take your seat'}</button>
         </div>
       </header>}
       {h && (

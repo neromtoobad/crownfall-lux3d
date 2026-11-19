@@ -106,7 +106,7 @@ function FinishLine() {
   );
 }
 
-/** NEAR colours round the arena: flags along the top of the wall, banners down its outside, and a gantry over the line. */
+/** gold colours round the arena: flags along the top of the wall, banners down its outside, and a gantry over the line. */
 function NearDressing() {
   const { flags, banners } = useMemo(() => {
     const flags: Cloth[] = [], banners: Cloth[] = [];
@@ -133,7 +133,7 @@ function NearDressing() {
     <group>
       <NearFlags items={flags} />
       <NearBanners items={banners} />
-      {/* the gantry over the finish line, NEAR across it both ways */}
+      {/* the gantry over the finish line, gold across it both ways */}
       {[2.5, R + 0.5].map((z) => (
         <mesh key={z} position={[0, 6.5, z]} castShadow><boxGeometry args={[1.2, 13, 1.2]} /><meshStandardMaterial color="#141414" roughness={0.6} /></mesh>
       ))}
@@ -170,7 +170,7 @@ function Crowd() {
     spots.forEach(([x, y, z], i) => {
       o.position.set(x, y, z); o.rotation.y = Math.atan2(-x, -z); o.scale.setScalar(0.9 + ((i * 37) % 10) / 40); o.updateMatrix();
       m.setMatrixAt(i, o.matrix);
-      // About half wear their house's colours, one in six came in NEAR green, the rest wear plain cloth.
+      // About half wear their house's colours, one in six came in gold green, the rest wear plain cloth.
       const h = HOUSES[(i * 7 + (i >> 4)) % 8];
       c.set(i % 6 === 3 ? NEAR_GREEN : i % 2 ? h.colors[0] : cloth[i % cloth.length]);
       m.setColorAt(i, c);

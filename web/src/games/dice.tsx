@@ -3,7 +3,7 @@
 // must be higher (more dice, or as many of a higher face). Or call the last bid a lie: both cups come up, and whoever
 // was wrong loses a die. First to lose all five loses. No wilds. Haseeb plays the odds, and bluffs a little.
 //
-// On NEAR the table is one wager the contract settles itself, so a win can't be reported by the browser: your five
+// On gold the table is one wager the contract settles itself, so a win can't be reported by the browser: your five
 // dice are rolled on chain in the block that takes your stake, you make one bid, and Haseeb's five are rolled from the
 // block that takes it. If both cups show at least that many of the face, the contract pays fair odds less 5% from the
 // Library's bank; if not, the stake goes to the bank.
@@ -130,7 +130,7 @@ interface S {
   phase: Phase; t: number; turn: Who; starter: Who;
   yours: number[]; his: number[]; you: number; him: number;
   bid?: Bid; think: number; reveal?: { n: number; ok: boolean; loser: Who }; nextRattle: number; done: boolean;
-  /** On NEAR: what the contract paid for the bid. */
+  /** On gold: what the contract paid for the bid. */
   paid: number;
   /** Per cup (yours, his), eased every frame so no phase change can snap a cup: how far it is lifted aside (0..1),
    *  how hard it rattles, and a short hop when its owner bids. */
@@ -148,7 +148,7 @@ function Play({ room, end }: { room: Room; end: (r: Result) => void }) {
   const faces = useRef<(THREE.Mesh | null)[]>([]);
   const yaws = useMemo(() => Array.from({ length: START * 2 }, () => Math.random() * Math.PI * 2), []);
   const camPos = useMemo(() => new THREE.Vector3(), []), camLook = useMemo(() => new THREE.Vector3(), []), look = useMemo(() => new THREE.Vector3(), []);
-  // A bid on NEAR can come back after you have walked out: it must not write to a table that is gone.
+  // A bid can come back after you have walked out: it must not write to a table that is gone.
   const alive = useRef(true);
   useEffect(() => { alive.current = true; return () => { alive.current = false; }; }, []);
 
@@ -160,7 +160,7 @@ function Play({ room, end }: { room: Room; end: (r: Result) => void }) {
     ui.set({ phase: 'roll', you: s.you, him: s.him, yours: [...s.yours].sort(), bid: undefined, reveal: undefined, turn: s.turn });
     tell('Both cups rattle.');
   };
-  // ---- On NEAR: one bid against Haseeb's cup, settled by the contract.
+  // ---- On gold: one bid against Haseeb's cup, settled by the contract.
   const wager = session.live;
   const bank = () => units(session.lib?.bank);
   const quote = (q: number, f: number): Quote | undefined => {
@@ -177,7 +177,7 @@ function Play({ room, end }: { room: Room; end: (r: Result) => void }) {
     s.phase = 'roll'; s.t = 0; s.turn = 'you';
     const pick = wagerPick();
     ui.set({ phase: 'roll', wager: true, you: START, him: START, yours: [...s.yours].sort(), bid: undefined, reveal: undefined, turn: 'you', pick, quote: quote(pick.q, pick.f), bank: bank() });
-    tell('Both cups rattle. Yours was rolled on NEAR when you staked.');
+    tell('Both cups rattle. Yours was rolled when you staked.');
   };
   const bidOnChain = (q: number, f: number) => {
     const round = session.chainRound;
@@ -209,7 +209,7 @@ function Play({ room, end }: { room: Room; end: (r: Result) => void }) {
     if (!wager) { deal(); return; }
     sitDown();
     // If the dice couldn't be read back at the stake, read them now.
-    if (!session.lib?.cup && session.chainRound !== undefined) void library(session.chainRound).then((l) => { if (!alive.current) return; session.lib = l; sitDown(); }).catch(() => alive.current && tell('Couldn’t read your cup from NEAR. Esc to leave (the stake goes to the Library).'));
+    if (!session.lib?.cup && session.chainRound !== undefined) void library(session.chainRound).then((l) => { if (!alive.current) return; session.lib = l; sitDown(); }).catch(() => alive.current && tell('Couldn’t read your cup from gold. Esc to leave (the stake goes to the Library).'));
     /* eslint-disable-line react-hooks/exhaustive-deps */
   }, []);
 
@@ -290,7 +290,7 @@ function Play({ room, end }: { room: Room; end: (r: Result) => void }) {
         else if (k === 'a' || k === 'arrowleft') f = ((f + 4) % 6) + 1;
         else if (k === 'e' || k === 'enter') {
           const qt = quote(q, f);
-          if (!qt) { tell('Your cup hasn’t come back from NEAR yet.'); continue; }
+          if (!qt) { tell('Your cup hasn’t come back from gold yet.'); continue; }
           if (qt.need < 1) { tell(`You hold ${NUM[qt.have]} yourself: bid more than that.`); continue; }
           if (qt.need > 5) { tell('Haseeb only has five dice.'); continue; }
           if (!qt.cover) { tell('The Library’s bank can’t cover that bid. Bid lower.'); continue; }
@@ -304,7 +304,7 @@ function Play({ room, end }: { room: Room; end: (r: Result) => void }) {
       const r = s.reveal!, b = s.bid!;
       if (s.t > 0.75 && s.t - dt <= 0.75) {
         burst(900, 1, 0.06, 0.3);
-        tell(`${NUM[r.n] ?? r.n} ${r.n === 1 ? FACE_NAME[b.f].replace(/s$/, '').replace('sixe', 'six') : FACE_NAME[b.f]} on the table. ${r.ok ? `Your bid was true: the contract pays ${s.paid.toFixed(3)} NEAR.` : 'Your bid was short: the stake goes to the Library’s bank.'}`);
+        tell(`${NUM[r.n] ?? r.n} ${r.n === 1 ? FACE_NAME[b.f].replace(/s$/, '').replace('sixe', 'six') : FACE_NAME[b.f]} on the table. ${r.ok ? `Your bid was true: the contract pays ${s.paid.toFixed(3)} gold.` : 'Your bid was short: the stake goes to the Library’s bank.'}`);
       }
       if (s.t > 2.6 && s.t - dt <= 2.6) say(any(r.ok ? LINES.heLoses : LINES.heWins));
       if (s.t > 4.2) { s.phase = 'over'; s.t = 0; ui.set({ phase: 'over' }); if (r.ok) burst(1800, 3, 0.05, 0.5); }
@@ -312,7 +312,7 @@ function Play({ room, end }: { room: Room; end: (r: Result) => void }) {
       if (s.t > 2.4) {
         s.done = true;
         const r = s.reveal!, b = s.bid!;
-        end({ won: r.ok, score: r.n, grade: 1, paid: s.paid, line: r.ok ? `You bid ${bidText(b)} and the cups showed ${NUM[r.n] ?? r.n}. The contract paid ${s.paid.toFixed(3)} NEAR.` : `You bid ${bidText(b)}; the cups showed ${NUM[r.n] ?? r.n}. Haseeb keeps the ${LIB_STAKE} NEAR for the Library.` });
+        end({ won: r.ok, score: r.n, grade: 1, paid: s.paid, line: r.ok ? `You bid ${bidText(b)} and the cups showed ${NUM[r.n] ?? r.n}. The contract paid ${s.paid.toFixed(3)} gold.` : `You bid ${bidText(b)}; the cups showed ${NUM[r.n] ?? r.n}. Haseeb keeps the ${LIB_STAKE} gold for the Library.` });
         return;
       }
     } else if (s.phase === 'bid') {
@@ -405,7 +405,7 @@ function Play({ room, end }: { room: Room; end: (r: Result) => void }) {
       g.rotation.set(0, yaws[i], 0);
       const up = UP[list[k]]; m.rotation.set(up[0], up[1], up[2]);
       m.material = hot ? hotMats : dieMats;
-      // The die that's lost shrinks away, and stays gone until the next deal (or the end of the game). On NEAR there
+      // The die that's lost shrinks away, and stays gone until the next deal (or the end of the game). On gold there
       // is one bid and nobody loses a die.
       const lost = !wager && reveal && !!s.reveal && ((s.reveal.loser === 'you') === mine) && k === list.length - 1;
       g.scale.setScalar(!lost ? 1 : s.phase === 'over' ? 0.001 : Math.max(0.001, 1 - smooth((s.t - 3.0) / 0.4)));
@@ -449,7 +449,7 @@ function WagerHud() {
   const q = s.quote, mine = s.phase === 'bid';
   return (
     <div className="game-hud dice">
-      {s.phase !== 'roll' && <div className="mine">Your cup, rolled on NEAR: {s.yours.map((d, i) => <b key={i} className={(s.bid ?? s.pick) && d === (s.bid ?? s.pick).f ? 'hit' : ''}>{PIPS[d]}</b>)}</div>}
+      {s.phase !== 'roll' && <div className="mine">Your cup, rolled: {s.yours.map((d, i) => <b key={i} className={(s.bid ?? s.pick) && d === (s.bid ?? s.pick).f ? 'hit' : ''}>{PIPS[d]}</b>)}</div>}
       {s.bid && <div className="big">You bid: {bidText(s.bid)}</div>}
       <div className="line">{s.who && <b>{s.who}: </b>}{s.line}</div>
       {mine && (
@@ -460,12 +460,12 @@ function WagerHud() {
       {mine && q && (
         <div className="hint">
           {q.need < 1 ? `You hold ${NUM[q.have]} yourself: bid higher.` : q.need > 5 ? 'Haseeb only has five dice.' : <>
-            Haseeb’s cup must show {NUM[q.need]} more · {(q.chance * 100).toFixed(1)}% · pays {q.pays.toFixed(3)} NEAR
+            Haseeb’s cup must show {NUM[q.need]} more · {(q.chance * 100).toFixed(1)}% · pays {q.pays.toFixed(3)} gold
             {!q.cover && ' · more than the bank can cover'}
           </>}
         </div>
       )}
-      {mine && <div className="hint"><kbd>E</kbd> bid {bidText(s.pick)} for {LIB_STAKE} NEAR · fair odds less 5%, from the Library’s bank ({s.bank.toFixed(2)} NEAR)</div>}
+      {mine && <div className="hint"><kbd>E</kbd> bid {bidText(s.pick)} for {LIB_STAKE} gold · fair odds less 5%, from the Library’s bank ({s.bank.toFixed(2)} gold)</div>}
       {s.phase === 'wait' && <div className="hint">The contract is rolling Haseeb’s cup…</div>}
     </div>
   );
@@ -497,7 +497,7 @@ function Hud() {
 
 register({
   id: 'dice', name: 'Liar’s Dice',
-  pitch: 'Five dice each under a cup; you only see yours. Bid on how many of a face lie under both cups, each bid higher than the last, or call Haseeb’s bid a lie. Whoever is wrong loses a die. No wilds. On NEAR it’s one bid, settled by the contract.',
+  pitch: 'Five dice each under a cup; you only see yours. Bid on how many of a face lie under both cups, each bid higher than the last, or call Haseeb’s bid a lie. Whoever is wrong loses a die. No wilds. On gold it’s one bid, settled by the contract.',
   keys: [['W S', 'how many'], ['A D', 'which face'], ['E', 'bid'], ['Space', 'call “Liar!”'], ['Esc', 'leave']],
   entry: 1,
   Station, Play, Hud,

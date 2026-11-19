@@ -1,4 +1,4 @@
-// Sign in to play on NEAR: Google, just a name, or a NEAR wallet. The first two make a real testnet account under
+// Sign in to play: Google, just a name, or a gold wallet. The first two make a real testnet account under
 // vael.testnet (see api/lord.ts) and keep its key in this browser, so nothing in the game ever asks a wallet.
 import { useEffect, useRef, useState } from 'react';
 import type { KeyPairString } from 'near-api-js';
@@ -48,7 +48,7 @@ export async function lordByName(name: string, onBusy: (s: string) => void = () 
   const pk = kp.getPublicKey().toString();
   onBusy('Sealing your name…');
   const nonce = await work(account, pk, cfg.pow);
-  onBusy('Making your lord on NEAR…');
+  onBusy('Making your lord…');
   const out = await post({ via: 'name', name: slug(name), publicKey: pk, nonce });
   await signInLord(out.account, kp.toString() as KeyPairString, 'name');
   return out.account;
@@ -72,7 +72,7 @@ export function SignIn({ suggest = '' }: { suggest?: string }) {
       window.google!.accounts.id.initialize({
         client_id: cfg.google, ux_mode: 'popup', auto_select: false, itp_support: true,
         callback: async (r: { credential: string }) => {
-          setErr(''); setBusy('Making your lord on NEAR…');
+          setErr(''); setBusy('Making your lord…');
           try {
             const out = await post({ via: 'google', credential: r.credential });
             await signInLord(out.account, out.key!, 'google');
@@ -95,11 +95,11 @@ export function SignIn({ suggest = '' }: { suggest?: string }) {
 
   return (
     <div className="scrim signin-scrim" onClick={closeSignIn}>
-      <div className="panel signin" onClick={(e) => e.stopPropagation()} role="dialog" aria-label="Sign in to play on NEAR">
+      <div className="panel signin" onClick={(e) => e.stopPropagation()} role="dialog" aria-label="Sign in to play">
         <button className="x" onClick={closeSignIn} aria-label="Close">×</button>
-        <div className="eyebrow">Play on NEAR testnet</div>
+        <div className="eyebrow">Play testnet</div>
         <h2>Sign in to the realm</h2>
-        <p className="lede">Sign in and Crownfall makes you a real NEAR account with a little testnet NEAR in it. Coins, hall rounds, seals and bets all sign right here, with no wallet and no popups.</p>
+        <p className="lede">Sign in and Crownfall makes you a real account with a little testnet gold in it. Coins, hall rounds, seals and bets all sign right here, with no wallet and no popups.</p>
 
         {lords.length > 0 && (
           <div className="again">{lords.map((l) => (
@@ -120,10 +120,10 @@ export function SignIn({ suggest = '' }: { suggest?: string }) {
 
         {busy && <p className="busy"><i />{busy}</p>}
         {!busy && (err || c.error) && <p className="err">{err || c.error}</p>}
-        {cfg?.open === false && <p className="err">The purse for new lords is empty right now. A NEAR wallet still works.</p>}
+        {cfg?.open === false && <p className="err">The purse for new lords is empty right now. A gold wallet still works.</p>}
 
         <div className="or"><span>have a wallet?</span></div>
-        <button className="wallet" onClick={wallet}><NearMark size={14} />Connect a NEAR wallet</button>
+        <button className="wallet" onClick={wallet}><NearMark size={14} />Connect a gold wallet</button>
       </div>
     </div>
   );

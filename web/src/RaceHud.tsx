@@ -1,5 +1,5 @@
 // The race card: what is running at the Hippodrome, the standings, odds, your bet and your whips.
-// On NEAR the race on the track is the contract's: bets are real (testnet) NEAR, whips burn house coin, and the
+// On gold the race on the track is the contract's: bets are real (testnet) gold, whips burn house coin, and the
 // result is the one the contract computes by running the same race this screen draws.
 import { useEffect, useState } from 'react';
 import { HOUSES } from './realm/layout.ts';
@@ -29,17 +29,17 @@ export function RaceHud() {
   const lap = Math.min(r.cup.laps, Math.floor(order[0].p) + 1);
   const off = Math.ceil(toOff(r));
   const status = r.phase === 'parade'
-    ? (cv ? (betsOpen() ? `Betting closes in ${off >= 60 ? `${Math.floor(off / 60)}:${String(off % 60).padStart(2, '0')}` : `${off}s`}` : 'Betting closed · the seed is drawn on NEAR at the start') : `Under starter's orders · ${off}s`)
+    ? (cv ? (betsOpen() ? `Betting closes in ${off >= 60 ? `${Math.floor(off / 60)}:${String(off % 60).padStart(2, '0')}` : `${off}s`}` : 'Betting closed · the seed is drawn at the start') : `Under starter's orders · ${off}s`)
     : r.phase === 'run' ? `Lap ${lap} of ${r.cup.laps}`
-    : cv ? (cv.settled ? 'Settled on NEAR' : 'Over the line · settling on NEAR') : 'Result';
+    : cv ? (cv.settled ? 'Settled' : 'Over the line · settling') : 'Result';
 
   if (!live.watch) {
     return (
       <button className="race-ticker" onClick={() => setWatch(true)}>
-        <span className="eyebrow">Mumtaz Hippodrome · race {r.n}{cv ? ' · on NEAR' : ''}</span>
+        <span className="eyebrow">Mumtaz Hippodrome · race {r.n}{cv ? ' ·' : ''}</span>
         <b>{r.cup.name}</b>
         <span className="row">{status}{r.phase !== 'parade' && <> · <i style={{ background: leader.colors[0] }} />{leader.name} leads</>}</span>
-        <span className="cta">Watch the race →<span className="on-near"><NearMark size={11} /> {cv ? 'bets and result on NEAR' : onChain() ? 'practice heat' : 'connect to bet on NEAR'}</span></span>
+        <span className="cta">Watch the race →<span className="on-near"><NearMark size={11} /> {cv ? 'bets and result' : onChain() ? 'practice heat' : 'practice heat'}</span></span>
       </button>
     );
   }
@@ -66,14 +66,14 @@ export function RaceHud() {
         <Rivals feed={feed} onNear />
         <div className="foot">
           <span className="mono">seed {r.seed.toString(16).padStart(8, '0')}</span>
-          <span className="on-near"><NearMark size={12} /> {onChain() ? 'A practice heat. The races on NEAR come back on the track after it.' : 'Practice slips. Sign in (top left) to bet on NEAR testnet.'}</span>
+          <span className="on-near"><NearMark size={12} /> {onChain() ? 'A practice heat. The races come back on the track after it.' : 'Practice slips.'}</span>
         </div>
         <button className="ghost leave" onClick={() => setWatch(false)}>Leave the stands</button>
       </aside>
     );
   }
 
-  // ---- On NEAR ----
+  // ---- On gold ----
   const total = cv.pools.reduce((a, b) => a + b, 0);
   const mine = cv.ticket?.bets ?? [];
   const myBet = mine.reduce((a, b) => a + b, 0);
@@ -88,12 +88,12 @@ export function RaceHud() {
   const busy = !!c.busy;
   return (
     <aside className="race-card">
-      <div className="eyebrow">Mumtaz Hippodrome · race {cv.n} · {cv.laps} {cv.laps > 1 ? 'laps' : 'lap'} · <span className="near-word"><NearMark size={11} /> on NEAR</span></div>
+      <div className="eyebrow">Mumtaz Hippodrome · race {cv.n} · {cv.laps} {cv.laps > 1 ? 'laps' : 'lap'} · <span className="near-word"><NearMark size={11} /></span></div>
       <h2>{r.cup.name}</h2>
       <div className="race-status">{status}</div>
       {win !== undefined && <div className="winner" style={{ ['--c' as string]: HOUSES[win].colors[0] }}>The contract ran it: <b>House {HOUSES[win].name}</b> wins</div>}
       {open && (
-        <div className="stakes">Stake {STAKES.map((s) => <button key={s} className={s === stake ? 'on' : ''} onClick={() => setStake(s)}>{s} NEAR</button>)}<small>Your first bet in a race pays 0.0025 NEAR for its ticket.</small></div>
+        <div className="stakes">Stake {STAKES.map((s) => <button key={s} className={s === stake ? 'on' : ''} onClick={() => setStake(s)}>{s} gold</button>)}<small>Your first bet in a race pays 0.0025 gold for its ticket.</small></div>
       )}
       <Standings
         order={order}
@@ -102,7 +102,7 @@ export function RaceHud() {
         sub={(h) => (cv.pools[h] > 0 ? `${cv.pools[h].toFixed(2)} N` : '')}
         action={open ? (h) => <button className="back" disabled={busy} onClick={() => void bet(h, stake).catch(() => {})}>{mine[h] > 0 ? `+${stake}` : 'Back'}</button> : undefined}
       />
-      {myBet > 0 && <div className="slip">Your bets: {mine.map((b, h) => (b > 0 ? `${b} NEAR on ${HOUSES[h].name}` : '')).filter(Boolean).join(', ')}.</div>}
+      {myBet > 0 && <div className="slip">Your bets: {mine.map((b, h) => (b > 0 ? `${b} gold on ${HOUSES[h].name}` : '')).filter(Boolean).join(', ')}.</div>}
       {whipOpen && whipHouse !== undefined && (
         <button className="whip" disabled={busy || whipsLeft <= 0 || held(whipHouse) < WHIP_COINS} onClick={() => void whip(whipHouse).catch(() => {})}>
           Crack the whip for {HOUSES[whipHouse].name}
@@ -110,8 +110,8 @@ export function RaceHud() {
         </button>
       )}
       {whipOpen && whipHouse === undefined && <div className="slip">Back a team to crack the whip for it. A whip burns {WHIP_COINS} of that house’s coin.</div>}
-      {cv.settled && pays > 0 && !cv.ticket?.claimed && <button className="whip" disabled={busy} onClick={() => void collect().catch(() => {})}>Collect {pays.toFixed(3)} NEAR</button>}
-      {cv.settled && cv.ticket?.claimed && <div className="slip">Collected. The winnings are in your NEAR account.</div>}
+      {cv.settled && pays > 0 && !cv.ticket?.claimed && <button className="whip" disabled={busy} onClick={() => void collect().catch(() => {})}>Collect {pays.toFixed(3)} gold</button>}
+      {cv.settled && cv.ticket?.claimed && <div className="slip">Collected. The winnings are in your account.</div>}
       {cv.settled && myBet > 0 && pays === 0 && win !== undefined && <div className="slip">{HOUSES[win].name} won; your teams didn’t. Your stake stays in the pot for the winners.</div>}
       {cv.settled && <button className="ghost" disabled={busy} onClick={() => void callRace().catch(() => {})}>Call the next race</button>}
       <Rivals feed={feed} race={cv.n} />
@@ -124,7 +124,7 @@ export function RaceHud() {
   );
 }
 
-/** The rival agents' moves in this race (or, from a practice heat, in the latest race on NEAR), with their reasons. */
+/** The rival agents' moves in this race (or, from a practice heat, in the latest race), with their reasons. */
 function Rivals({ feed, race, onNear }: { feed?: Feed; race?: number; onNear?: boolean }) {
   if (!feed?.events.length) return null;
   const last = race ?? Math.max(...feed.events.map((e) => e.race ?? -1));
@@ -132,11 +132,11 @@ function Rivals({ feed, race, onNear }: { feed?: Feed; race?: number; onNear?: b
   if (!moves.length) return null;
   return (
     <div className="rivals">
-      <div className="eyebrow">{onNear ? `Meanwhile on NEAR, race ${last}: the rivals` : 'The rivals in this race'} · <span title={feed.model ? `Their bets are decided by ${feed.model} on NEAR AI Cloud` : 'Their bets follow fixed rules'}>agents with their own wallets</span></div>
+      <div className="eyebrow">{onNear ? `Meanwhile, race ${last}: the rivals` : 'The rivals in this race'} · <span title={feed.model ? `Their bets are decided by ${feed.model} AI Cloud` : 'Their bets follow fixed rules'}>agents with their own wallets</span></div>
       <ul>
         {moves.map((e) => {
           const who = rivalOf(feed, e.who);
-          const what = e.kind === 'bet' ? `${e.near} NEAR on ${HOUSES[e.house ?? 0].name}` : e.kind === 'whip' ? `whips ${HOUSES[e.house ?? 0].name}` : e.kind === 'claim' ? `collects ${e.near} NEAR` : 'sits this one out';
+          const what = e.kind === 'bet' ? `${e.near} gold on ${HOUSES[e.house ?? 0].name}` : e.kind === 'whip' ? `whips ${HOUSES[e.house ?? 0].name}` : e.kind === 'claim' ? `collects ${e.near} gold` : 'sits this one out';
           return (
             <li key={`${e.t}-${e.who}-${e.kind}`}>
               <i style={{ background: HOUSES[who?.house ?? 0].colors[0] }} />

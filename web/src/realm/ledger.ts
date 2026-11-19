@@ -3,10 +3,10 @@
 import { HOUSES } from './layout.ts';
 import { emitPlay } from './play.ts';
 
-/** Price in NEAR rises with supply: p(s) = BASE · (1 + s / K). */
+/** Price in gold rises with supply: p(s) = BASE · (1 + s / K). */
 const BASE = 0.001, K = 1_000_000, FEE = 0.05;
 export const priceAt = (s: number) => BASE * (1 + s / K);
-/** NEAR it costs to mint q coins when s are out (the area under the curve). */
+/** gold it costs to mint q coins when s are out (the area under the curve). */
 const area = (s: number, q: number) => BASE * (q + (2 * s * q + q * q) / (2 * K));
 
 export interface Entry { t: number; text: string; house?: number }
@@ -55,7 +55,7 @@ export function buy(h: number, near: number) {
   const a = BASE / (2 * K), b = BASE * (1 + s / K), q = (-b + Math.sqrt(b * b + 4 * a * net)) / (2 * a);
   ledger.near -= near; ledger.supply[h] += q; ledger.held[h] += q;
   flags.bought = { h, t: Date.now() };
-  save(`Bought ${fmt(q)} $${HOUSES[h].coin} for ${near.toFixed(2)} NEAR at the Warwick Mint.`, h);
+  save(`Bought ${fmt(q)} $${HOUSES[h].coin} for ${near.toFixed(2)} gold at the Warwick Mint.`, h);
   return q;
 }
 export function sell(h: number, q: number) {
@@ -63,7 +63,7 @@ export function sell(h: number, q: number) {
   if (q <= 0) return 0;
   const s = ledger.supply[h], out = area(s - q, q) * (1 - FEE);
   ledger.near += out; ledger.supply[h] -= q; ledger.held[h] -= q;
-  save(`Sold ${fmt(q)} $${HOUSES[h].coin} for ${out.toFixed(3)} NEAR.`, h);
+  save(`Sold ${fmt(q)} $${HOUSES[h].coin} for ${out.toFixed(3)} gold.`, h);
   return out;
 }
 
@@ -102,8 +102,8 @@ export function playBurn(h: number, coins: number, game: string) {
   return true;
 }
 export function note(text: string, house?: number) { save(text, house); }
-/** A reward: practice NEAR into the purse (the HUD shows the "+" ticking up). */
-export function pay(near: number, why: string) { ledger.near += near; lastPay.amount = near; lastPay.t = Date.now(); save(`${why} (+${near} NEAR).`); }
+/** A reward: practice gold into the purse (the HUD shows the "+" ticking up). */
+export function pay(near: number, why: string) { ledger.near += near; lastPay.amount = near; lastPay.t = Date.now(); save(`${why} (+${near} gold).`); }
 export const lastPay = { amount: 0, t: 0 };
 
 export const fmt = (n: number) => (n >= 1e6 ? `${(n / 1e6).toFixed(2)}M` : n >= 1e4 ? `${(n / 1e3).toFixed(1)}k` : Math.round(n).toLocaleString());
