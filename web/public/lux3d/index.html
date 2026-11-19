@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Crownfall, rebuilt with Aholo Lux3D</title>
+    <meta name="description" content="Every castle, wall, tower, house and hall in Crownfall's realm, regenerated from text with the Aholo Lux3D API." />
+    <style>
+      :root { --bg: #15110e; --panel: #1f1914; --line: #3a2f24; --ink: #f1e6d3; --soft: #b9a98f; --gold: #d6b26e; --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+      main { max-width: 1080px; margin: 0 auto; padding: 48px 20px 80px; }
+      a { color: var(--gold); }
+      h1 { font: 600 44px/1.08 var(--serif); letter-spacing: -0.01em; margin: 0 0 14px; }
+      h2 { font: 600 28px/1.2 var(--serif); margin: 56px 0 10px; }
+      h3 { font: 600 21px/1.2 var(--serif); margin: 0 0 2px; }
+      p { margin: 0 0 14px; }
+      .lead { font-size: 19px; color: var(--ink); max-width: 760px; }
+      .soft { color: var(--soft); }
+      .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 8px; }
+      .btn { display: inline-block; padding: 11px 18px; border-radius: 8px; font-weight: 600; text-decoration: none; border: 1px solid var(--gold); color: var(--gold); }
+      .btn.main { background: var(--gold); color: #1a130b; }
+      .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 30px 0 0; }
+      .fact { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+      .fact b { display: block; font: 600 28px/1.1 var(--serif); color: var(--gold); font-variant-numeric: tabular-nums; }
+      .fact span { font-size: 14px; color: var(--soft); }
+      .wide img, .pair img { width: 100%; display: block; border-radius: 8px; border: 1px solid var(--line); background: #2a241e; }
+      .wide { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+      figure { margin: 0; }
+      figcaption { font-size: 13px; color: var(--soft); margin-top: 6px; }
+      .model { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-top: 16px; }
+      .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+      blockquote { margin: 10px 0; padding: 10px 14px; border-left: 3px solid var(--gold); background: #17120e; font: italic 16px/1.5 var(--serif); }
+      .meta { font: 12.5px/1.7 var(--mono); color: var(--soft); margin: 0; }
+      ol, ul { padding-left: 22px; margin: 0 0 14px; }
+      li { margin-bottom: 6px; }
+      code { font: 13.5px var(--mono); background: #241c15; padding: 1px 5px; border-radius: 4px; }
+      @media (max-width: 640px) { h1 { font-size: 32px; } .wide, .pair { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Crownfall, rebuilt with Aholo Lux3D</h1>
+      <p class="lead">Crownfall is a 3D medieval realm you can walk, race and scheme in. Every castle, wall, tower, house and hall in it is placed from six 3D models. For the Manycore Aholo Global 3D AI Hackathon, each of those models was regenerated from a text prompt with the Lux3D API.</p>
+      <div class="actions">
+        <a class="btn main" href="/">Enter the realm</a>
+        <a class="btn" href="https://github.com/neromtoobad/crownfall/tree/lux3d">Source code</a>
+        <a class="btn" href="https://github.com/neromtoobad/crownfall/blob/lux3d/tools/lux3d/kit.mjs">The Lux3D pipeline script</a>
+      </div>
+      <div class="facts" id="facts"></div>
+
+      <h2>The realm, before and after</h2>
+      <p class="soft">Same land, same layout, same camera. Only the six kit models changed.</p>
+      <div class="wide">
+        <figure><img src="./img/realm-before.jpg" alt="The realm with its original models" /><figcaption>Before: the original models</figcaption></figure>
+        <figure><img src="./img/realm-after.jpg" alt="The realm with Lux3D models" /><figcaption>After: every building is a Lux3D generation</figcaption></figure>
+      </div>
+
+      <h2>The six models</h2>
+      <p class="soft">The exact prompt, the Lux3D task it came from, and what the model is used for. "Before" is the model it replaced.</p>
+      <div id="models"><p class="soft">Loading the build record…</p></div>
+
+      <h2>How it works</h2>
+      <ol>
+        <li><b>One prompt per kit model.</b> The prompts live in <code>tools/lux3d/kit.json</code> and describe the realm's look: pale limestone, terracotta roofs, timber frames.</li>
+        <li><b>Lux3D text-to-3D.</b> <code>tools/lux3d/kit.mjs</code> creates a task with <code>POST /lux3d/v1/generate/text-to-3d/task/create</code>, polls <code>GET /lux3d/v1/generate/task/get</code>, and downloads the GLB. Lux3D runs one generation at a time, so the script is a serial queue.</li>
+        <li><b>Fit for the realm.</b> The same script joins the model into one mesh, keeps its base colour texture, simplifies it to the realm's triangle budget and compresses it, because each model is drawn hundreds of times.</li>
+        <li><b>Placed by the game.</b> <code>web/src/realm/Props.tsx</code> stretches each model into every slot the realm's layout asks for, as one instanced draw call per model.</li>
+      </ol>
+
+      <h2>What is Lux3D here, and what is not</h2>
+      <ul>
+        <li><b>Lux3D:</b> the keep of every house, every wall tower and gatehouse, every stretch of wall, every cottage and townhouse, and the hall of the Ashen Throne.</li>
+        <li><b>Not Lux3D:</b> the land, water and trees (procedural geometry), the lords, peasants, soldiers and horses (rigged characters made earlier), the throne and the market props (modelled in Blender), and the game itself.</li>
+        <li><b>Prior work:</b> Crownfall was first built from 8 to 15 November 2026 and entered in the NEAR hackathon. The Lux3D rebuild of its world, the pipeline script and this page were made for this event, on the <code>lux3d</code> branch. The original still runs at <a href="https://crownfall.nerom.site">crownfall.nerom.site</a>.</li>
+      </ul>
+    </main>
+
+    <script>
+      const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; };
+      const fig = (src, cap) => { const f = el('figure'); const i = el('img'); i.src = src; i.alt = cap; i.loading = 'lazy'; f.append(i, el('figcaption', '', cap)); return f; };
+      fetch('./kit.json', { cache: 'no-cache' }).then((r) => r.json()).then((rec) => {
+        const models = rec.models || [];
+        const secs = models.reduce((s, m) => s + (m.seconds || 0), 0);
+        const facts = [
+          [models.length, 'kit models generated with Lux3D'],
+          [Math.round(secs / 60) + ' min', 'total generation time, one task at a time'],
+          [models.reduce((s, m) => s + (m.rawTriangles || 0), 0).toLocaleString('en-US'), 'triangles as generated'],
+          [models.reduce((s, m) => s + (m.triangles || 0), 0).toLocaleString('en-US'), 'triangles after fitting for the realm'],
+        ];
+        const f = document.getElementById('facts');
+        for (const [n, label] of facts) { const d = el('div', 'fact'); d.append(el('b', '', String(n)), el('span', '', label)); f.appendChild(d); }
+        const box = document.getElementById('models');
+        box.replaceChildren();
+        for (const m of models) {
+          const card = el('section', 'model');
+          card.append(el('h3', '', m.id.replace('-', ' ')), el('p', 'soft', 'Used for ' + m.what + '.'));
+          const pair = el('div', 'pair');
+          pair.append(fig(`./img/before-${m.id}.jpg`, 'Before'), fig(`./img/after-${m.id}.jpg`, 'After: Lux3D'));
+          card.append(pair, el('blockquote', '', m.request.prompt));
+          const meta = el('p', 'meta');
+          meta.append(
+            `Lux3D ${m.request.version} · style ${m.request.style} · task #${m.taskId} · generated in ${m.seconds}s`, el('br'),
+            `${m.rawTriangles.toLocaleString('en-US')} triangles generated -> ${m.triangles.toLocaleString('en-US')} in the realm · ${(m.rawBytes / 1e6).toFixed(1)} MB -> ${Math.round(m.bytes / 1e3)} KB`,
+          );
+          card.append(meta);
+          box.appendChild(card);
+        }
+        if (!models.length) box.append(el('p', 'soft', 'No models in the build record yet.'));
+      }).catch(() => { document.getElementById('models').textContent = 'The build record could not be loaded.'; });
+    </script>
+  </body>
+</html>

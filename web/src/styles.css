@@ -88,6 +88,8 @@ button.ghost:hover { border-color: var(--gold); }
 .near-pill b { font-weight: 800; letter-spacing: 0.06em; }
 .near-pill .near-mark { color: var(--near); }
 .near-pill:hover { border-color: var(--near); }
+.lux3d-pill { padding-left: 12px; border-color: rgba(214, 178, 110, 0.6); }
+.lux3d-pill:hover { border-color: #d6b26e; }
 .coin { display: inline-flex; align-items: center; gap: 4px; font: 600 13px var(--mono); color: var(--near); }
 .on-near { display: inline-flex; align-items: center; gap: 6px; }
 .on-near .near-mark { color: var(--near); }

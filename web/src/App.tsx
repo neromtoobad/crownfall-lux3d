@@ -67,6 +67,7 @@ function Game() {
         <div className="mark">Crownfall</div>
         <div className="sub">The realm of Vael · eight houses · one Ashen Throne</div>
         <NearPill />
+        <a className="near-pill lux3d-pill" href="/lux3d/index.html" target="_blank" rel="noreferrer"><span>World rebuilt with <b>Aholo Lux3D</b></span></a>
         <div className="top-actions">
           {mode === 'map' && <button className="ghost" onClick={() => { setPicked(undefined); setFocus({ x: 0, z: 60, dist: 980 }); }}>The whole realm</button>}
           <button className="seat-btn" onClick={() => setMode('play')}>{account ? 'Take your seat' : 'Sign in & take your seat'}</button>
