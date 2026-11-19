@@ -19,6 +19,7 @@ import { Smoke } from './Smoke.tsx';
 import { tickWind } from './wind.ts';
 import { tickAmbience } from './ambience.ts';
 import { LOW, markReady, me, play, usePlay } from './play.ts';
+import { kitUrl } from './kit.ts';
 
 // Models are Draco-compressed; the decoder is served from this site (public/draco), not a CDN.
 useGLTF.setDecoderPath('/draco/');
@@ -27,7 +28,7 @@ useGLTF.setDecoderPath('/draco/');
 if (LOW) THREE.DefaultLoadingManager.setURLModifier((u) => (u.startsWith('/models/') && !u.startsWith('/models/lo/') ? '/models/lo/' + u.slice(8) : u));
 // The land, all requested at once: otherwise each part only asks for its files once the part before it has loaded.
 ['grass', 'dirt', 'rock', 'wheat', 'sand', 'marsh'].forEach((n) => useTexture.preload(`/tex/${n}.jpg`));
-['keep', 'throne-hall', 'tower', 'wall', 'townhouse', 'cottage'].forEach((n) => useGLTF.preload(`/env/${n}.glb`));
+['keep', 'throne-hall', 'tower', 'wall', 'townhouse', 'cottage'].forEach((n) => useGLTF.preload(kitUrl(n)));
 
 // The post effects (and their library) load only where they're used: not on phones.
 const PostFX = lazy(() => import('./PostFX.tsx'));

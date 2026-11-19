@@ -4,11 +4,12 @@ import { useLayoutEffect, useMemo, useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { surfaced } from './materials.ts';
+import { kitUrl } from './kit.ts';
 
 export interface Place { x: number; y: number; z: number; ry: number; sx: number; sy: number; sz: number }
 
 export function Props({ name, items, shadows = true }: { name: string; items: Place[]; shadows?: boolean }) {
-  const gltf = useGLTF(`/env/${name}.glb`);
+  const gltf = useGLTF(kitUrl(name));
   const { geo, mat, size, centre } = useMemo(() => {
     let mesh: THREE.Mesh | undefined;
     gltf.scene.traverse((o) => { if (!mesh && (o as THREE.Mesh).isMesh) mesh = o as THREE.Mesh; });

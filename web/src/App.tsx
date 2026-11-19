@@ -17,6 +17,7 @@ import { Rotate } from './Rotate.tsx';
 import { ledger } from './realm/ledger.ts';
 import { startChain } from './chain/ChainBar.tsx';
 import { useChain } from './chain/near.ts';
+import { KIT, LUX3D_COUNT, switchKit } from './realm/kit.ts';
 
 const DEMO_MARCH: MarchOrder = { id: 'demo', from: 1, to: 2, started: 0 };
 
@@ -68,6 +69,7 @@ function Game() {
         <div className="sub">The realm of Vael · eight houses · one Ashen Throne</div>
         <NearPill />
         <a className="near-pill lux3d-pill" href="/lux3d/index.html" target="_blank" rel="noreferrer"><span>World rebuilt with <b>Aholo Lux3D</b></span></a>
+        {LUX3D_COUNT > 0 && <button className="ghost kit-switch" onClick={() => switchKit(KIT === 'lux3d' ? 'original' : 'lux3d')}>{KIT === 'lux3d' ? 'Show the original models' : 'Show the Lux3D models'}</button>}
         <div className="top-actions">
           {mode === 'map' && <button className="ghost" onClick={() => { setPicked(undefined); setFocus({ x: 0, z: 60, dist: 980 }); }}>The whole realm</button>}
           <button className="seat-btn" onClick={() => setMode('play')}>{account ? 'Take your seat' : 'Sign in & take your seat'}</button>

@@ -3,6 +3,7 @@ import { Suspense, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Bounds, ContactShadows, Environment, OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
+import { kitUrl } from './realm/kit.ts';
 
 function Figure({ url }: { url: string }) {
   const gltf = useGLTF(url);
@@ -34,7 +35,7 @@ export function Viewer({ name }: { name: string }) {
 
 /** ?env=<name> shows one environment model (public/env/<name>.glb), framed to fit, for checking. */
 export function EnvViewer({ name }: { name: string }) {
-  const gltf = useGLTF(`/env/${name}.glb`);
+  const gltf = useGLTF(kitUrl(name));
   return (
     <Canvas shadows camera={{ position: [2.6, 1.8, 2.6], fov: 35 }} gl={{ toneMapping: THREE.ACESFilmicToneMapping }}>
       <color attach="background" args={['#2a241e']} />

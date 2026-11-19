@@ -6,11 +6,12 @@
 //
 // For each model: create a Lux3D task -> poll -> download the GLB -> fit it for the realm
 // (one mesh, base colour only, simplified to the realm's triangle budget, WebP texture,
-// meshopt compression) -> write it over web/public/env/<id>.glb, which the game instances
-// hundreds of times (web/src/realm/Props.tsx).
+// meshopt compression) -> write web/public/env/lux3d/<id>.glb, which the game instances
+// hundreds of times (web/src/realm/Props.tsx). The models they replace stay in web/public/env,
+// so the game can show either set (?kit=original).
 // Lux3D runs one generation at a time per account, so this is a serial loop.
 // API reference: https://labs.aholo.ai/api-docs/en/api-reference#tag/lux3d
-import { readFile, writeFile, mkdir, stat, copyFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -25,7 +26,8 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '../..');
 const API = process.env.LUX3D_BASE_URL || 'https://api.aholo.ai/global';
 const VERSION = process.env.LUX3D_VERSION || 'G1-Turbo';
-const ENV_DIR = path.join(ROOT, 'web/public/env');
+const ENV_DIR = path.join(ROOT, 'web/public/env/lux3d');
+const DONE_LIST = path.join(ROOT, 'web/src/realm/lux3dKit.json');
 const RECORD = path.join(ROOT, 'web/public/lux3d/kit.json');
 const RAW = path.join(HERE, 'raw');
 
@@ -171,6 +173,7 @@ async function main() {
   const { kit } = JSON.parse(await readFile(path.join(HERE, 'kit.json'), 'utf8'));
   await mkdir(RAW, { recursive: true });
   await mkdir(path.dirname(RECORD), { recursive: true });
+  await mkdir(ENV_DIR, { recursive: true });
   const record = await readJson(RECORD, { generator: 'Aholo Lux3D text-to-3D', api: API, models: [] });
   const key = fitOnly ? null : await loadKey();
 
@@ -179,10 +182,6 @@ async function main() {
     if (only.length ? !only.includes(item.id) : have) continue;
     const rawFile = path.join(RAW, `${item.id}.glb`);
     const outFile = path.join(ENV_DIR, `${item.id}.glb`);
-
-    // Keep the model this one replaces, for the before/after pictures.
-    const oldFile = path.join(RAW, `before-${item.id}.glb`);
-    if (!dry && !existsSync(oldFile) && existsSync(outFile)) await copyFile(outFile, oldFile);
 
     let entry = have;
     if (!fitOnly) {
@@ -214,6 +213,8 @@ async function main() {
     record.models = record.models.filter((m) => m.id !== item.id).concat(entry);
     record.models.sort((a, b) => kit.findIndex((k) => k.id === a.id) - kit.findIndex((k) => k.id === b.id));
     await writeFile(RECORD, JSON.stringify(record, null, 2) + '\n');
+    // The game reads this list to know which models to take from the Lux3D set.
+    await writeFile(DONE_LIST, JSON.stringify(record.models.map((m) => m.id)) + '\n');
   }
   console.log(`\n${record.models.length} of ${kit.length} kit models are Lux3D`);
 }
