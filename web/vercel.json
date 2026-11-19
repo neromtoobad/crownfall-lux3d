@@ -1,12 +1,16 @@
 {
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "https://crownfall.nerom.site/api/:path*"
+    },
+    {
       "source": "/proof",
-      "destination": "/api/proof"
+      "destination": "https://crownfall.nerom.site/proof"
     },
     {
       "source": "/proof.json",
-      "destination": "/api/proof?format=json"
+      "destination": "https://crownfall.nerom.site/proof.json"
     }
   ],
   "headers": [
