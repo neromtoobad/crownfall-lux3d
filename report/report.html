@@ -20,8 +20,12 @@
   img { width: 100%; display: block; border-radius: 3pt; border: 0.5pt solid #cfc4b0; background: #2a241e; }
   figure { margin: 0; }
   figcaption { font-size: 8.4pt; color: #6f6557; margin-top: 3pt; }
-  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt; }
-  .pair { break-inside: avoid; margin-bottom: 12pt; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8pt; }
+  .cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12pt 10pt; }
+  .card { break-inside: avoid; min-width: 0; }
+  .card .mono { white-space: normal; }
+  .card h3 { margin-top: 5pt; }
+  .card p { margin: 3pt 0 0; }
   blockquote { margin: 5pt 0 0; padding: 4pt 8pt; border-left: 2.5pt solid #b88a3b; background: #f7f2e8; font: italic 9.6pt/1.45 Georgia, serif; }
   table { width: 100%; border-collapse: collapse; margin: 4pt 0 9pt; }
   th { text-align: left; font-size: 8.6pt; color: #6f6557; font-weight: 600; border-bottom: 1pt solid #b9ad97; padding: 3pt 6pt 3pt 0; }
@@ -54,7 +58,6 @@
   <h3>Try it in two minutes</h3>
   <ol>
     <li>Open the demo. The whole realm loads: eight castles, a walled capital, villages, a hippodrome with a race running.</li>
-    <li>Click <b>Show the original models</b> in the header. The same realm reloads with the models Lux3D replaced, so you can compare the two worlds directly. Click again to return.</li>
     <li>Click <b>Take your seat</b>, pick a lord and a house, and walk or drive a chariot through a Lux3D town (W A S D).</li>
     <li>Click <b>World rebuilt with Aholo Lux3D</b> for each model's exact prompt and Lux3D task number.</li>
   </ol>
@@ -64,14 +67,14 @@
   <h2>1. The idea</h2>
   <p>Most text-to-3D showcases are single objects on a turntable. We wanted to know whether Lux3D is good enough to be the <b>only source of architecture in a real, playable game world</b>.</p>
   <p>Crownfall made that a clean test. The realm's layout is code: it decides where every wall segment, tower and house goes, and stretches one model into each slot. So the built world is defined by just six models. That means <b>the look of the whole realm is six sentences of text</b>. Change the sentences, run Lux3D, and hundreds of buildings change, without touching the layout or the game.</p>
-  <p>Why it is worth trying: this is the workflow a small team would actually use. Write the art direction once as prompts, generate a kit, drop it into a working game. The header switch shows the result honestly, because the old models are still one click away.</p>
+  <p>Why it is worth trying: this is the workflow a small team would actually use. Write the art direction once as prompts, generate a kit, drop it into a working game.</p>
 
   <h2>2. How it was built</h2>
   <ol>
     <li><b>One prompt per kit model.</b> The prompts are in <code>tools/lux3d/kit.json</code>. They share one art direction: pale limestone, terracotta roofs, timber frames, thatch.</li>
     <li><b>Lux3D text-to-3D through the API.</b> <code>tools/lux3d/kit.mjs</code> calls <code>POST /lux3d/v1/generate/text-to-3d/task/create</code> (model G1-Turbo, GLB output), polls <code>GET /lux3d/v1/generate/task/get</code>, and downloads the result. Lux3D runs one generation at a time per account, so the script is a serial queue that waits for the slot.</li>
     <li><b>Fit for the realm.</b> The same script joins each model into one mesh, keeps its base colour texture, brings it to a common size, simplifies it to a triangle budget, converts the texture to WebP and compresses the mesh. Each model is drawn hundreds of times, so this step matters.</li>
-    <li><b>Placed by the game.</b> <code>web/src/realm/Props.tsx</code> draws each model as one instanced mesh, stretched into every slot the layout asks for. <code>web/src/realm/kit.ts</code> chooses between the Lux3D set and the original set.</li>
+    <li><b>Placed by the game.</b> <code>web/src/realm/Props.tsx</code> draws each model as one instanced mesh, stretched into every slot the layout asks for. <code>web/src/realm/kit.ts</code> points the game at the Lux3D set.</li>
   </ol>
   <table>
     <tr><th>Model and where it is used</th><th>Lux3D task</th><th>Time</th><th>Triangles (generated &rarr; in the realm)</th><th>File size</th></tr>
@@ -151,97 +154,74 @@
 </section>
 
 <section>
-  <h2>3. Asset comparisons: before and after</h2>
-  <p class="soft">Left: the model Crownfall used before. Right: the Lux3D model that replaced it, after fitting. Below each pair: the exact prompt.</p>
-  
-  <div class="pair">
+  <h2>3. The Lux3D models</h2>
+  <p class="soft">Every model below is one Lux3D text-to-3D task, shown as it runs in the game, with the exact prompt that made it.</p>
+  <div class="cards">
+  <div class="card">
+    <img src="img/after-keep.jpg">
     <h3>keep <span class="soft">· the castle keep at the heart of each of the eight houses</span></h3>
-    <div class="two">
-      <figure><img src="img/before-keep.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-keep.jpg"><figcaption>After: Lux3D G1-Turbo, task #8427584</figcaption></figure>
-    </div>
     <blockquote>A square medieval castle keep with four round corner towers topped with conical terracotta-red tiled roofs, crenellated battlements, an arched wooden gate and arrow slits, pale weathered limestone, single isolated building, game asset</blockquote>
+    <p class="mono soft">Lux3D G1-Turbo · task #8427584 · 20,202 triangles in the realm</p>
   </div>
-  <div class="pair">
+  <div class="card">
+    <img src="img/after-tower.jpg">
     <h3>tower <span class="soft">· every wall tower and gatehouse tower</span></h3>
-    <div class="two">
-      <figure><img src="img/before-tower.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-tower.jpg"><figcaption>After: Lux3D G1-Turbo, task #8427923</figcaption></figure>
-    </div>
     <blockquote>A round medieval castle tower of pale weathered limestone with crenellated battlements, arrow slits and a conical terracotta-red tiled roof, single isolated tower, game asset</blockquote>
+    <p class="mono soft">Lux3D G1-Turbo · task #8427923 · 3,000 triangles in the realm</p>
   </div>
-  <div class="pair">
+  <div class="card">
+    <img src="img/after-wall.jpg">
     <h3>wall <span class="soft">· every stretch of castle and city wall</span></h3>
-    <div class="two">
-      <figure><img src="img/before-wall.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-wall.jpg"><figcaption>After: Lux3D G1-Turbo, task #8428298</figcaption></figure>
-    </div>
     <blockquote>A straight section of medieval castle curtain wall, a long rectangular block of pale weathered limestone with crenellated battlements along the top and flat cut ends, single isolated wall segment, game asset</blockquote>
+    <p class="mono soft">Lux3D G1-Turbo · task #8428298 · 2,500 triangles in the realm</p>
   </div>
-  <div class="pair">
+  <div class="card">
+    <img src="img/after-cottage.jpg">
     <h3>cottage <span class="soft">· the village cottages</span></h3>
-    <div class="two">
-      <figure><img src="img/before-cottage.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-cottage.jpg"><figcaption>After: Lux3D G1-Turbo, task #8428642</figcaption></figure>
-    </div>
     <blockquote>A small medieval village cottage with white plaster walls, dark timber framing, a steep thatched straw roof and a stone chimney, single isolated building, game asset</blockquote>
+    <p class="mono soft">Lux3D G1-Turbo · task #8428642 · 6,186 triangles in the realm</p>
   </div>
-  <div class="pair">
+  <div class="card">
+    <img src="img/after-townhouse.jpg">
     <h3>townhouse <span class="soft">· the town and capital houses</span></h3>
-    <div class="two">
-      <figure><img src="img/before-townhouse.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-townhouse.jpg"><figcaption>After: Lux3D G1-Turbo, task #8429112</figcaption></figure>
-    </div>
     <blockquote>A tall narrow two-storey medieval townhouse, half-timbered upper floor overhanging a stone ground floor, steep terracotta-red clay tile roof, single isolated building, game asset</blockquote>
+    <p class="mono soft">Lux3D G1-Turbo · task #8429112 · 3,000 triangles in the realm</p>
   </div>
-  <div class="pair">
+  <div class="card">
+    <img src="img/after-throne-hall.jpg">
     <h3>throne hall <span class="soft">· the great hall of the Ashen Throne in the capital</span></h3>
-    <div class="two">
-      <figure><img src="img/before-throne-hall.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-throne-hall.jpg"><figcaption>After: Lux3D G1-Turbo, task #8429371</figcaption></figure>
-    </div>
     <blockquote>A grand medieval great hall, a long pale limestone building with tall arched windows, buttresses and a steep dark slate roof, single isolated building, game asset</blockquote>
+    <p class="mono soft">Lux3D G1-Turbo · task #8429371 · 20,000 triangles in the realm</p>
   </div>
-  <div class="pair">
+  <div class="card">
+    <img src="img/after-props-barrel.jpg">
     <h3>barrel <span class="soft">· the barrels in the markets and halls</span></h3>
-    <div class="two">
-      <figure><img src="img/before-props-barrel.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-props-barrel.jpg"><figcaption>After: Lux3D G1-Turbo, task #8433632</figcaption></figure>
-    </div>
     <blockquote>A wooden storage barrel with dark iron hoops, weathered oak staves, standing upright, single isolated object, game asset</blockquote>
+    <p class="mono soft">Lux3D G1-Turbo · task #8433632 · 1,500 triangles in the realm</p>
   </div>
-  <div class="pair">
+  <div class="card">
+    <img src="img/after-props-crate.jpg">
     <h3>crate <span class="soft">· the crates in the markets and halls</span></h3>
-    <div class="two">
-      <figure><img src="img/before-props-crate.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-props-crate.jpg"><figcaption>After: Lux3D G1-Turbo, task #8433958</figcaption></figure>
-    </div>
     <blockquote>A square wooden shipping crate made of rough planks with reinforced edges, weathered wood, single isolated object, game asset</blockquote>
+    <p class="mono soft">Lux3D G1-Turbo · task #8433958 · 1,500 triangles in the realm</p>
   </div>
-  <div class="pair">
+  <div class="card">
+    <img src="img/after-props-well.jpg">
     <h3>well <span class="soft">· the village wells</span></h3>
-    <div class="two">
-      <figure><img src="img/before-props-well.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-props-well.jpg"><figcaption>After: Lux3D G1-Turbo, task #8434310</figcaption></figure>
-    </div>
     <blockquote>A round medieval stone well with a small wooden roof on two posts, a winch and a bucket, single isolated object, game asset</blockquote>
+    <p class="mono soft">Lux3D G1-Turbo · task #8434310 · 3,366 triangles in the realm</p>
   </div>
-  <div class="pair">
+  <div class="card">
+    <img src="img/after-props-hay.jpg">
     <h3>hay <span class="soft">· the hay bales</span></h3>
-    <div class="two">
-      <figure><img src="img/before-props-hay.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-props-hay.jpg"><figcaption>After: Lux3D G1-Turbo, task #8434587</figcaption></figure>
-    </div>
     <blockquote>A rectangular bale of golden straw hay tied with two ropes, single isolated object, game asset</blockquote>
-  </div>
+    <p class="mono soft">Lux3D G1-Turbo · task #8434587 · 4,396 triangles in the realm</p>
+  </div></div>
 </section>
 
 <section>
-  <h2>4. The realm, before and after</h2>
-  <div class="two">
-    <figure><img src="img/realm-before.jpg"><figcaption>Before: original models</figcaption></figure>
-    <figure><img src="img/realm-after.jpg"><figcaption>After: Lux3D models, same layout and camera</figcaption></figure>
-  </div>
+  <h2>4. The realm they build</h2>
+  <figure><img src="img/castle.jpg"><figcaption>The castle of House Thorne on the live site: a Lux3D keep inside Lux3D walls and towers, with Lux3D cottages and townhouses around it</figcaption></figure>
   <p></p>
   <div class="two">
     <figure><img src="img/play-1.jpg"><figcaption>On foot in a Lux3D town</figcaption></figure>
@@ -266,11 +246,11 @@
 </section>
 
 <section>
-  <h2>6. What Lux3D made, and what we made for this event</h2>
+  <h2>6. What Lux3D made in this project</h2>
   <ul>
     <li><b>Lux3D:</b> the keep of every house, every wall tower and gatehouse, every stretch of wall, every cottage and townhouse, and the hall of the Ashen Throne. All six are text-to-3D with no reference image and no manual modelling. The market barrels, crates, wells and hay bales are Lux3D too.</li>
-    <li><b>The project:</b> Crownfall is our own game, started before this hackathon. For this event we rebuilt its world with Lux3D: the 10 models, the generation and fitting script, the model switch, the &quot;how it was built&quot; page and this report.</li>
-    <li><b>Limits we know about:</b> the fitted cottage, keep and hall are heavier than the models they replaced, so the Lux3D realm draws more triangles than the original. Lux3D's texture detail is reduced to 512 px on the small models to keep the download light.</li>
+    <li><b>The project:</b> Crownfall is our own game, started before this hackathon. For this event we rebuilt its world with Lux3D: the 10 models, the generation and fitting script, the &quot;how it was built&quot; page and this report.</li>
+    <li><b>Limits we know about:</b> dense Lux3D meshes stop simplifying at about half their triangles, so the keep and the hall carry about 20,000 triangles each. The small models carry 512 px textures to keep the download light.</li>
   </ul>
   <h2>7. Manycore tools used</h2>
   <ul>

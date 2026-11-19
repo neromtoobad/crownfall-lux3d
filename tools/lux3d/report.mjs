@@ -27,14 +27,12 @@ const rows = models.map((m) => `
     <td class="mono">${(m.rawBytes / 1e6).toFixed(1)} MB &rarr; ${Math.round(m.bytes / 1e3)} KB</td>
   </tr>`).join('');
 
-const pairs = models.map((m) => `
-  <div class="pair">
+const cards = models.map((m) => `
+  <div class="card">
+    <img src="img/after-${pic(m.id)}.jpg">
     <h3>${esc(name(m.id))} <span class="soft">· ${esc(m.what)}</span></h3>
-    <div class="two">
-      <figure><img src="img/before-${pic(m.id)}.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-${pic(m.id)}.jpg"><figcaption>After: Lux3D ${esc(m.request.version)}, task #${m.taskId}</figcaption></figure>
-    </div>
     <blockquote>${esc(m.request.prompt)}</blockquote>
+    <p class="mono soft">Lux3D ${esc(m.request.version)} · task #${m.taskId} · ${num(m.triangles)} triangles in the realm</p>
   </div>`).join('');
 
 const html = `<!doctype html>
@@ -59,8 +57,12 @@ const html = `<!doctype html>
   img { width: 100%; display: block; border-radius: 3pt; border: 0.5pt solid #cfc4b0; background: #2a241e; }
   figure { margin: 0; }
   figcaption { font-size: 8.4pt; color: #6f6557; margin-top: 3pt; }
-  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt; }
-  .pair { break-inside: avoid; margin-bottom: 12pt; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8pt; }
+  .cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12pt 10pt; }
+  .card { break-inside: avoid; min-width: 0; }
+  .card .mono { white-space: normal; }
+  .card h3 { margin-top: 5pt; }
+  .card p { margin: 3pt 0 0; }
   blockquote { margin: 5pt 0 0; padding: 4pt 8pt; border-left: 2.5pt solid #b88a3b; background: #f7f2e8; font: italic 9.6pt/1.45 Georgia, serif; }
   table { width: 100%; border-collapse: collapse; margin: 4pt 0 9pt; }
   th { text-align: left; font-size: 8.6pt; color: #6f6557; font-weight: 600; border-bottom: 1pt solid #b9ad97; padding: 3pt 6pt 3pt 0; }
@@ -93,7 +95,6 @@ const html = `<!doctype html>
   <h3>Try it in two minutes</h3>
   <ol>
     <li>Open the demo. The whole realm loads: eight castles, a walled capital, villages, a hippodrome with a race running.</li>
-    <li>Click <b>Show the original models</b> in the header. The same realm reloads with the models Lux3D replaced, so you can compare the two worlds directly. Click again to return.</li>
     <li>Click <b>Take your seat</b>, pick a lord and a house, and walk or drive a chariot through a Lux3D town (W A S D).</li>
     <li>Click <b>World rebuilt with Aholo Lux3D</b> for each model's exact prompt and Lux3D task number.</li>
   </ol>
@@ -103,14 +104,14 @@ const html = `<!doctype html>
   <h2>1. The idea</h2>
   <p>Most text-to-3D showcases are single objects on a turntable. We wanted to know whether Lux3D is good enough to be the <b>only source of architecture in a real, playable game world</b>.</p>
   <p>Crownfall made that a clean test. The realm's layout is code: it decides where every wall segment, tower and house goes, and stretches one model into each slot. So the built world is defined by just six models. That means <b>the look of the whole realm is six sentences of text</b>. Change the sentences, run Lux3D, and hundreds of buildings change, without touching the layout or the game.</p>
-  <p>Why it is worth trying: this is the workflow a small team would actually use. Write the art direction once as prompts, generate a kit, drop it into a working game. The header switch shows the result honestly, because the old models are still one click away.</p>
+  <p>Why it is worth trying: this is the workflow a small team would actually use. Write the art direction once as prompts, generate a kit, drop it into a working game.</p>
 
   <h2>2. How it was built</h2>
   <ol>
     <li><b>One prompt per kit model.</b> The prompts are in <code>tools/lux3d/kit.json</code>. They share one art direction: pale limestone, terracotta roofs, timber frames, thatch.</li>
     <li><b>Lux3D text-to-3D through the API.</b> <code>tools/lux3d/kit.mjs</code> calls <code>POST /lux3d/v1/generate/text-to-3d/task/create</code> (model ${esc(models[0]?.request.version || 'G1-Turbo')}, GLB output), polls <code>GET /lux3d/v1/generate/task/get</code>, and downloads the result. Lux3D runs one generation at a time per account, so the script is a serial queue that waits for the slot.</li>
     <li><b>Fit for the realm.</b> The same script joins each model into one mesh, keeps its base colour texture, brings it to a common size, simplifies it to a triangle budget, converts the texture to WebP and compresses the mesh. Each model is drawn hundreds of times, so this step matters.</li>
-    <li><b>Placed by the game.</b> <code>web/src/realm/Props.tsx</code> draws each model as one instanced mesh, stretched into every slot the layout asks for. <code>web/src/realm/kit.ts</code> chooses between the Lux3D set and the original set.</li>
+    <li><b>Placed by the game.</b> <code>web/src/realm/Props.tsx</code> draws each model as one instanced mesh, stretched into every slot the layout asks for. <code>web/src/realm/kit.ts</code> points the game at the Lux3D set.</li>
   </ol>
   <table>
     <tr><th>Model and where it is used</th><th>Lux3D task</th><th>Time</th><th>Triangles (generated &rarr; in the realm)</th><th>File size</th></tr>
@@ -120,17 +121,14 @@ const html = `<!doctype html>
 </section>
 
 <section>
-  <h2>3. Asset comparisons: before and after</h2>
-  <p class="soft">Left: the model Crownfall used before. Right: the Lux3D model that replaced it, after fitting. Below each pair: the exact prompt.</p>
-  ${pairs}
+  <h2>3. The Lux3D models</h2>
+  <p class="soft">Every model below is one Lux3D text-to-3D task, shown as it runs in the game, with the exact prompt that made it.</p>
+  <div class="cards">${cards}</div>
 </section>
 
 <section>
-  <h2>4. The realm, before and after</h2>
-  <div class="two">
-    <figure><img src="img/realm-before.jpg"><figcaption>Before: original models</figcaption></figure>
-    <figure><img src="img/realm-after.jpg"><figcaption>After: Lux3D models, same layout and camera</figcaption></figure>
-  </div>
+  <h2>4. The realm they build</h2>
+  <figure><img src="img/castle.jpg"><figcaption>The castle of House Thorne on the live site: a Lux3D keep inside Lux3D walls and towers, with Lux3D cottages and townhouses around it</figcaption></figure>
   <p></p>
   <div class="two">
     <figure><img src="img/play-1.jpg"><figcaption>On foot in a Lux3D town</figcaption></figure>
@@ -155,11 +153,11 @@ const html = `<!doctype html>
 </section>
 
 <section>
-  <h2>6. What Lux3D made, and what we made for this event</h2>
+  <h2>6. What Lux3D made in this project</h2>
   <ul>
     <li><b>Lux3D:</b> the keep of every house, every wall tower and gatehouse, every stretch of wall, every cottage and townhouse, and the hall of the Ashen Throne. All six are text-to-3D with no reference image and no manual modelling. The market barrels, crates, wells and hay bales are Lux3D too.</li>
-    <li><b>The project:</b> Crownfall is our own game, started before this hackathon. For this event we rebuilt its world with Lux3D: the 10 models, the generation and fitting script, the model switch, the &quot;how it was built&quot; page and this report.</li>
-    <li><b>Limits we know about:</b> the fitted cottage, keep and hall are heavier than the models they replaced, so the Lux3D realm draws more triangles than the original. Lux3D's texture detail is reduced to 512 px on the small models to keep the download light.</li>
+    <li><b>The project:</b> Crownfall is our own game, started before this hackathon. For this event we rebuilt its world with Lux3D: the 10 models, the generation and fitting script, the &quot;how it was built&quot; page and this report.</li>
+    <li><b>Limits we know about:</b> dense Lux3D meshes stop simplifying at about half their triangles, so the keep and the hall carry about 20,000 triangles each. The small models carry 512 px textures to keep the download light.</li>
   </ul>
   <h2>7. Manycore tools used</h2>
   <ul>
