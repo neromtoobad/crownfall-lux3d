@@ -1,6 +1,19 @@
 # Submission kit: Manycore Aholo Global 3D AI Hackathon
 
-Deadline: 19 November 2026, 11:00 UTC (12:00 noon Lagos). Submit at https://www.aholo.ai/hackathon (Submit your project / My Submission).
+Deadline: 19 November 2026, 6:00 a.m. EST = 11:00 UTC = 12:00 noon Lagos. No changes are accepted after it.
+
+## Steps, in the order the official handbook gives them
+
+1. Sign in at https://www.aholo.ai/hackathon and open **My Submission** (https://www.aholo.ai/hackathon/my).
+2. **Create a team**, even though you are solo. The handbook says solo participants also need one. The report file is named for the team "neromtoobad": use that name, or rename the PDF to match yours ("Team Name + Project Name").
+3. Upload the **project report**: `neromtoobad + Crownfall rebuilt with Aholo Lux3D.pdf` in this folder.
+4. **Runnable demo:** paste https://crownfall-lux3d.vercel.app (it is public and needs no sign-in). If the form also takes a video, upload `report/crownfall-lux3d-demo.mp4` (33 seconds, real footage of the live demo).
+5. **Source code:** paste https://github.com/neromtoobad/crownfall-lux3d
+6. **Partner equipment / technology:** choose **None** (no partner hardware or partner services were used).
+7. **Application award preference:** choose **Gaming Application Award**.
+8. **X post:** publish the post below with the video attached, copy the direct URL of that post, and paste it into the social media link field.
+9. Click the **final submission button** and wait for the success message. Saving a draft or uploading a file does not count.
+10. Reopen My Submission and check that the report, links and selections were saved. Open the demo link in a private window once.
 
 ## Fields
 
@@ -30,17 +43,19 @@ https://crownfall-lux3d.vercel.app
 
 https://github.com/neromtoobad/crownfall-lux3d
 
-**Social post (bonus, 5% of the score)**
+**Social post (bonus, 5% of the score, and the entry for the Popularity Award)**
 
-Post on X, then paste the post link into the form. Attach `report/img/realm-after.jpg`.
+The handbook asks for the project name, one sentence, and a video with real running footage. Attach `report/crownfall-lux3d-demo.mp4`. Likes are counted until 30 November, 4:00 a.m. EST, so keep the post public.
 
-> I rebuilt a whole game world with six sentences.
+> Crownfall, rebuilt with Aholo Lux3D
 >
-> Every castle, wall, tower, house and hall in Crownfall is now a text-to-3D generation from Aholo Lux3D. 13 minutes of generation for the entire realm, and a switch to compare it with the old models.
+> A playable 3D medieval realm where every castle, wall, tower, house and hall was generated from text. Six Lux3D models, 13 minutes of generation, and a switch to compare with the old ones.
 >
-> Play it: https://crownfall-lux3d.vercel.app
+> Play it, no sign-in: https://crownfall-lux3d.vercel.app
 >
-> #Manycorehackathon
+> Which kingdom should the next six prompts build?
+>
+> #Manycorehackathon #GameDev #AI3D
 
 ## Tools used (if the form asks)
 
