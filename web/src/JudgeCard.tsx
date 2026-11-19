@@ -68,7 +68,7 @@ export function JudgeCard() {
     },
     {
       claim: 'Seals are kept on chain',
-      how: 'Meet Stepan Gershuni at the Gate and drive the reins course',
+      how: 'Meet Sten Harrow at the Gate and drive the reins course',
       expect: 'the Gate seal is written to your account (a 0.01 gold toll goes to the crown pool)',
       done: (me?.seals?.length ?? 0) > 0,
       act: ['Route to the Gate', () => route(gate)],

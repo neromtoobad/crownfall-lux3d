@@ -10,7 +10,7 @@ import { Forest } from './Forest.tsx';
 import { Roads } from './Roads.tsx';
 import { Buildings } from './Buildings.tsx';
 import { ground } from './heights.ts';
-import './bridges.ts'; // places the Lazzarin Bridge label
+import './bridges.ts'; // places the Lorimer Bridge label
 import { CAPITAL, HOUSES, LANDMARKS } from './layout.ts';
 import { Market } from './Market.tsx';
 import { Grass } from './Grass.tsx';

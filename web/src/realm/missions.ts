@@ -2,7 +2,7 @@
 // law it goes to whoever earns the seals of the SEVEN WARDENS. The Wardens are the realm's judges, named for the
 // judges of the gold HACKATHON: names and roles only (drawn from their work), our own figures, no likeness.
 // Walk into a Warden's yellow marker to hear their trial; the objective shows at the bottom, the radar shows the way.
-import './bridges.ts'; // sets the Lazzarin Bridge's position before the Wardens are placed
+import './bridges.ts'; // sets the Lorimer Bridge's position before the Wardens are placed
 import { BRIDGES } from './bridges.ts';
 import { HIPPODROME, HOUSES, LANDMARKS, ROADS, roadCurve, yardOf } from './layout.ts';
 import { flags, ledger, note, pay } from './ledger.ts';
@@ -69,7 +69,7 @@ const sinceStep = (f: { t: number } | undefined, s: Run) => !!f && f.t >= s.step
 const nth = (n: number) => n + (['th', 'st', 'nd', 'rd'][n % 100 > 10 && n % 100 < 14 ? 0 : n % 10] ?? 'th');
 const won = (id: string, s: Run) => { const g = flagsGame.last; return !!g && g.t >= s.t0 && g.won && g.id === id; };
 
-// Where the Lazzarin Bridge meets the capital's bank: the keeper stands just off the deck on the dry end.
+// Where the Lorimer Bridge meets the capital's bank: the keeper stands just off the deck on the dry end.
 const bridgeFoot = (): [number, number] => {
   const b = BRIDGES.find((x) => Math.hypot(x.a.x - x.b.x, x.a.y - x.b.y) > 0 && Math.abs((x.a.x + x.b.x) / 2 - LANDMARKS[1].pos[0]) < 1 && Math.abs((x.a.y + x.b.y) / 2 - LANDMARKS[1].pos[1]) < 1);
   if (!b) return [LANDMARKS[1].pos[0] + 30, LANDMARKS[1].pos[1]];
@@ -80,18 +80,18 @@ const bridgeFoot = (): [number, number] => {
 const BRIDGE = bridgeFoot();
 const [lhx, lhz] = LANDMARKS[3].pos;
 const [libx, libz] = LANDMARKS[5].pos;
-/** Haseeb waits at the foot of the Library steps, off to one side of the door. */
+/** Hobb waits at the foot of the Library steps, off to one side of the door. */
 const QA = Math.PI / 2 + 0.6;
 
 /** The Seven Wardens, and the two who help along the way. */
 export const GIVERS: Giver[] = [
-  { id: 'gershuni', name: 'Stepan Gershuni', title: 'Warden of the Gate', real: 'cyber•Fund', letter: 'G', body: 'soldier', tint: '#6f7f99', at: [47, 80], face: 0.52 + Math.PI },
-  { id: 'warwick', name: 'Kain Warwick', title: 'Master of the Mint', real: 'Synthetix & Infinex', letter: 'W', body: 'peasant-m', tint: '#c9a24a', at: [mx + Math.sin(MINT_RY) * 27 + Math.cos(MINT_RY) * 7, mz + Math.cos(MINT_RY) * 27 - Math.sin(MINT_RY) * 7], face: MINT_RY + Math.PI },
-  { id: 'lazzarin', name: 'Eddy Lazzarin', title: 'Keeper of the Bridge', real: 'a16z crypto', letter: 'L', body: 'peasant-m', tint: '#5d7a6a', at: BRIDGE, face: Math.atan2(-BRIDGE[0], -BRIDGE[1]) },
-  { id: 'garg', name: 'Avichal Garg', title: 'Keeper of the Lighthouse', real: 'Electric Capital', letter: 'A', body: 'peasant-m', tint: '#3f6f8f', at: [lhx - 14, lhz - 10], face: Math.atan2(-14, -10) + Math.PI },
-  { id: 'qureshi', name: 'Haseeb Qureshi', title: 'Keeper of the Library', real: 'Dragonfly', letter: 'Q', body: 'peasant-m', tint: '#6a4a7a', at: [libx + Math.cos(QA) * 18, libz + Math.sin(QA) * 18], face: Math.atan2(Math.cos(QA), Math.sin(QA)) },
-  { id: 'mumtaz', name: 'Mert Mumtaz', title: 'Master of the Hippodrome', real: 'Helius', letter: 'M', body: 'soldier', tint: '#c06a2a', at: [STABLES[0] - 8, STABLES[1] - 4], face: 2.6 },
-  { id: 'polosukhin', name: 'Illia Polosukhin', title: 'Founder of the Reach', real: 'gold', letter: 'I', body: 'peasant-m', tint: '#2f9e75', at: [38, -12], face: Math.PI * 0.95 },
+  { id: 'gershuni', name: 'Sten Harrow', title: 'Warden of the Gate', real: '', letter: 'G', body: 'soldier', tint: '#6f7f99', at: [47, 80], face: 0.52 + Math.PI },
+  { id: 'warwick', name: 'Corwin Aldous', title: 'Master of the Mint', real: '', letter: 'W', body: 'peasant-m', tint: '#c9a24a', at: [mx + Math.sin(MINT_RY) * 27 + Math.cos(MINT_RY) * 7, mz + Math.cos(MINT_RY) * 27 - Math.sin(MINT_RY) * 7], face: MINT_RY + Math.PI },
+  { id: 'lazzarin', name: 'Edric Lorimer', title: 'Keeper of the Bridge', real: '', letter: 'L', body: 'peasant-m', tint: '#5d7a6a', at: BRIDGE, face: Math.atan2(-BRIDGE[0], -BRIDGE[1]) },
+  { id: 'garg', name: 'Alaric Garrow', title: 'Keeper of the Lighthouse', real: '', letter: 'A', body: 'peasant-m', tint: '#3f6f8f', at: [lhx - 14, lhz - 10], face: Math.atan2(-14, -10) + Math.PI },
+  { id: 'qureshi', name: 'Hobb Quillon', title: 'Keeper of the Library', real: '', letter: 'Q', body: 'peasant-m', tint: '#6a4a7a', at: [libx + Math.cos(QA) * 18, libz + Math.sin(QA) * 18], face: Math.atan2(Math.cos(QA), Math.sin(QA)) },
+  { id: 'mumtaz', name: 'Merrik Marlowe', title: 'Master of the Hippodrome', real: '', letter: 'M', body: 'soldier', tint: '#c06a2a', at: [STABLES[0] - 8, STABLES[1] - 4], face: 2.6 },
+  { id: 'polosukhin', name: 'Idris Palomir', title: 'Founder of the Reach', real: '', letter: 'I', body: 'peasant-m', tint: '#2f9e75', at: [38, -12], face: Math.PI * 0.95 },
   { id: 'ysolde', name: 'Ysolde of the Rookery', letter: 'Y', body: 'peasant-f', at: [72, -31], face: 0 },
   { id: 'brannoc', name: 'Captain Brannoc', letter: 'B', body: 'soldier', at: [60, 86], face: 0.52 + Math.PI },
 ];
@@ -114,17 +114,17 @@ export const MISSIONS: Mission[] = [
     id: 'gate', title: 'The Reins', giver: G('gershuni'), seal: 'Gate',
     brief: () => 'Learn the reins: drive the markers down the Greywater road against the clock.',
     intro: () => [
-      { who: 'Stepan Gershuni', text: 'Another hopeful at my gate. Good. The realm needs a few.' },
-      { who: 'Stepan Gershuni', text: 'Here is how it works. The king is dead. Seven of us are Wardens of Vael, and whoever earns all seven of our seals before the season ends sits the Ashen Throne.' },
-      { who: 'Stepan Gershuni', text: 'Mine is the first. A lord who can’t drive can’t hold a realm. Whistle for your chariot with C, climb up with E, and take the Greywater markers in under a minute and a half.' },
+      { who: 'Sten Harrow', text: 'Another hopeful at my gate. Good. The realm needs a few.' },
+      { who: 'Sten Harrow', text: 'Here is how it works. The king is dead. Seven of us are Wardens of Vael, and whoever earns all seven of our seals before the season ends sits the Ashen Throne.' },
+      { who: 'Sten Harrow', text: 'Mine is the first. A lord who can’t drive can’t hold a realm. Whistle for your chariot with C, climb up with E, and take the Greywater markers in under a minute and a half.' },
     ],
     steps: [
       { text: () => 'Get in your **chariot** (C calls it, E climbs up)', target: () => [me.car.x, me.car.z], check: () => play.driving },
       { text: () => 'Drive through the **markers** on the Greywater road', gates: greywater, limit: () => 90, target: () => greywater()[0] },
     ],
     outro: () => [
-      { who: 'Stepan Gershuni', text: 'You drive like someone who means to arrive. The seal of the Gate is yours.' },
-      { who: 'Stepan Gershuni', text: 'Press J for your Seal Book. Next, Kain Warwick at the Mint. Nobody sits a throne without coin.' },
+      { who: 'Sten Harrow', text: 'You drive like someone who means to arrive. The seal of the Gate is yours.' },
+      { who: 'Sten Harrow', text: 'Press J for your Seal Book. Next, Corwin Aldous at the Mint. Nobody sits a throne without coin.' },
     ],
     reward: { near: 3, renown: 1 },
   },
@@ -132,9 +132,9 @@ export const MISSIONS: Mission[] = [
     id: 'mint', title: 'Coin of the Realm', giver: G('warwick'), needs: () => hasSeal('Gate'), seal: 'Mint',
     brief: () => `Buy $${mine().coin} at the Mint, then enter your own hall and play its game once.`,
     intro: () => [
-      { who: 'Kain Warwick', text: 'A seat is a chair until there’s coin under it.' },
-      { who: 'Kain Warwick', text: 'Every house strikes its own coin here, and every house is a merchant. Rush to buy and it’s dear; flood it with selling and it’s cheap. Buy some of your house’s coin.' },
-      { who: 'Kain Warwick', text: 'Then go home. Every hall in Vael has a game, and every round played burns that house’s coin. Play yours once. That’s how a coin earns its price here.' },
+      { who: 'Corwin Aldous', text: 'A seat is a chair until there’s coin under it.' },
+      { who: 'Corwin Aldous', text: 'Every house strikes its own coin here, and every house is a merchant. Rush to buy and it’s dear; flood it with selling and it’s cheap. Buy some of your house’s coin.' },
+      { who: 'Corwin Aldous', text: 'Then go home. Every hall in Vael has a game, and every round played burns that house’s coin. Play yours once. That’s how a coin earns its price here.' },
     ],
     steps: [
       { text: () => `Buy some **$${mine().coin}** at the **Mint counter**`, target: () => { const p = PLACES.find((x) => x.id === 'mint')!; return [p.x, p.z]; }, check: (s) => since(flags.bought, s) && flags.bought!.h === seat().house },
@@ -142,7 +142,7 @@ export const MISSIONS: Mission[] = [
       { text: () => `Play **${mine().name}’s game** in your hall (the house stands you the first round)`, target: () => doorAt(seat().house), check: (s) => { const g = flagsGame.last; return !!g && g.t >= s.stepT0 && g.house === seat().house; } },
     ],
     outro: () => [
-      { who: 'Your steward', text: 'Word from the Mint, my lord: Master Warwick has sent his seal. He says you understand what a coin is for.' },
+      { who: 'Your steward', text: 'Word from the Mint, my lord: Master Aldous has sent his seal. He says you understand what a coin is for.' },
       { who: 'Your steward', text: 'The other Wardens will see you now, in any order you like. The Seal Book (J) has them all.' },
     ],
     reward: { near: 2, renown: 1 },
@@ -151,41 +151,41 @@ export const MISSIONS: Mission[] = [
     id: 'bridge', title: 'Don’t Trust, Verify', giver: G('lazzarin'), needs: () => hasSeal('Mint'), seal: 'Bridge',
     brief: () => 'Win the Vintner’s Cups in House Velmont’s cellar at Vinehold.',
     intro: () => [
-      { who: 'Eddy Lazzarin', text: 'A bridge you can’t check is a long way down. I don’t take anyone’s word for what’s on the other side.' },
-      { who: 'Eddy Lazzarin', text: 'The vintner at Vinehold swears you can’t follow his cups. Prove him wrong. The chain replays every shuffle, so it will know. Watch everything; trust nothing.' },
+      { who: 'Edric Lorimer', text: 'A bridge you can’t check is a long way down. I don’t take anyone’s word for what’s on the other side.' },
+      { who: 'Edric Lorimer', text: 'The vintner at Vinehold swears you can’t follow his cups. Prove him wrong. The chain replays every shuffle, so it will know. Watch everything; trust nothing.' },
     ],
     steps: [{ text: () => 'Win **the Vintner’s Cups** in House Velmont’s hall at **Vinehold**', target: () => doorAt(2), check: (s) => won('cups', s) }],
-    outro: () => [{ who: 'Eddy Lazzarin', text: 'Verified. The seal of the Bridge, and my respect, which is harder to get.' }],
+    outro: () => [{ who: 'Edric Lorimer', text: 'Verified. The seal of the Bridge, and my respect, which is harder to get.' }],
     reward: { near: 4, renown: 1 },
   },
   {
     id: 'lighthouse', title: 'Count Every Ship', giver: G('garg'), needs: () => hasSeal('Mint'), seal: 'Lighthouse',
     brief: () => 'Bring six ships in with the lantern signals in House Ashveil’s hall at Greywater.',
     intro: () => [
-      { who: 'Avichal Garg', text: 'I count every ship that comes into Greywater. Every one, every season. The count tells you where the realm is going before the realm knows.' },
-      { who: 'Avichal Garg', text: 'Ashveil’s signal hall talks the ships in by lantern. Go and bring me six.' },
+      { who: 'Alaric Garrow', text: 'I count every ship that comes into Greywater. Every one, every season. The count tells you where the realm is going before the realm knows.' },
+      { who: 'Alaric Garrow', text: 'Ashveil’s signal hall talks the ships in by lantern. Go and bring me six.' },
     ],
     steps: [{ text: () => 'Bring six ships in at **Lantern Signals**, House Ashveil’s hall in **Greywater**', target: () => doorAt(0), check: (s) => won('signals', s) }],
-    outro: () => [{ who: 'Avichal Garg', text: 'Six, logged. That’s a good season for one evening. The seal of the Lighthouse.' }],
+    outro: () => [{ who: 'Alaric Garrow', text: 'Six, logged. That’s a good season for one evening. The seal of the Lighthouse.' }],
     reward: { near: 4, renown: 1 },
   },
   {
     id: 'library', title: 'Read the Table', giver: G('qureshi'), needs: () => hasSeal('Mint'), seal: 'Library',
-    brief: () => (onChain() ? 'Go into Qureshi’s Library and win a bid against Haseeb’s cup (0.1 gold, settled by the contract).' : 'Go into Qureshi’s Library and beat Haseeb at Liar’s Dice (stake 1 gold).'),
+    brief: () => (onChain() ? 'Go into Quillon’s Library and win a bid against Hobb’s cup (0.1 gold, settled by the contract).' : 'Go into Quillon’s Library and beat Hobb at Liar’s Dice (stake 1 gold).'),
     intro: () => [
-      { who: 'Haseeb Qureshi', text: 'Sit down. Every lord in Vael bluffs. Very few do it well, and I’ve watched most of them try.' },
-      { who: 'Haseeb Qureshi', text: 'Liar’s Dice. Five each, under the cup. Come inside, sit across from me, and beat me. Then the Library’s seal is yours.' },
+      { who: 'Hobb Quillon', text: 'Sit down. Every lord in Vael bluffs. Very few do it well, and I’ve watched most of them try.' },
+      { who: 'Hobb Quillon', text: 'Liar’s Dice. Five each, under the cup. Come inside, sit across from me, and beat me. Then the Library’s seal is yours.' },
     ],
-    steps: [{ text: () => (play.inside === LIBRARY ? 'Sit down at the **dice table** under the dome and beat Haseeb Qureshi' : 'Go into **Qureshi’s Library** and beat Haseeb Qureshi at **Liar’s Dice**'), target: () => (play.inside === LIBRARY ? undefined : libDoor().out), check: (s) => won('dice', s) }],
-    outro: () => [{ who: 'Haseeb Qureshi', text: 'Well played. I’ll be thinking about that last call for a week. The seal of the Library.' }],
+    steps: [{ text: () => (play.inside === LIBRARY ? 'Sit down at the **dice table** under the dome and beat Hobb Quillon' : 'Go into **Quillon’s Library** and beat Hobb Quillon at **Liar’s Dice**'), target: () => (play.inside === LIBRARY ? undefined : libDoor().out), check: (s) => won('dice', s) }],
+    outro: () => [{ who: 'Hobb Quillon', text: 'Well played. I’ll be thinking about that last call for a week. The seal of the Library.' }],
     reward: { near: 4, renown: 1 },
   },
   {
     id: 'hippodrome', title: 'Blood on the Sand', giver: G('mumtaz'), needs: () => hasSeal('Mint'), seal: 'Hippodrome',
     brief: () => 'Drive for your house at the Hippodrome and finish in the top four.',
     intro: () => [
-      { who: 'Mert Mumtaz', text: 'Eight houses, eight teams, one line. Fast is the only speed I respect.' },
-      { who: 'Mert Mumtaz', text: 'Take the reins for your house. Top four and the seal of the Hippodrome is yours. Inside lanes are short. Crowded too.' },
+      { who: 'Merrik Marlowe', text: 'Eight houses, eight teams, one line. Fast is the only speed I respect.' },
+      { who: 'Merrik Marlowe', text: 'Take the reins for your house. Top four and the seal of the Hippodrome is yours. Inside lanes are short. Crowded too.' },
     ],
     steps: [{ text: () => `Drive at the **Hippodrome** (the stables) and finish in the **top four**`, target: () => STABLES,
       check: (s) => since(flags.race, s) && flags.race!.place <= 4,
@@ -193,15 +193,15 @@ export const MISSIONS: Mission[] = [
       // On gold the seal needs what the contract can see: a bet on one of its races. (The practice purse skips this.)
       { text: () => 'Now back a team in a race, from the stands at the **Hippodrome**', target: () => STABLES,
         check: () => !onChain() || !!chain.me?.raced }],
-    outro: () => [{ who: 'Mert Mumtaz', text: `${nth(flags.race?.place ?? 4)}. They were chanting a name up there. The seal of the Hippodrome.` }],
+    outro: () => [{ who: 'Merrik Marlowe', text: `${nth(flags.race?.place ?? 4)}. They were chanting a name up there. The seal of the Hippodrome.` }],
     reward: { near: 5, renown: 2 },
   },
   {
     id: 'throne', title: 'The Ashen Throne', giver: G('polosukhin'), needs: () => ['Gate', 'Mint', 'Bridge', 'Lighthouse', 'Library', 'Hippodrome'].every(hasSeal), seal: 'Throne',
     brief: () => 'Hold six seals, win in three different halls, then win the Crown Race outright.',
     intro: () => [
-      { who: 'Illia Polosukhin', text: 'I laid these roads so that anyone could walk them, and here you are with six seals. Pay attention now; it’s all you need.' },
-      { who: 'Illia Polosukhin', text: 'A throne is held by the houses, not the Wardens. Win the favour of three halls, then win the Crown Race outright.' },
+      { who: 'Idris Palomir', text: 'I laid these roads so that anyone could walk them, and here you are with six seals. Pay attention now; it’s all you need.' },
+      { who: 'Idris Palomir', text: 'A throne is held by the houses, not the Wardens. Win the favour of three halls, then win the Crown Race outright.' },
     ],
     steps: [
       { text: () => `Win a round in **three different halls** (${Math.min(3, hallsWon())} / 3)`, check: () => hallsWon() >= 3 },
@@ -210,8 +210,8 @@ export const MISSIONS: Mission[] = [
         fail: (s) => (sinceStep(flags.race, s) && flags.race!.place > 1 ? `${nth(flags.race!.place)} is not first.` : undefined) },
     ],
     outro: () => [
-      { who: 'Illia Polosukhin', text: `Seven seals. By the old law of Vael, the Ashen Throne belongs to House ${mine().name} for this season.` },
-      { who: 'The Chronicle', text: `In the year of the empty throne, a lord of House ${mine().name} rode in through the Gershuni Gate with nothing, and left with the crown.` },
+      { who: 'Idris Palomir', text: `Seven seals. By the old law of Vael, the Ashen Throne belongs to House ${mine().name} for this season.` },
+      { who: 'The Chronicle', text: `In the year of the empty throne, a lord of House ${mine().name} rode in through the Harrow Gate with nothing, and left with the crown.` },
     ],
     reward: { near: 25, renown: 5, title: 'Keeper of the Ashen Throne' },
   },
@@ -239,10 +239,10 @@ export const MISSIONS: Mission[] = [
     brief: () => `Muster a march on House ${enemy().name} and scout their walls.`,
     intro: () => [
       { who: 'Captain Brannoc', text: `Words did not work on House ${enemy().name}. Then iron will.` },
-      { who: 'Captain Brannoc', text: 'Muster at the Gershuni Gate, then ride ahead. I want eyes on their walls before our banners reach them.' },
+      { who: 'Captain Brannoc', text: 'Muster at the Harrow Gate, then ride ahead. I want eyes on their walls before our banners reach them.' },
     ],
     steps: [
-      { text: () => `Muster a **march** on House ${enemy().name} at the **Gershuni Gate**`, target: () => LANDMARKS[6].pos, check: (s) => since(flags.march, s) && flags.march!.to === enemy().id },
+      { text: () => `Muster a **march** on House ${enemy().name} at the **Harrow Gate**`, target: () => LANDMARKS[6].pos, check: (s) => since(flags.march, s) && flags.march!.to === enemy().id },
       { text: () => `Ride ahead to the gates of **${enemy().seat}**`, target: () => doorAt(enemy().id), r: 30 },
     ],
     outro: () => [{ who: 'Captain Brannoc', text: 'Their walls are thin on the river side. Our column will be there by dusk. Well ridden, my lord.' }],

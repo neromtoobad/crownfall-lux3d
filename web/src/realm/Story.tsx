@@ -118,7 +118,7 @@ function GiverFigure({ giver, open, mats, ringMat }: { giver: Giver; open: boole
   );
 }
 
-/** "Stepan Gershuni / Warden of the Gate" on a little parchment ribbon over their head. */
+/** "Sten Harrow / Warden of the Gate" on a little parchment ribbon over their head. */
 function nameplate(g: Giver) {
   const c = document.createElement('canvas');
   const W = 512, H = g.title ? 128 : 78;

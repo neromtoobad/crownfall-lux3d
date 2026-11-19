@@ -19,11 +19,11 @@ function arena(ax: number, az: number): [number, number] {
 export const STABLES = arena(0, -(ARENA.R + 24));
 
 export const PLACES: Place[] = [
-  { id: 'mint', verb: 'Trade', what: 'at the Warwick Mint counter', panel: 'mint', x: mx + Math.sin(MINT_RY) * 20, z: mz + Math.cos(MINT_RY) * 20, r: 8 },
-  { id: 'door-lib', verb: 'Enter', what: "Qureshi's Library", panel: 'enter', house: LIBRARY, x: libDoor().out[0], z: libDoor().out[1], r: 5 },
+  { id: 'mint', verb: 'Trade', what: 'at the Aldous Mint counter', panel: 'mint', x: mx + Math.sin(MINT_RY) * 20, z: mz + Math.cos(MINT_RY) * 20, r: 8 },
+  { id: 'door-lib', verb: 'Enter', what: "Quillon's Library", panel: 'enter', house: LIBRARY, x: libDoor().out[0], z: libDoor().out[1], r: 5 },
   { id: 'council', verb: 'Enter', what: 'the hall of the Ashen Throne', panel: 'enter', house: THRONE_ROOM, x: throneDoor().out[0], z: throneDoor().out[1], r: 7 },
   { id: 'rookery', verb: 'Send', what: 'a raven from the rookery', panel: 'raven', x: 77, z: -37, r: 8 },
-  { id: 'gate', verb: 'Muster', what: 'a march at the Gershuni Gate', panel: 'march', x: gx, z: gz, r: 12 },
+  { id: 'gate', verb: 'Muster', what: 'a march at the Harrow Gate', panel: 'march', x: gx, z: gz, r: 12 },
   { id: 'stables', verb: 'Race', what: 'drive a chariot, or bet from the stands', panel: 'race', x: STABLES[0], z: STABLES[1], r: 14 },
   ...HOUSES.flatMap((h): Place[] => {
     const [hx, hz] = h.pos, d = Math.hypot(hx, hz) || 1;
@@ -51,8 +51,8 @@ export const ROOM_PLACES: Place[] = ROOMS.flatMap((r): Place[] => {
 {
   const r = LIB_ROOM, at = (lx: number, lz: number) => { const [x, z] = inRoom(r, lx, lz); return { x, z }; };
   ROOM_PLACES.push(
-    { id: 'leave-lib', verb: 'Leave', what: "Qureshi's Library", panel: 'leave', house: LIBRARY, ...at(0, r.d / 2 - 0.5), r: 2.6 },
-    { id: 'game-lib', verb: 'Sit down', what: 'to Liar’s Dice with Haseeb Qureshi', panel: 'game', house: LIBRARY, ...at(0, 3.6), r: 2.6 },
+    { id: 'leave-lib', verb: 'Leave', what: "Quillon's Library", panel: 'leave', house: LIBRARY, ...at(0, r.d / 2 - 0.5), r: 2.6 },
+    { id: 'game-lib', verb: 'Sit down', what: 'to Liar’s Dice with Hobb Quillon', panel: 'game', house: LIBRARY, ...at(0, 3.6), r: 2.6 },
     { id: 'chronicle', verb: 'Read', what: 'the chronicle, the Book of Ages', panel: 'library', ...at(-8.5, -8.5), r: 3.2 },
     { id: 'scribes', verb: 'Ask', what: 'the scribes Claude and Codex what to do next', panel: 'scribes', ...at(9, -7.5), r: 3.6 },
   );

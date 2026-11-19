@@ -46,7 +46,7 @@ const T: Record<number, Omit<Room, 'house' | 'x' | 'z'>> = {
 
 export const ROOMS: Room[] = HOUSES.map((h) => ({ house: h.id, x: ROOM_X + h.id * ROOM_GAP, z: 0, ...T[h.id] }));
 
-/** Qureshi's Library is the ninth room: a round reading room under the dome, where Haseeb Qureshi plays Liar's Dice. */
+/** Quillon's Library is the ninth room: a round reading room under the dome, where Hobb Quillon plays Liar's Dice. */
 export const LIBRARY = 8;
 export const LIB_ROOM: Room = {
   house: LIBRARY, x: ROOM_X + LIBRARY * ROOM_GAP, z: 0, w: 32, d: 32, h: 24, hall: 'library', game: 'dice', gameName: 'Liar’s Dice',

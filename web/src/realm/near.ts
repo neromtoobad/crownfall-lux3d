@@ -80,7 +80,7 @@ export const coinTexture = () => once('coin', () => {
   mark(g, S / 2, S / 2, 190, '#7a561a');
   g.save();
   g.font = `700 34px Cinzel, Georgia, serif`; g.fillStyle = '#6e4e16'; g.textAlign = 'center'; g.textBaseline = 'middle';
-  const legend = 'THE WARWICK MINT  ·  STRUCK IN VAEL  ·  ';
+  const legend = 'THE ALDOUS MINT  ·  STRUCK IN VAEL  ·  ';
   for (let i = 0; i < legend.length; i++) {
     const a = (i / legend.length) * Math.PI * 2 - Math.PI / 2;
     g.save(); g.translate(S / 2 + Math.cos(a) * S * 0.43, S / 2 + Math.sin(a) * S * 0.43); g.rotate(a + Math.PI / 2); g.fillText(legend[i], 0, 0); g.restore();

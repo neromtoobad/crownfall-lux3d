@@ -1,5 +1,5 @@
 // Bridges: wherever a road runs into water, a stone deck carries it across. Found from the roads themselves,
-// so moving a road or the river never leaves travellers wading. The capital's west road gets the Lazzarin Bridge.
+// so moving a road or the river never leaves travellers wading. The capital's west road gets the Lorimer Bridge.
 import * as THREE from 'three';
 import { ground } from './heights.ts';
 import { LANDMARKS, ROADS, roadCurve } from './layout.ts';
@@ -31,7 +31,7 @@ ROADS.forEach((r, road) => {
   }
 });
 
-// The Lazzarin Bridge is the longest crossing out of the capital.
+// The Lorimer Bridge is the longest crossing out of the capital.
 const lazzarin = BRIDGES.filter((b) => ROADS[b.road].from === 'capital').sort((p, q) => q.a.distanceTo(q.b) - p.a.distanceTo(p.b))[0];
 if (lazzarin) {
   const m = lazzarin.a.clone().add(lazzarin.b).multiplyScalar(0.5);

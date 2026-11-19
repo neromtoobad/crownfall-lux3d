@@ -53,7 +53,7 @@ export const me = {
   camYaw: 0, camPitch: 0.26, camDist: 8.5, lastLook: -10,
   /** Set when you're moved somewhere new (through a door): the camera jumps there instead of gliding. */
   cut: false,
-  // On the Greywater road beside the Mint square, facing the Gershuni Gate.
+  // On the Greywater road beside the Mint square, facing the Harrow Gate.
   car: { x: 25.5, z: 44.5, yaw: 0.52, v: 0, boost: 0, cool: 0, gait: 0 },
 };
 if (import.meta.env.DEV) Object.assign(window, { __me: me });

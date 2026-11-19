@@ -84,7 +84,7 @@ function town(cx: number, cz: number, rMin: number, rMax: number, n: number, see
   }
 }
 
-/** The Warwick Mint: a stone counting-house with pilasters, a slate hip roof, furnace chimneys, a gilded cupola and a portico. */
+/** The Aldous Mint: a stone counting-house with pilasters, a slate hip roof, furnace chimneys, a gilded cupola and a portico. */
 function mint(stone: G[], slate: G[], gold: G[], dark: G[]) {
   const [x, z] = LANDMARKS[4].pos, y = ground(x, z) - 0.4;
   const at = (g: G) => g.rotateY(MINT_RY).translate(x, y, z);
@@ -127,7 +127,7 @@ function MintCoin() {
   );
 }
 
-/** Qureshi's Library: a domed rotunda inside a ring of columns. */
+/** Quillon's Library: a domed rotunda inside a ring of columns. */
 function library(stone: G[], dome: G[]) {
   const [x, z] = LANDMARKS[5].pos, y = ground(x, z) - 0.4;
   stone.push(cyl(13.5, 1.4, x, y, z, 32)); // the steps
@@ -161,7 +161,7 @@ export function Buildings({ fallen = [] as number[] }) {
     walls(cx + 20, cz, y, 100, 16, 12, stone, kit);
     kit.hall.push({ x: cx + 35, y, z: cz - 40, ry: 0, sx: 66, sy: 47, sz: 23 }); // the Ashen Throne's hall
     town(cx + 20, cz + 10, 22, 92, 300, 5, kit, undefined, [[...LANDMARKS[4].pos, 36], [...LANDMARKS[5].pos, 19], [...ROOKERY, 13]]);
-    stone.push(...bridgeGeometry()); // the Lazzarin Bridge and every other river crossing
+    stone.push(...bridgeGeometry()); // the Lorimer Bridge and every other river crossing
     // gold colours over Emberfall: a flag on every tower of the city wall, a banner down every stretch of it,
     // and two great banners on the throne hall.
     const ring = (p: Place) => Math.abs(Math.hypot(p.x - (cx + 20), p.z - cz) - 100) < 9;
@@ -173,7 +173,7 @@ export function Buildings({ fallen = [] as number[] }) {
     for (const dx of [-22, 22]) nearBanners.push({ x: cx + 35 + dx, y: y + 34, z: cz - 40 + 12.3, ry: 0, w: 6.5, h: 18 });
     mint(stone, slate, gold, dark);
     library(stone, dome);
-    // Garg's Lighthouse.
+    // Garrow's Lighthouse.
     const [lx, lz] = LANDMARKS[3].pos;
     stone.push(cyl(3.2, 26, lx, ground(lx, lz) - 0.5, lz, 12));
     roofs.push(cone(4, 5, lx, ground(lx, lz) + 28, lz, 12));
@@ -252,7 +252,7 @@ function Banner({ x, y, z, h, down }: { x: number; y: number; z: number; h: Hous
   );
 }
 
-/** The light at the top of Garg's Lighthouse. */
+/** The light at the top of Garrow's Lighthouse. */
 function Beacon() {
   const ref = useRef<THREE.PointLight>(null);
   const [lx, lz] = LANDMARKS[3].pos;

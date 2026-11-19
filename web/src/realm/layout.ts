@@ -36,17 +36,17 @@ export function yardOf(h: House): [number, number] {
 }
 
 export const CAPITAL = { name: 'Emberfall', pos: [0, 0] as [number, number] };
-export const HIPPODROME = { name: 'Mumtaz Hippodrome', pos: [330, 210] as [number, number], rot: -0.3 };
+export const HIPPODROME = { name: 'Marlowe Hippodrome', pos: [330, 210] as [number, number], rot: -0.3 };
 
 /** The judges, as names on landmarks. No likeness and no part in the fighting. */
 export const LANDMARKS: { name: string; note: string; pos: [number, number] }[] = [
-  { name: "Polosukhin's Reach", note: 'the great north road', pos: [-60, -250] },
-  { name: 'The Lazzarin Bridge', note: 'over the Ember River', pos: [0, 0] }, // set in bridges.ts
-  { name: 'Mumtaz Hippodrome', note: 'the chariot arena', pos: HIPPODROME.pos },
-  { name: "Garg's Lighthouse", note: 'guides ships into Greywater', pos: [425, 455] },
-  { name: 'The Warwick Mint', note: 'where coins graduate', pos: [-5, 42] },
-  { name: "Qureshi's Library", note: 'the Book of Ages', pos: [70, 38] },
-  { name: 'Gershuni Gate', note: 'the south gate of the capital', pos: [54, 93] },
+  { name: "Palomir's Reach", note: 'the great north road', pos: [-60, -250] },
+  { name: 'The Lorimer Bridge', note: 'over the Ember River', pos: [0, 0] }, // set in bridges.ts
+  { name: 'Marlowe Hippodrome', note: 'the chariot arena', pos: HIPPODROME.pos },
+  { name: "Garrow's Lighthouse", note: 'guides ships into Greywater', pos: [425, 455] },
+  { name: 'The Aldous Mint', note: 'where coins graduate', pos: [-5, 42] },
+  { name: "Quillon's Library", note: 'the Book of Ages', pos: [70, 38] },
+  { name: 'Harrow Gate', note: 'the south gate of the capital', pos: [54, 93] },
 ];
 
 /** The Ember River, from the snows in the north down through the capital to the delta in the south. */
@@ -57,12 +57,12 @@ export const RIVER = new THREE.CatmullRomCurve3(
 );
 
 
-/** Every western road leaves the capital the same way: out of the west gate and over the Lazzarin Bridge. */
+/** Every western road leaves the capital the same way: out of the west gate and over the Lorimer Bridge. */
 const WEST: [number, number][] = [[-25, 3], [-90, 5]];
 
 /** Roads: every seat links to the capital, plus a few between neighbours. Each is a list of waypoints. */
 export const ROADS: { from: number | 'capital'; to: number | 'capital'; via: [number, number][] }[] = [
-  { from: 'capital', to: 6, via: [...WEST, [-95, -110], [-100, -250], [-115, -370]] }, // Polosukhin's Reach
+  { from: 'capital', to: 6, via: [...WEST, [-95, -110], [-100, -250], [-115, -370]] }, // Palomir's Reach
   { from: 'capital', to: 4, via: [...WEST, [-150, -60], [-300, -170]] },
   { from: 'capital', to: 1, via: [...WEST, [-160, 30], [-300, 90]] },
   { from: 'capital', to: 2, via: [...WEST, [-130, 140], [-230, 280]] },

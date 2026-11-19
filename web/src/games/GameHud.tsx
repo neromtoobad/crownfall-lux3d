@@ -39,19 +39,19 @@ export function GameHud() {
   if (session.phase === 'intro') return (
     <div className="game-card" style={style}>
       {lib ? <div className="sig glyph"><SealGlyph seal="Library" size={64} /></div> : <img className="sig" src={sig} alt="" />}
-      <small>{lib ? 'Qureshi’s Library · across the table from Haseeb Qureshi' : `The hall of House ${h.name}`}</small>
+      <small>{lib ? 'Quillon’s Library · across the table from Hobb Quillon' : `The hall of House ${h.name}`}</small>
       <h2>{def.name}</h2>
       <p>{def.pitch}</p>
       <div className="keys">{def.keys.filter(([k]) => !(lib && live && k === 'Space')).map(([k, v]) => <div key={k}><kbd>{k}</kbd><span>{v}</span></div>)}</div>
       <div className="entry">
         {live
           ? (lib
-            ? <><b>Stake: {LIB_STAKE} gold on the table.</b><span>{signsHere() ? 'It signs from your account here.' : 'Your wallet asks for it.'} The contract rolls your five dice from that block; you make one bid, and Haseeb’s five are rolled from the block that takes it. A true bid pays fair odds less 5% from the Library’s bank; a short one goes to the bank. No browser can report this win.</span></>
+            ? <><b>Stake: {LIB_STAKE} gold on the table.</b><span>{signsHere() ? 'It signs from your account here.' : 'Your wallet asks for it.'} The contract rolls your five dice from that block; you make one bid, and Hobb’s five are rolled from the block that takes it. A true bid pays fair odds less 5% from the Library’s bank; a short one goes to the bank. No browser can report this win.</span></>
             : closed
             ? <><b>The hall is shut. House {h.name} went broke.</b><span>A run of selling drained its purse to {q!.reserve.toFixed(3)} gold, under 70% of its peak. Buying ${h.coin} invests in it, and the hall reopens once the purse is back to {q!.reopenAt.toFixed(3)} gold. It sells at ×{q!.factor.toFixed(2)} fair value right now.</span></>
             : <><b>Entry: {fmt(def.entry)} ${h.coin}, burned.</b><span>{short ? `You hold ${fmt(held(room.house))}: buy some first.` : `You hold ${fmt(held(room.house))}.`} The burn raises ${h.coin} for every holder and counts as favour with House {h.name}.</span></>)
           : lib
-          ? (session.free ? <><b>Haseeb stands you the first game.</b><span>Win it and he pays you {def.entry} gold. After this the stake is {def.entry} gold: a win hands it back.</span></> : <><b>Stake: {def.entry} gold on the table.</b><span>Win and it comes back to you. Lose and Haseeb keeps it.</span></>)
+          ? (session.free ? <><b>Hobb stands you the first game.</b><span>Win it and he pays you {def.entry} gold. After this the stake is {def.entry} gold: a win hands it back.</span></> : <><b>Stake: {def.entry} gold on the table.</b><span>Win and it comes back to you. Lose and Hobb keeps it.</span></>)
           : session.free
           ? <><b>The house stands you this round.</b><span>After this, a round burns {fmt(def.entry)} ${h.coin}.</span></>
           : <><b>Entry: {fmt(def.entry)} ${h.coin}, burned.</b><span>{ledger.held[room.house] >= def.entry ? `You hold ${fmt(ledger.held[room.house])}.` : 'Bought on the curve for you first.'} Every round played here raises ${h.coin} for its holders.</span></>}
@@ -75,7 +75,7 @@ export function GameHud() {
       <p>{r.line}</p>
       {r.won && live && <div className="entry"><b>{lib ? `+${session.payout.toFixed(3)} gold from the Library’s bank, paid` : judged ? `A win for House ${h.name}, judged` : `A win for House ${h.name}, recorded`}</b><span>{lib ? 'The contract rolled both cups and paid the bid. It counts for the Library’s seal.' : judged ? 'The contract replayed your moves against the seed it rolled at the door and judged the win itself. It counts toward the Wardens’ seals and the house’s tally of wins.' : 'It counts toward the Wardens’ seals and the house’s tally of wins. The favour was your burn: at the season’s end the house with the most favour is crowned and its players share the crown pool. (The chain can’t watch this game, so a reported win pays nothing.)'}</span></div>}
       {!r.won && live && <div className="entry"><b>{lib ? 'The stake goes to the Library’s bank' : `The ${h.coin} you burned still counts as favour`}</b><span>The round is closed.</span></div>}
-      {r.won && !live && <div className="entry"><b>+{session.payout} gold {lib ? 'from the Library’s table' : `from the treasury of House ${h.name}`}</b><span>{lib ? 'Haseeb nods. That one he’ll remember.' : `Favour with House ${h.name}: ${ledger.favour[room.house]}`}</span></div>}
+      {r.won && !live && <div className="entry"><b>+{session.payout} gold {lib ? 'from the Library’s table' : `from the treasury of House ${h.name}`}</b><span>{lib ? 'Hobb nods. That one he’ll remember.' : `Favour with House ${h.name}: ${ledger.favour[room.house]}`}</span></div>}
       <div className="go"><button disabled={session.busy} onClick={beginRound}><kbd>E</kbd> Again ({lib ? `${live ? LIB_STAKE : def.entry} gold` : `${fmt(def.entry)} $${h.coin}`})</button><button className="ghost" onClick={quitGame}><kbd>Esc</kbd> Done</button></div>
     </div>
   );

@@ -30,7 +30,7 @@ export async function buyCoin(h: number, near: number): Promise<number> {
   if (!onChain()) return ding(practiceBuy(h, near), 6);
   try {
     const got = await walletCall<string>(`Buying $${HOUSES[h].coin} with ${near} NEAR`, 'buy', { house: h }, near);
-    note(`Bought ${fmt(units(got))} $${HOUSES[h].coin} for ${near} NEAR at the Warwick Mint, on NEAR.`, h);
+    note(`Bought ${fmt(units(got))} $${HOUSES[h].coin} for ${near} NEAR at the Aldous Mint, on NEAR.`, h);
     return ding(units(got), 6);
   } catch { return 0; }
 }
@@ -39,12 +39,12 @@ export async function sellCoin(h: number, q: number): Promise<number> {
   if (!onChain()) return ding(practiceSell(h, q), 3);
   try {
     await keyCall(`Selling ${fmt(q)} $${HOUSES[h].coin}`, 'sell', { house: h, amount: yocto(q).toString() });
-    note(`Sold ${fmt(q)} $${HOUSES[h].coin} at the Warwick Mint, on NEAR.`, h);
+    note(`Sold ${fmt(q)} $${HOUSES[h].coin} at the Aldous Mint, on NEAR.`, h);
     return ding(q, 3);
   } catch { return 0; }
 }
 
-/** NEAR put on Haseeb's table for one wager on chain. */
+/** NEAR put on Hobb's table for one wager on chain. */
 export const LIB_STAKE = 0.1;
 /** The Gate's toll: its trial is a drive the chain can't see, so its seal is paid for (it goes to the crown pool). */
 export const GATE_TOLL = 0.01;
@@ -52,7 +52,7 @@ export const GATE_TOLL = 0.01;
 /** A hall round's entry on chain: the coin is burned and a round opened. The Library is staked through the wallet. */
 export async function enterHall(hall: number, library: boolean): Promise<number> {
   return library
-    ? Number(await walletCall<number>(`Staking ${LIB_STAKE} NEAR at Haseeb’s table`, 'stake', {}, LIB_STAKE))
+    ? Number(await walletCall<number>(`Staking ${LIB_STAKE} NEAR at Hobb’s table`, 'stake', {}, LIB_STAKE))
     : Number(await keyCall<number>(`Burning the entry: ${fmt(units(chain.realm?.houses[hall]?.entry ?? '0'))} $${HOUSES[hall].coin}`, 'enter', { house: hall }));
 }
 
@@ -74,20 +74,20 @@ export async function hallSeed(round: number): Promise<number | undefined> {
 /** House indexes of the halls the chain judges (chain/src/halls.rs). */
 export const JUDGED = [0, 2];
 
-// ---------- Qureshi's Library: a wager the contract settles ----------
+// ---------- Quillon's Library: a wager the contract settles ----------
 
 export interface Library { bank: string; min: string; max: string; edge_bps: number; odds: number[]; of: number; cup: { mine: number[]; height: number } | null }
 export interface LibResult { round: number; won: boolean; bid?: [number, number]; mine?: number[]; his?: number[]; shown?: number; paid?: string; refunded?: string }
 /** The Library's bank and odds, and (with a round) your five dice, rolled on chain when you staked. */
 export const library = (round?: number) => view<Library>('get_library', { round: round ?? null });
-/** What a true bid pays back in all, in NEAR, when Haseeb's cup must show `need` more of the face (0 if none). */
+/** What a true bid pays back in all, in NEAR, when Hobb's cup must show `need` more of the face (0 if none). */
 export const libPays = (lib: Library, stake: number, need: number) =>
   need < 1 || need > 5 ? 0 : (stake * lib.of / lib.odds[need - 1]) * (1 - lib.edge_bps / 10_000);
-/** The chance a bid needing `need` more from Haseeb's five dice is true. */
+/** The chance a bid needing `need` more from Hobb's five dice is true. */
 export const libChance = (lib: Library, need: number) => (need < 1 ? 1 : need > 5 ? 0 : lib.odds[need - 1] / lib.of);
-/** Bid on the table: the contract rolls Haseeb's dice from this block and pays a true bid. */
+/** Bid on the table: the contract rolls Hobb's dice from this block and pays a true bid. */
 export const bidLibrary = (round: number, count: number, face: number) =>
-  keyCall<LibResult>('Haseeb lifts his cup', 'finish', { round, won: false, bid: [count, face] });
+  keyCall<LibResult>('Hobb lifts his cup', 'finish', { round, won: false, bid: [count, face] });
 
 /** Take a Warden's seal on chain (the contract checks what it can see; a seal it refuses stays a practice seal). The
  *  Gate's seal takes its toll through the wallet. */

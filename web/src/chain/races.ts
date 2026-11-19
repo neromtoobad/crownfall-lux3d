@@ -1,4 +1,4 @@
-// The Mumtaz Hippodrome on NEAR: read the contract's latest race, keep the track showing it, and do the chores any
+// The Marlowe Hippodrome on NEAR: read the contract's latest race, keep the track showing it, and do the chores any
 // player may do (settle a finished race, call the next one). Bets go through the wallet; whips and claims use the game key.
 import { live, showChainRace, type ChainRaceView } from '../realm/race.ts';
 import { HOUSES } from '../realm/layout.ts';

@@ -358,7 +358,7 @@ function Rocks() {
   );
 }
 
-/** Garg's Lighthouse on its headland, its beam sweeping the bay. */
+/** Garrow's Lighthouse on its headland, its beam sweeping the bay. */
 function Lighthouse({ beam }: { beam: React.RefObject<THREE.Group> }) {
   const beamMat = useMemo(() => new THREE.ShaderMaterial({
     transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, fog: false,

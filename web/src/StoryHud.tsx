@@ -115,15 +115,15 @@ function sting(good: boolean) {
 /** Where you are, as the realm names it. */
 function zoneAt(x: number, z: number): [string, string] {
   const d = (p: readonly [number, number]) => Math.hypot(x - p[0], z - p[1]);
-  if (d(HIPPODROME.pos) < 95) return ['Mumtaz Hippodrome', 'the chariot arena'];
+  if (d(HIPPODROME.pos) < 95) return ['Marlowe Hippodrome', 'the chariot arena'];
   if (d(LANDMARKS[4].pos) < 34) return ['Mint Square', 'Emberfall'];
-  if (d(LANDMARKS[5].pos) < 26) return ["Qureshi's Library", 'Emberfall'];
+  if (d(LANDMARKS[5].pos) < 26) return ["Quillon's Library", 'Emberfall'];
   if (d([35, -40]) < 42) return ['The Ashen Throne', 'Emberfall'];
   if (d([20, 0]) < 104) return ['Emberfall', 'the capital'];
   for (const h of HOUSES) if (d(h.pos) < 120) return [h.seat, `House ${h.name} · ${h.land}`];
-  if (d(LANDMARKS[3].pos) < 60) return ["Garg's Lighthouse", 'the Greywater coast'];
+  if (d(LANDMARKS[3].pos) < 60) return ["Garrow's Lighthouse", 'the Greywater coast'];
   if (riverDist(x, z) < 24) return ['The Ember River', 'Vael'];
-  if (z < -200) return ["Polosukhin's Reach", 'the northern pines'];
+  if (z < -200) return ["Palomir's Reach", 'the northern pines'];
   return ['The open country', 'Vael'];
 }
 export function AreaName() {
@@ -133,7 +133,7 @@ export function AreaName() {
   useEffect(() => {
     let hide = 0;
     const i = setInterval(() => {
-      const z: [string, string] = play.inside === LIBRARY ? ['Qureshi’s Library', 'Liar’s Dice under the dome'] : play.inside === THRONE_ROOM ? ['The hall of the Ashen Throne', 'The seat every house is fighting for'] : play.inside >= 0 ? [`The hall of House ${HOUSES[play.inside].name}`, ROOMS[play.inside].gameName + ' is played here'] : zoneAt(me.x, me.z);
+      const z: [string, string] = play.inside === LIBRARY ? ['Quillon’s Library', 'Liar’s Dice under the dome'] : play.inside === THRONE_ROOM ? ['The hall of the Ashen Throne', 'The seat every house is fighting for'] : play.inside >= 0 ? [`The hall of House ${HOUSES[play.inside].name}`, ROOMS[play.inside].gameName + ' is played here'] : zoneAt(me.x, me.z);
       if (z[0] !== last.current) {
         last.current = z[0]; setZone(z); setShow(true);
         clearTimeout(hide); hide = window.setTimeout(() => setShow(false), 3100);

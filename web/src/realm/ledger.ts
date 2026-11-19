@@ -55,7 +55,7 @@ export function buy(h: number, near: number) {
   const a = BASE / (2 * K), b = BASE * (1 + s / K), q = (-b + Math.sqrt(b * b + 4 * a * net)) / (2 * a);
   ledger.near -= near; ledger.supply[h] += q; ledger.held[h] += q;
   flags.bought = { h, t: Date.now() };
-  save(`Bought ${fmt(q)} $${HOUSES[h].coin} for ${near.toFixed(2)} gold at the Warwick Mint.`, h);
+  save(`Bought ${fmt(q)} $${HOUSES[h].coin} for ${near.toFixed(2)} gold at the Aldous Mint.`, h);
   return q;
 }
 export function sell(h: number, q: number) {

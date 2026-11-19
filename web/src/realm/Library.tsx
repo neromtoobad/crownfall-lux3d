@@ -1,6 +1,6 @@
-// Inside Qureshi's Library: a round reading room under the dome. Two tiers of bookcases run all the way round, with a
-// gallery between them; the sun comes straight down through the oculus onto the dice table in the middle, where Haseeb
-// Qureshi waits. The chronicle lies open on its lectern, and the two scribes, Claude and Codex, keep the Seal Book at
+// Inside Quillon's Library: a round reading room under the dome. Two tiers of bookcases run all the way round, with a
+// gallery between them; the sun comes straight down through the oculus onto the dice table in the middle, where Hobb
+// Quillon waits. The chronicle lies open on its lectern, and the two scribes, Claude and Codex, keep the Seal Book at
 // their desk under the gallery and will tell you what to do next.
 // Built in the room's own frame (x across, z toward the door, y up) and placed off the map at the room's origin.
 import { useMemo } from 'react';
@@ -256,7 +256,7 @@ const SCRIBES = (() => {
   return { claude: [a[0], a[1], face, 0] as [number, number, number, number], codex: [b[0], b[1], face, 0] as [number, number, number, number] };
 })();
 
-/** Everything in the Library: the room, the dice table, Haseeb across it, the scribes at their desk. */
+/** Everything in the Library: the room, the dice table, Hobb across it, the scribes at their desk. */
 export function LibraryScene() {
   const r = LIB_ROOM, def = gameDef('dice');
   return (
@@ -265,7 +265,7 @@ export function LibraryScene() {
         <Shell />
         {def && <def.Station room={r} />}
       </group>
-      <Standing url="/models/peasant-m.glb" kind="lord" name="Haseeb Qureshi" theirs="the Library" spots={[[0, -3.15, 0, 0]]} scale={2.3} tint="#6a4a7a" />
+      <Standing url="/models/peasant-m.glb" kind="lord" name="Hobb Quillon" theirs="the Library" spots={[[0, -3.15, 0, 0]]} scale={2.3} tint="#6a4a7a" />
       <Standing url="/models/peasant-f.glb" kind="woman" name="Claude, a scribe" theirs="the Library" spots={[SCRIBES.claude]} tint="#b5603f" />
       <Standing url="/models/peasant-m.glb" kind="man" name="Codex, a scribe" theirs="the Library" spots={[SCRIBES.codex]} tint="#33363d" />
     </>

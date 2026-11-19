@@ -1,4 +1,4 @@
-// Chariot races at the Mumtaz Hippodrome. The race is a pure function of its seed plus the whips cracked during it,
+// Chariot races at the Marlowe Hippodrome. The race is a pure function of its seed plus the whips cracked during it,
 // stepped at a fixed 10 Hz, so the contract (or anyone) can replay a result from the same inputs.
 import { useSyncExternalStore } from 'react';
 import { DT, laneLen, laneR, newRace, tick, type Race, type Runner } from './raceSim.ts';

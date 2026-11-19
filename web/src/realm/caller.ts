@@ -1,4 +1,4 @@
-// The race caller at the Mumtaz Hippodrome: a voice over the crowd that follows the race actually being run (the
+// The race caller at the Marlowe Hippodrome: a voice over the crowd that follows the race actually being run (the
 // practice race, or the contract's when one is on the track). Riders to the line as the off nears, the off, the whips,
 // the last lap, and the house that takes the cup. Only within earshot: at the Hippodrome, driving in it, or watching.
 import { live, toOff } from './race.ts';

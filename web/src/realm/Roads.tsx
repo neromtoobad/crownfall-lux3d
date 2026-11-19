@@ -1,4 +1,4 @@
-// Dirt roads draped over the ground, and the Lazzarin Bridge where the east road crosses the river.
+// Dirt roads draped over the ground, and the Lorimer Bridge where the east road crosses the river.
 import { useMemo } from 'react';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';

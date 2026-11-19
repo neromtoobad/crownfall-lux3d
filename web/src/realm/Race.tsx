@@ -1,4 +1,4 @@
-// The Mumtaz Hippodrome: stands, sand, the spina, a crowd, and eight chariots in house colours.
+// The Marlowe Hippodrome: stands, sand, the spina, a crowd, and eight chariots in house colours.
 // One generated horse (no rig): the gallop is done in its vertex shader — legs, tail and head swing about fixed pivots.
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';

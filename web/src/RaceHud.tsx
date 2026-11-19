@@ -36,7 +36,7 @@ export function RaceHud() {
   if (!live.watch) {
     return (
       <button className="race-ticker" onClick={() => setWatch(true)}>
-        <span className="eyebrow">Mumtaz Hippodrome · race {r.n}{cv ? ' ·' : ''}</span>
+        <span className="eyebrow">Marlowe Hippodrome · race {r.n}{cv ? ' ·' : ''}</span>
         <b>{r.cup.name}</b>
         <span className="row">{status}{r.phase !== 'parade' && <> · <i style={{ background: leader.colors[0] }} />{leader.name} leads</>}</span>
         <span className="cta">Watch the race →<span className="on-near"><NearMark size={11} /> {cv ? 'bets and result' : onChain() ? 'practice heat' : 'practice heat'}</span></span>
@@ -50,7 +50,7 @@ export function RaceHud() {
     const won = r.phase === 'done' ? order[0] : undefined;
     return (
       <aside className="race-card">
-        <div className="eyebrow">Mumtaz Hippodrome · race {r.n} · {r.cup.laps} {r.cup.laps > 1 ? 'laps' : 'lap'} · practice</div>
+        <div className="eyebrow">Marlowe Hippodrome · race {r.n} · {r.cup.laps} {r.cup.laps > 1 ? 'laps' : 'lap'} · practice</div>
         <h2>{r.cup.name}</h2>
         <div className="race-status">{status}</div>
         {won && <div className="winner" style={{ ['--c' as string]: HOUSES[won.house].colors[0] }}>{r.cup.name} goes to <b>House {HOUSES[won.house].name}</b></div>}
@@ -88,7 +88,7 @@ export function RaceHud() {
   const busy = !!c.busy;
   return (
     <aside className="race-card">
-      <div className="eyebrow">Mumtaz Hippodrome · race {cv.n} · {cv.laps} {cv.laps > 1 ? 'laps' : 'lap'} · <span className="near-word"><NearMark size={11} /></span></div>
+      <div className="eyebrow">Marlowe Hippodrome · race {cv.n} · {cv.laps} {cv.laps > 1 ? 'laps' : 'lap'} · <span className="near-word"><NearMark size={11} /></span></div>
       <h2>{r.cup.name}</h2>
       <div className="race-status">{status}</div>
       {win !== undefined && <div className="winner" style={{ ['--c' as string]: HOUSES[win].colors[0] }}>The contract ran it: <b>House {HOUSES[win].name}</b> wins</div>}

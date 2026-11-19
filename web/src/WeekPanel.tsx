@@ -39,7 +39,7 @@ export function WeekPanel({ back }: { back: () => void }) {
   const evs = week.events.slice(-5).reverse();
   return (
     <>
-      <div className="eyebrow">The Warwick Mint · fast-forward</div>
+      <div className="eyebrow">The Aldous Mint · fast-forward</div>
       <h2>A week in a minute</h2>
       <p className="lede">The eight houses as they stand now, a week on: the contract’s own pricing rule against simulated traders, whales and the four rivals. Each line is a coin’s value (its house’s purse per coin). Tap a house to see what the merchant asked, dashed. Nothing is sent.</p>
       <svg className="week-chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Each house’s coin price over the week, relative to where it started">

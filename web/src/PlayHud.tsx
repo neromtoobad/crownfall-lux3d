@@ -209,7 +209,7 @@ function MintPanel() {
   const [why, setWhy] = useState(false);
   return (
     <>
-      <div className="eyebrow">The Warwick Mint · {live ? 'on practice' : 'practice purse'}</div>
+      <div className="eyebrow">The Aldous Mint · {live ? 'on practice' : 'practice purse'}</div>
       <h2>Buy and sell house coin</h2>
       <p className="lede">{live
         ? 'Each house is a merchant: its coin is worth a share of its gold purse, and it asks more when buyers rush in and pays less when sellers flood it. Every round played in a hall burns coin, which raises every holder’s share.'
@@ -257,7 +257,7 @@ function WarPanel({ house }: { house: number }) {
         </button>
       ))}</div>
       <dl className="stats"><div><dt>People</dt><dd>{ledger.people[house]}</dd></div><div><dt>You hold</dt><dd>{fmt(ledger.held[house])} ${x.coin}</dd></div></dl>
-      {msg ? <p className="slip">{msg}</p> : ledger.held[house] < 1200 && <p className="honest">You need ${x.coin} to decree. Buy some at the Warwick Mint in Emberfall.</p>}
+      {msg ? <p className="slip">{msg}</p> : ledger.held[house] < 1200 && <p className="honest">You need ${x.coin} to decree. Buy some at the Aldous Mint in Emberfall.</p>}
     </>
   );
 }
@@ -268,7 +268,7 @@ function GateOf({ house }: { house: number }) {
     <>
       <div className="eyebrow">{x.seat} · {x.land}</div>
       <h2>The gate of House {x.name}</h2>
-      <p className="lede">The guards will not let a lord of another house in. Talk to their lord on the green, send a raven, or muster a march at the Gershuni Gate.</p>
+      <p className="lede">The guards will not let a lord of another house in. Talk to their lord on the green, send a raven, or muster a march at the Harrow Gate.</p>
       <dl className="stats"><div><dt>People</dt><dd>{ledger.people[house]}</dd></div><div><dt>${x.coin}</dt><dd>{priceAt(ledger.supply[house]).toFixed(5)} gold</dd></div></dl>
     </>
   );
@@ -369,7 +369,7 @@ function Library() {
   usePlay();
   return (
     <>
-      <div className="eyebrow">Qureshi's Library · the Book of Ages</div>
+      <div className="eyebrow">Quillon's Library · the Book of Ages</div>
       <h2>The chronicle</h2>
       <ol className="chron">{ledger.chronicle.slice(0, 18).map((e, i) => (
         <li key={i} style={{ ['--c' as string]: e.house !== undefined ? HOUSES[e.house].colors[0] : 'var(--gold)' }}>
@@ -386,7 +386,7 @@ function March() {
   const [done, setDone] = useState(false);
   return (
     <>
-      <div className="eyebrow">Emberfall · the Gershuni Gate</div>
+      <div className="eyebrow">Emberfall · the Harrow Gate</div>
       <h2>Muster a march</h2>
       <p className="lede">Your house's soldiers leave {HOUSES[mine].seat} and take the roads to a rival seat. You can watch them go.</p>
       <div className="chips">{HOUSES.filter((x) => x.id !== mine).map((x) => <button key={x.id} className={x.id === to ? 'on' : ''} onClick={() => { setTo(x.id); setDone(false); }}>{x.name}</button>)}</div>
@@ -403,7 +403,7 @@ function RacePanel({ onGo }: { onGo: () => void }) {
   const run = race.phase !== 'parade';
   return (
     <>
-      <div className="eyebrow">The Mumtaz Hippodrome · the stables</div>
+      <div className="eyebrow">The Marlowe Hippodrome · the stables</div>
       <h2>{run ? 'The next race' : race.cup.name}</h2>
       {run ? <p className="lede">{race.cup.name} is running now. Take the reins and you drive House {mine.name}'s chariot in the race after it; you watch this one from the stands meanwhile. The inside lanes are shorter but crowded; a chariot in your way blocks you.</p> : <p className="lede">{race.cup.laps} {race.cup.laps === 1 ? 'lap' : 'laps'} of {Math.round(laneLen(laneR(3.5)) / M)} m. You drive House {mine.name}'s chariot from lane {lane + 1}. The inside lanes are shorter but crowded; a chariot in your way blocks you.</p>}
       <ul className="keys"><li><kbd>A</kbd><kbd>D</kbd> change lane</li><li><kbd>Space</kbd> whip (three cracks, each burns 10 ${mine.coin})</li></ul>
@@ -460,9 +460,9 @@ function SealBook() {
       <div className="next"><b style={{ color: '#ffd23f' }}>Next · </b>{next.text.split('**').map((t, i) => (i % 2 ? <b key={i} style={{ color: '#ffd23f' }}>{t}</b> : <span key={i}>{t}</span>))}</div>
       <h3>Open to you any time, whatever the story · click for the route</h3>
       <div className="anytime">{([
-        ['$', 'The Warwick Mint', 'buy and sell house coin', [PLACES.find((x) => x.id === 'mint')!.x, PLACES.find((x) => x.id === 'mint')!.z]],
-        ['H', 'The Mumtaz Hippodrome', 'drive a chariot, or bet on the race', [STABLES[0], STABLES[1]]],
-        ['L', 'Qureshi’s Library', 'Liar’s Dice for a stake', [libDoor().out[0], libDoor().out[1]]],
+        ['$', 'The Aldous Mint', 'buy and sell house coin', [PLACES.find((x) => x.id === 'mint')!.x, PLACES.find((x) => x.id === 'mint')!.z]],
+        ['H', 'The Marlowe Hippodrome', 'drive a chariot, or bet on the race', [STABLES[0], STABLES[1]]],
+        ['L', 'Quillon’s Library', 'Liar’s Dice for a stake', [libDoor().out[0], libDoor().out[1]]],
         [HOUSES[mine].name[0], `Your hall at ${HOUSES[mine].seat}`, ROOMS.find((r) => r.house === mine)?.gameName ?? 'your house game', [doorOf(HOUSES[mine]).x, doorOf(HOUSES[mine]).z]],
       ] as [string, string, string, [number, number]][]).map(([icon, name, what, at]) => (
         <button key={name} className={icon === 'H' ? 'race' : ''} onClick={() => { waypoint.at = at; openPanel(); }}>

@@ -61,7 +61,7 @@ export const session = {
   /** On gold: the round the contract opened for this play, and whether we're waiting on the chain. */
   chainRound: undefined as number | undefined,
   busy: false,
-  /** gold put on the Library table this round (0 when Haseeb stood you the game). */
+  /** gold put on the Library table this round (0 when Hobb stood you the game). */
   staked: 0,
   /** This round is (its entry burned or staked there). */
   live: false,
@@ -109,7 +109,7 @@ export function beginRound() {
       // Cups and Signals are played from the seed the contract rolled, so it can replay the round and judge it.
       if (JUDGED.includes(r.house)) hallPlay.seed = await hallSeed(id);
       session.busy = false; session.chainRound = id;
-      note(lib ? `Staked ${LIB_STAKE} gold at ${def.name} in Qureshi's Library.` : `Played ${def.name} in the hall of House ${hallHouse(r.house).name}: ${def.entry} $${hallHouse(r.house).coin} burned.`, lib ? undefined : r.house);
+      note(lib ? `Staked ${LIB_STAKE} gold at ${def.name} in Quillon's Library.` : `Played ${def.name} in the hall of House ${hallHouse(r.house).name}: ${def.entry} $${hallHouse(r.house).coin} burned.`, lib ? undefined : r.house);
       session.phase = 'play'; session.round++;
       takePressed();
       emitPlay();
@@ -118,7 +118,7 @@ export function beginRound() {
   }
   if (!session.free && r.house === LIBRARY) {
     if (ledger.near < def.entry) { session.error = `You need ${def.entry} gold for the stake.`; emitPlay(); return; }
-    ledger.near -= def.entry; note(`Staked ${def.entry} gold at ${def.name} in Qureshi's Library.`);
+    ledger.near -= def.entry; note(`Staked ${def.entry} gold at ${def.name} in Quillon's Library.`);
   } else if (!session.free) {
     const ok = playBurn(r.house, def.entry, def.name);
     if (!ok) { session.error = `You need about ${(def.entry * 0.0011).toFixed(2)} gold for the entry.`; emitPlay(); return; }
@@ -155,9 +155,9 @@ export function endRound(res: Result) {
     if (round !== undefined) void finishHall(round, res.won, g, play).catch(() => { /* shown in the chain bar */ });
   } else if (res.won) {
     ledger.favour[r.house] = (ledger.favour[r.house] ?? 0) + 1;
-    const where = r.house === LIBRARY ? 'Qureshi’s Library' : `the hall of House ${h.name}`;
+    const where = r.house === LIBRARY ? 'Quillon’s Library' : `the hall of House ${h.name}`;
     pay(session.payout, `Won ${gameDef(r.game)!.name} in ${where}`);
-  } else note(`Lost at ${gameDef(r.game)!.name} in ${r.house === LIBRARY ? 'Qureshi’s Library' : `the hall of House ${h.name}`}.`, r.house < LIBRARY ? r.house : undefined);
+  } else note(`Lost at ${gameDef(r.game)!.name} in ${r.house === LIBRARY ? 'Quillon’s Library' : `the hall of House ${h.name}`}.`, r.house < LIBRARY ? r.house : undefined);
   flagsGame.last = { id: r.game, house: r.house, won: res.won, score: res.score, t: Date.now() };
   takePressed();
   // Keys still going from the round (a last arrow, a last bid) must not hit "Again" and pay for another.

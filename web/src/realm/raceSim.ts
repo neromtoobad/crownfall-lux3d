@@ -31,13 +31,13 @@ export function lanePoint(r: number, s: number, out: { x: number; z: number; yaw
 
 /** Every race is run for a cup named after one of the judges. Names only. */
 export const CUPS = [
-  { name: 'The Polosukhin Cup', laps: 3 },
-  { name: 'The Lazzarin Stakes', laps: 2 },
-  { name: 'The Mumtaz Derby', laps: 3 },
-  { name: "Garg's Lantern Sprint", laps: 1 },
-  { name: 'The Warwick Purse', laps: 2 },
-  { name: 'The Qureshi Classic', laps: 3 },
-  { name: 'The Gershuni Gold', laps: 2 },
+  { name: 'The Palomir Cup', laps: 3 },
+  { name: 'The Lorimer Stakes', laps: 2 },
+  { name: 'The Marlowe Derby', laps: 3 },
+  { name: "Garrow's Lantern Sprint", laps: 1 },
+  { name: 'The Aldous Purse', laps: 2 },
+  { name: 'The Quillon Classic', laps: 3 },
+  { name: 'The Harrow Gold', laps: 2 },
 ];
 
 export const DT = 0.1; // one sim tick
