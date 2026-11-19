@@ -5,6 +5,7 @@ import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { surfaced } from './materials.ts';
+import { isLux3d, kitUrl } from './kit.ts';
 import * as THREE from 'three';
 import { walkY } from './bridges.ts';
 import { addBox, addCircle, free, solid } from './collide.ts';
@@ -171,7 +172,7 @@ const q = new THREE.Quaternion(), e = new THREE.Euler(), mtx = new THREE.Matrix4
 
 function LooseProps({ items, kind }: { items: Loose[]; kind: 'crate' | 'barrel' }) {
   const mine = useMemo(() => items.filter((l) => l.kind === kind), [items, kind]);
-  const gltf = useGLTF(`/env/props/${kind}.glb`);
+  const gltf = useGLTF(kitUrl(`props/${kind}`));
   const s = SIZE[kind], half = (s[1] * M) / 2, rad = (Math.max(s[0], s[2]) * M) / 2;
   const { geo, mat } = useMemo(() => {
     let mesh: THREE.Mesh | undefined;
@@ -183,7 +184,7 @@ function LooseProps({ items, kind }: { items: Loose[]; kind: 'crate' | 'barrel' 
     geo.translate(-c.x, -c.y, -c.z).scale((s[0] * M) / size.x, (s[1] * M) / size.y, (s[2] * M) / size.z);
     const mat = (mesh!.material as THREE.MeshStandardMaterial).clone();
     mat.roughness = 0.9; mat.metalness = 0;
-    surfaced(mat, geo, 1.4 / M);
+    if (!isLux3d(`props/${kind}`)) surfaced(mat, geo, 1.4 / M);
     return { geo, mat };
   }, [gltf, s]);
   const ref = useRef<THREE.InstancedMesh>(null);

@@ -4,7 +4,7 @@ import { useLayoutEffect, useMemo, useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { surfaced } from './materials.ts';
-import { kitUrl } from './kit.ts';
+import { isLux3d, kitUrl } from './kit.ts';
 
 export interface Place { x: number; y: number; z: number; ry: number; sx: number; sy: number; sz: number }
 
@@ -22,7 +22,8 @@ export function Props({ name, items, shadows = true }: { name: string; items: Pl
     mat.roughness = Math.max(mat.roughness, 0.85);
     mat.metalness = 0;
     // Blender props (design/blender) carry a surface tag: give them the realm's wood and stone grain.
-    if (name.startsWith('props/')) surfaced(mat, geo);
+    // Lux3D props bring their own texture, so they skip the grain.
+    if (name.startsWith('props/') && !isLux3d(name)) surfaced(mat, geo);
     return { geo, mat, size, centre };
   }, [gltf, name]);
   const ref = useRef<THREE.InstancedMesh>(null);

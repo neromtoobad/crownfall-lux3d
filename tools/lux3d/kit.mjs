@@ -17,7 +17,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { NodeIO } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
-import { flatten, join, weld, simplify, prune, dedup, textureCompress, meshopt, getBounds } from '@gltf-transform/functions';
+import { flatten, join, weld, simplify, prune, dedup, textureCompress, meshopt, getBounds, clearNodeTransform } from '@gltf-transform/functions';
 import { MeshoptSimplifier, MeshoptEncoder, MeshoptDecoder } from 'meshoptimizer';
 import draco3d from 'draco3dgltf';
 import sharp from 'sharp';
@@ -168,8 +168,12 @@ async function fit(rawFile, outFile, item) {
     prune(),
     dedup(),
     textureCompress({ encoder: sharp, targetFormat: 'webp', resize: [item.tex, item.tex], quality: 82 }),
-    meshopt({ encoder: MeshoptEncoder, level: 'medium' }),
   );
+  // The small props stay uncompressed: the game moves and scales their vertices directly (the loose barrels and
+  // crates tumble), and compressed positions cannot hold values outside -1 to 1.
+  // Their size and turn are baked into the vertices for the same reason.
+  if (item.plain) for (const node of doc.getRoot().listNodes()) if (node.getMesh()) clearNodeTransform(node);
+  else await doc.transform(meshopt({ encoder: MeshoptEncoder, level: 'medium' }));
   await io.write(outFile, doc);
   const after = countTriangles(doc);
   return { before, after, size: boxSize(doc), bytes: (await stat(outFile)).size };
@@ -191,8 +195,9 @@ async function main() {
   for (const item of kit) {
     const have = record.models.find((m) => m.id === item.id);
     if (only.length ? !only.includes(item.id) : have) continue;
-    const rawFile = path.join(RAW, `${item.id}.glb`);
+    const rawFile = path.join(RAW, `${item.id.replace('/', '-')}.glb`);
     const outFile = path.join(ENV_DIR, `${item.id}.glb`);
+    await mkdir(path.dirname(outFile), { recursive: true });
 
     let entry = have;
     if (!fitOnly) {
@@ -210,7 +215,7 @@ async function main() {
     }
     if (!entry && !dry) throw new Error(`${item.id} has not been generated yet`);
 
-    const fitted = await fit(rawFile, dry ? path.join(RAW, `dry-${item.id}.glb`) : outFile, item);
+    const fitted = await fit(rawFile, dry ? path.join(RAW, `dry-${item.id.replace('/', '-')}.glb`) : outFile, item);
     console.log(`   fitted: ${fitted.before.triangles} -> ${fitted.after.triangles} triangles, ${fitted.after.primitives} primitive(s), box ${fitted.size.join(' x ')}, ${(fitted.bytes / 1e3).toFixed(0)} KB`);
     if (dry) continue;
     Object.assign(entry, {

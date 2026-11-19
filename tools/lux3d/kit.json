@@ -1,5 +1,5 @@
 {
-  "note": "Every castle, wall, tower, house and hall in Crownfall's realm is placed from these six kit models (web/public/env). Each one is a single Aholo Lux3D text-to-3D task. Order is build order. (Trees are procedural geometry in web/src/realm/Forest.tsx, so they are not part of the kit.)",
+  "note": "Every castle, wall, tower, house and hall in Crownfall's realm is placed from these kit models (web/public/env). Each one is a single Aholo Lux3D text-to-3D task. Order is build order. (Trees are procedural geometry in web/src/realm/Forest.tsx, so they are not part of the kit.)",
   "kit": [
     {
       "id": "keep",
@@ -54,6 +54,46 @@
       "faceCount": 30000,
       "tris": 20000,
       "tex": 1024
+    },
+    {
+      "id": "props/barrel",
+      "what": "the barrels in the markets and halls",
+      "prompt": "A wooden storage barrel with dark iron hoops, weathered oak staves, standing upright, single isolated object, game asset",
+      "style": "photorealistic",
+      "faceCount": 10000,
+      "tris": 1500,
+      "tex": 256,
+      "plain": true
+    },
+    {
+      "id": "props/crate",
+      "what": "the crates in the markets and halls",
+      "prompt": "A square wooden shipping crate made of rough planks with reinforced edges, weathered wood, single isolated object, game asset",
+      "style": "photorealistic",
+      "faceCount": 10000,
+      "tris": 1500,
+      "tex": 256,
+      "plain": true
+    },
+    {
+      "id": "props/well",
+      "what": "the village wells",
+      "prompt": "A round medieval stone well with a small wooden roof on two posts, a winch and a bucket, single isolated object, game asset",
+      "style": "photorealistic",
+      "faceCount": 10000,
+      "tris": 1500,
+      "tex": 256,
+      "plain": true
+    },
+    {
+      "id": "props/hay",
+      "what": "the hay bales",
+      "prompt": "A rectangular bale of golden straw hay tied with two ropes, single isolated object, game asset",
+      "style": "photorealistic",
+      "faceCount": 10000,
+      "tris": 1500,
+      "tex": 256,
+      "plain": true
     }
   ]
 }

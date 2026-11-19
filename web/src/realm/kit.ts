@@ -10,6 +10,8 @@ const done = new Set(DONE as string[]);
 export const LUX3D_COUNT = done.size;
 /** The file for one model: from the Lux3D set when it has been generated and that set is showing. */
 export const kitUrl = (name: string) => (KIT === 'lux3d' && done.has(name) ? `/env/lux3d/${name}.glb` : `/env/${name}.glb`);
+/** Whether this model is being drawn from the Lux3D set right now. */
+export const isLux3d = (name: string) => KIT === 'lux3d' && done.has(name);
 /** Reloads the realm with the other set of models. */
 export function switchKit(to: Kit) {
   const u = new URL(location.href);

@@ -65,8 +65,8 @@ node kit.mjs --fit keep # re-run only the fitting step
 
 ## What is Lux3D here, and what is not
 
-- **Lux3D:** the six kit models above, which are every building in the realm.
-- **Not Lux3D:** the land, water and trees (procedural geometry), the lords, peasants, soldiers and horses (rigged characters made earlier with other tools), the throne and market props (modelled in Blender), and the game code.
+- **Lux3D:** the six kit models above, which are every building in the realm. The market barrels, crates, wells and hay bales are Lux3D too.
+- **Not Lux3D:** the land, water and trees (procedural geometry), the lords, peasants, soldiers and horses (rigged characters made earlier with other tools), the throne, the chariot, the market stalls, signposts and rookery, the carts (modelled in Blender), and the game code.
 - **Prior work:** Crownfall the game was first built from 8 to 15 November 2026 for a different hackathon, as a blockchain game. Made for this event: the six Lux3D models, `tools/lux3d`, the model switch, the "how it was built" page and the report. The blockchain parts are switched off in this copy ([web/src/realm/offline.ts](web/src/realm/offline.ts)); the purse and seals stay in the browser. Some chain code is still in `web/src/chain` but is never called.
 - **Known limits:** the fitted cottage, keep and hall are heavier than the models they replaced, so the Lux3D realm draws more triangles than the original. Small models carry 512 px textures to keep the download light.
 

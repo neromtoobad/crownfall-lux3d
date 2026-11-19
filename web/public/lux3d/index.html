@@ -56,7 +56,7 @@
         <figure><img src="./img/realm-after.jpg" alt="The realm with Lux3D models" /><figcaption>After: every building is a Lux3D generation</figcaption></figure>
       </div>
 
-      <h2>The six models</h2>
+      <h2>The 10 models</h2>
       <p class="soft">The exact prompt, the Lux3D task it came from, and what the model is used for. "Before" is the model it replaced.</p>
       <div id="models"><p class="soft">Loading the build record…</p></div>
 
@@ -70,8 +70,8 @@
 
       <h2>What is Lux3D here, and what is not</h2>
       <ul>
-        <li><b>Lux3D:</b> the keep of every house, every wall tower and gatehouse, every stretch of wall, every cottage and townhouse, and the hall of the Ashen Throne.</li>
-        <li><b>Not Lux3D:</b> the land, water and trees (procedural geometry), the lords, peasants, soldiers and horses (rigged characters made earlier), the throne and the market props (modelled in Blender), and the game itself.</li>
+        <li><b>Lux3D:</b> the keep of every house, every wall tower and gatehouse, every stretch of wall, every cottage and townhouse, and the hall of the Ashen Throne. The market barrels, crates, wells and hay bales are Lux3D too.</li>
+        <li><b>Not Lux3D:</b> the land, water and trees (procedural geometry), the lords, peasants, soldiers and horses (rigged characters made earlier), the throne, the chariot, the market stalls, signposts and rookery, the carts (modelled in Blender), and the game itself.</li>
         <li><b>Prior work:</b> Crownfall the game was first built from 8 to 15 November 2026 for a different hackathon, as a blockchain game. This entry is its world rebuilt with Lux3D: the six models, the pipeline script, the model switch in the header and this page were made for this event. The blockchain parts are switched off in this copy, so the purse and seals stay in your browser.</li>
       </ul>
     </main>
@@ -94,9 +94,10 @@
         box.replaceChildren();
         for (const m of models) {
           const card = el('section', 'model');
-          card.append(el('h3', '', m.id.replace('-', ' ')), el('p', 'soft', 'Used for ' + m.what + '.'));
+          card.append(el('h3', '', m.id.replace('props/', '').replace('-', ' ')), el('p', 'soft', 'Used for ' + m.what + '.'));
           const pair = el('div', 'pair');
-          pair.append(fig(`./img/before-${m.id}.jpg`, 'Before'), fig(`./img/after-${m.id}.jpg`, 'After: Lux3D'));
+          const pic = m.id.replace('/', '-');
+          pair.append(fig(`./img/before-${pic}.jpg`, 'Before'), fig(`./img/after-${pic}.jpg`, 'After: Lux3D'));
           card.append(pair, el('blockquote', '', m.request.prompt));
           const meta = el('p', 'meta');
           meta.append(

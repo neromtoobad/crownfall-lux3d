@@ -163,6 +163,114 @@
       ],
       "bytes": 542620,
       "turn": 0
+    },
+    {
+      "id": "props/barrel",
+      "what": "the barrels in the markets and halls",
+      "taskId": 8433632,
+      "request": {
+        "prompt": "A wooden storage barrel with dark iron hoops, weathered oak staves, standing upright, single isolated object, game asset",
+        "style": "photorealistic",
+        "version": "G1-Turbo",
+        "faceCount": 10000,
+        "outputFormat": [
+          "glb"
+        ]
+      },
+      "seconds": 137,
+      "rawBytes": 10436156,
+      "finishedAt": "2026-11-19T10:14:11.635Z",
+      "rawTriangles": 8778,
+      "triangles": 1500,
+      "primitives": 1,
+      "box": [
+        1.484,
+        1.799,
+        1.47
+      ],
+      "bytes": 81492,
+      "turn": 0
+    },
+    {
+      "id": "props/crate",
+      "what": "the crates in the markets and halls",
+      "taskId": 8433958,
+      "request": {
+        "prompt": "A square wooden shipping crate made of rough planks with reinforced edges, weathered wood, single isolated object, game asset",
+        "style": "photorealistic",
+        "version": "G1-Turbo",
+        "faceCount": 10000,
+        "outputFormat": [
+          "glb"
+        ]
+      },
+      "seconds": 106,
+      "rawBytes": 10104336,
+      "finishedAt": "2026-11-19T10:16:10.115Z",
+      "rawTriangles": 7208,
+      "triangles": 1500,
+      "primitives": 1,
+      "box": [
+        1.789,
+        1.795,
+        1.794
+      ],
+      "bytes": 92096,
+      "turn": 0
+    },
+    {
+      "id": "props/well",
+      "what": "the village wells",
+      "taskId": 8434310,
+      "request": {
+        "prompt": "A round medieval stone well with a small wooden roof on two posts, a winch and a bucket, single isolated object, game asset",
+        "style": "photorealistic",
+        "version": "G1-Turbo",
+        "faceCount": 10000,
+        "outputFormat": [
+          "glb"
+        ]
+      },
+      "seconds": 109,
+      "rawBytes": 9405792,
+      "finishedAt": "2026-11-19T10:18:14.243Z",
+      "rawTriangles": 9040,
+      "triangles": 3366,
+      "primitives": 1,
+      "box": [
+        1.291,
+        1.798,
+        1.209
+      ],
+      "bytes": 204540,
+      "turn": 0
+    },
+    {
+      "id": "props/hay",
+      "what": "the hay bales",
+      "taskId": 8434587,
+      "request": {
+        "prompt": "A rectangular bale of golden straw hay tied with two ropes, single isolated object, game asset",
+        "style": "photorealistic",
+        "version": "G1-Turbo",
+        "faceCount": 10000,
+        "outputFormat": [
+          "glb"
+        ]
+      },
+      "seconds": 131,
+      "rawBytes": 8939844,
+      "finishedAt": "2026-11-19T10:20:31.212Z",
+      "rawTriangles": 10788,
+      "triangles": 4396,
+      "primitives": 1,
+      "box": [
+        1.797,
+        0.898,
+        1.235
+      ],
+      "bytes": 280464,
+      "turn": 0
     }
   ]
 }

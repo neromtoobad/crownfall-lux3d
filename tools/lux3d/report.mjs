@@ -15,7 +15,8 @@ const num = (n) => Number(n).toLocaleString('en-US');
 const totalSecs = models.reduce((s, m) => s + m.seconds, 0);
 const rawTris = models.reduce((s, m) => s + m.rawTriangles, 0);
 const fitTris = models.reduce((s, m) => s + m.triangles, 0);
-const name = (id) => id.replace('-', ' ');
+const name = (id) => id.replace('props/', '').replace('-', ' ');
+const pic = (id) => id.replace('/', '-');
 
 const rows = models.map((m) => `
   <tr>
@@ -30,8 +31,8 @@ const pairs = models.map((m) => `
   <div class="pair">
     <h3>${esc(name(m.id))} <span class="soft">· ${esc(m.what)}</span></h3>
     <div class="two">
-      <figure><img src="img/before-${m.id}.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
-      <figure><img src="img/after-${m.id}.jpg"><figcaption>After: Lux3D ${esc(m.request.version)}, task #${m.taskId}</figcaption></figure>
+      <figure><img src="img/before-${pic(m.id)}.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
+      <figure><img src="img/after-${pic(m.id)}.jpg"><figcaption>After: Lux3D ${esc(m.request.version)}, task #${m.taskId}</figcaption></figure>
     </div>
     <blockquote>${esc(m.request.prompt)}</blockquote>
   </div>`).join('');
@@ -157,9 +158,9 @@ const html = `<!doctype html>
 <section>
   <h2>6. What is Lux3D here, and what is not</h2>
   <ul>
-    <li><b>Lux3D:</b> the keep of every house, every wall tower and gatehouse, every stretch of wall, every cottage and townhouse, and the hall of the Ashen Throne. All six are text-to-3D with no reference image and no manual modelling.</li>
-    <li><b>Not Lux3D:</b> the land, water and trees (procedural geometry), the lords, peasants, soldiers and horses (rigged characters made earlier with other tools), the throne and market props (modelled in Blender), and the game code.</li>
-    <li><b>Prior work:</b> Crownfall the game was first built from 8 to 15 November 2026 for a different hackathon, as a blockchain game. What was made for this event: the six Lux3D models, the generation and fitting script, the model switch, the "how it was built" page and this report. The blockchain parts are switched off in this copy; the purse and seals stay in the browser.</li>
+    <li><b>Lux3D:</b> the keep of every house, every wall tower and gatehouse, every stretch of wall, every cottage and townhouse, and the hall of the Ashen Throne. All six are text-to-3D with no reference image and no manual modelling. The market barrels, crates, wells and hay bales are Lux3D too.</li>
+    <li><b>Not Lux3D:</b> the land, water and trees (procedural geometry), the lords, peasants, soldiers and horses (rigged characters made earlier with other tools), the throne, the chariot, the market stalls, signposts and rookery, the carts (modelled in Blender), and the game code.</li>
+    <li><b>Prior work:</b> Crownfall the game was first built from 8 to 15 November 2026 for a different hackathon, as a blockchain game. What was made for this event: the 10 Lux3D models, the generation and fitting script, the model switch, the "how it was built" page and this report. The blockchain parts are switched off in this copy; the purse and seals stay in the browser.</li>
     <li><b>Limits we know about:</b> the fitted cottage, keep and hall are heavier than the models they replaced, so the Lux3D realm draws more triangles than the original. Lux3D's texture detail is reduced to 512 px on the small models to keep the download light.</li>
   </ul>
   <h2>7. Manycore tools used</h2>
