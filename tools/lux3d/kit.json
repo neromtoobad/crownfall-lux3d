@@ -1,0 +1,59 @@
+{
+  "note": "Every castle, wall, tower, house and hall in Crownfall's realm is placed from these six kit models (web/public/env). Each one is a single Aholo Lux3D text-to-3D task. Order is build order. (Trees are procedural geometry in web/src/realm/Forest.tsx, so they are not part of the kit.)",
+  "kit": [
+    {
+      "id": "keep",
+      "what": "the castle keep at the heart of each of the eight houses",
+      "prompt": "A square medieval castle keep with four round corner towers topped with conical terracotta-red tiled roofs, crenellated battlements, an arched wooden gate and arrow slits, pale weathered limestone, single isolated building, game asset",
+      "style": "photorealistic",
+      "faceCount": 30000,
+      "tris": 8000,
+      "tex": 1024
+    },
+    {
+      "id": "tower",
+      "what": "every wall tower and gatehouse tower",
+      "prompt": "A round medieval castle tower of pale weathered limestone with crenellated battlements, arrow slits and a conical terracotta-red tiled roof, single isolated tower, game asset",
+      "style": "photorealistic",
+      "faceCount": 10000,
+      "tris": 3000,
+      "tex": 512
+    },
+    {
+      "id": "wall",
+      "what": "every stretch of castle and city wall",
+      "prompt": "A straight section of medieval castle curtain wall, a long rectangular block of pale weathered limestone with crenellated battlements along the top and flat cut ends, single isolated wall segment, game asset",
+      "style": "photorealistic",
+      "faceCount": 10000,
+      "tris": 2500,
+      "tex": 512
+    },
+    {
+      "id": "cottage",
+      "what": "the village cottages",
+      "prompt": "A small medieval village cottage with white plaster walls, dark timber framing, a steep thatched straw roof and a stone chimney, single isolated building, game asset",
+      "style": "photorealistic",
+      "faceCount": 10000,
+      "tris": 3000,
+      "tex": 512
+    },
+    {
+      "id": "townhouse",
+      "what": "the town and capital houses",
+      "prompt": "A tall narrow two-storey medieval townhouse, half-timbered upper floor overhanging a stone ground floor, steep terracotta-red clay tile roof, single isolated building, game asset",
+      "style": "photorealistic",
+      "faceCount": 10000,
+      "tris": 3000,
+      "tex": 512
+    },
+    {
+      "id": "throne-hall",
+      "what": "the great hall of the Ashen Throne in the capital",
+      "prompt": "A grand medieval great hall, a long pale limestone building with tall arched windows, buttresses and a steep dark slate roof, single isolated building, game asset",
+      "style": "photorealistic",
+      "faceCount": 30000,
+      "tris": 10000,
+      "tex": 1024
+    }
+  ]
+}
