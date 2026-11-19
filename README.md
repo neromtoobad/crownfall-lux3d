@@ -33,6 +33,8 @@ Crownfall's layout is code. It decides where every wall segment, tower and house
 | `cottage` | the village cottages |
 | `townhouse` | the town and capital houses |
 | `throne-hall` | the great hall of the Ashen Throne in the capital |
+| `props/barrel`, `props/crate` | the barrels and crates in the markets and halls, including the ones that tumble when a chariot hits them |
+| `props/well`, `props/hay` | the village wells and the hay bales |
 
 Each one is a single Lux3D text-to-3D task, with no reference image and no manual modelling. The prompts are in [tools/lux3d/kit.json](tools/lux3d/kit.json). The task numbers, generation times and triangle counts are written by the script as it runs into [web/public/lux3d/kit.json](web/public/lux3d/kit.json).
 

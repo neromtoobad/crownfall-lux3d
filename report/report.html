@@ -47,10 +47,10 @@
     <div><b>Source code:</b> <a href="https://github.com/neromtoobad/crownfall-lux3d">https://github.com/neromtoobad/crownfall-lux3d</a></div>
   </div>
   <div class="facts">
-    <div class="fact"><b>6</b><span>kit models, each one Lux3D text-to-3D task</span></div>
-    <div class="fact"><b>13 min</b><span>total generation time, one task at a time</span></div>
-    <div class="fact"><b>109,202</b><span>triangles as generated</span></div>
-    <div class="fact"><b>54,888</b><span>triangles after fitting for the realm</span></div>
+    <div class="fact"><b>10</b><span>kit models, each one Lux3D text-to-3D task</span></div>
+    <div class="fact"><b>21 min</b><span>total generation time, one task at a time</span></div>
+    <div class="fact"><b>145,016</b><span>triangles as generated</span></div>
+    <div class="fact"><b>65,650</b><span>triangles after fitting for the realm</span></div>
   </div>
   <h3>Try it in two minutes</h3>
   <ol>
@@ -119,6 +119,34 @@
     <td class="mono">29,728 &rarr; 20,000</td>
     <td class="mono">8.7 MB &rarr; 543 KB</td>
   </tr>
+  <tr>
+    <td><b>barrel</b><br><span class="soft">the barrels in the markets and halls</span></td>
+    <td class="mono">#8433632</td>
+    <td class="mono">137s</td>
+    <td class="mono">8,778 &rarr; 1,500</td>
+    <td class="mono">10.4 MB &rarr; 81 KB</td>
+  </tr>
+  <tr>
+    <td><b>crate</b><br><span class="soft">the crates in the markets and halls</span></td>
+    <td class="mono">#8433958</td>
+    <td class="mono">106s</td>
+    <td class="mono">7,208 &rarr; 1,500</td>
+    <td class="mono">10.1 MB &rarr; 92 KB</td>
+  </tr>
+  <tr>
+    <td><b>well</b><br><span class="soft">the village wells</span></td>
+    <td class="mono">#8434310</td>
+    <td class="mono">109s</td>
+    <td class="mono">9,040 &rarr; 3,366</td>
+    <td class="mono">9.4 MB &rarr; 205 KB</td>
+  </tr>
+  <tr>
+    <td><b>hay</b><br><span class="soft">the hay bales</span></td>
+    <td class="mono">#8434587</td>
+    <td class="mono">131s</td>
+    <td class="mono">10,788 &rarr; 4,396</td>
+    <td class="mono">8.9 MB &rarr; 280 KB</td>
+  </tr>
   </table>
   <p class="soft">These numbers are written by the script while it runs (<code>web/public/lux3d/kit.json</code>), not typed by hand.</p>
 </section>
@@ -175,6 +203,38 @@
     </div>
     <blockquote>A grand medieval great hall, a long pale limestone building with tall arched windows, buttresses and a steep dark slate roof, single isolated building, game asset</blockquote>
   </div>
+  <div class="pair">
+    <h3>barrel <span class="soft">· the barrels in the markets and halls</span></h3>
+    <div class="two">
+      <figure><img src="img/before-props-barrel.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
+      <figure><img src="img/after-props-barrel.jpg"><figcaption>After: Lux3D G1-Turbo, task #8433632</figcaption></figure>
+    </div>
+    <blockquote>A wooden storage barrel with dark iron hoops, weathered oak staves, standing upright, single isolated object, game asset</blockquote>
+  </div>
+  <div class="pair">
+    <h3>crate <span class="soft">· the crates in the markets and halls</span></h3>
+    <div class="two">
+      <figure><img src="img/before-props-crate.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
+      <figure><img src="img/after-props-crate.jpg"><figcaption>After: Lux3D G1-Turbo, task #8433958</figcaption></figure>
+    </div>
+    <blockquote>A square wooden shipping crate made of rough planks with reinforced edges, weathered wood, single isolated object, game asset</blockquote>
+  </div>
+  <div class="pair">
+    <h3>well <span class="soft">· the village wells</span></h3>
+    <div class="two">
+      <figure><img src="img/before-props-well.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
+      <figure><img src="img/after-props-well.jpg"><figcaption>After: Lux3D G1-Turbo, task #8434310</figcaption></figure>
+    </div>
+    <blockquote>A round medieval stone well with a small wooden roof on two posts, a winch and a bucket, single isolated object, game asset</blockquote>
+  </div>
+  <div class="pair">
+    <h3>hay <span class="soft">· the hay bales</span></h3>
+    <div class="two">
+      <figure><img src="img/before-props-hay.jpg"><figcaption>Before: the model it replaced</figcaption></figure>
+      <figure><img src="img/after-props-hay.jpg"><figcaption>After: Lux3D G1-Turbo, task #8434587</figcaption></figure>
+    </div>
+    <blockquote>A rectangular bale of golden straw hay tied with two ropes, single isolated object, game asset</blockquote>
+  </div>
 </section>
 
 <section>
@@ -209,9 +269,9 @@
 <section>
   <h2>6. What is Lux3D here, and what is not</h2>
   <ul>
-    <li><b>Lux3D:</b> the keep of every house, every wall tower and gatehouse, every stretch of wall, every cottage and townhouse, and the hall of the Ashen Throne. All six are text-to-3D with no reference image and no manual modelling.</li>
-    <li><b>Not Lux3D:</b> the land, water and trees (procedural geometry), the lords, peasants, soldiers and horses (rigged characters made earlier with other tools), the throne and market props (modelled in Blender), and the game code.</li>
-    <li><b>Prior work:</b> Crownfall the game was first built from 8 to 15 November 2026 for a different hackathon, as a blockchain game. What was made for this event: the six Lux3D models, the generation and fitting script, the model switch, the "how it was built" page and this report. The blockchain parts are switched off in this copy; the purse and seals stay in the browser.</li>
+    <li><b>Lux3D:</b> the keep of every house, every wall tower and gatehouse, every stretch of wall, every cottage and townhouse, and the hall of the Ashen Throne. All six are text-to-3D with no reference image and no manual modelling. The market barrels, crates, wells and hay bales are Lux3D too.</li>
+    <li><b>Not Lux3D:</b> the land, water and trees (procedural geometry), the lords, peasants, soldiers and horses (rigged characters made earlier with other tools), the throne, the chariot, the market stalls, signposts and rookery, the carts (modelled in Blender), and the game code.</li>
+    <li><b>Prior work:</b> Crownfall the game was first built from 8 to 15 November 2026 for a different hackathon, as a blockchain game. What was made for this event: the 10 Lux3D models, the generation and fitting script, the model switch, the "how it was built" page and this report. The blockchain parts are switched off in this copy; the purse and seals stay in the browser.</li>
     <li><b>Limits we know about:</b> the fitted cottage, keep and hall are heavier than the models they replaced, so the Lux3D realm draws more triangles than the original. Lux3D's texture detail is reduced to 512 px on the small models to keep the download light.</li>
   </ul>
   <h2>7. Manycore tools used</h2>
@@ -221,7 +281,7 @@
   </ul>
   <h2>8. What we would do next</h2>
   <ul>
-    <li><b>Theme packs.</b> A second <code>kit.json</code> (a desert kingdom, a frozen north) would rebuild the realm again in about 13 minutes of generation. The game already loads its buildings from a named set, so a second set is a small change.</li>
+    <li><b>Theme packs.</b> A second <code>kit.json</code> (a desert kingdom, a frozen north) would rebuild the realm again in about 21 minutes of generation. The game already loads its buildings from a named set, so a second set is a small change.</li>
     <li><b>Lux3D part-splitting</b> for walls and gates that can be broken in a siege, and <b>auto-rigging</b> to bring the characters into the same pipeline.</li>
   </ul>
 </section>
