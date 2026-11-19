@@ -26,7 +26,7 @@
   table { width: 100%; border-collapse: collapse; margin: 4pt 0 9pt; }
   th { text-align: left; font-size: 8.6pt; color: #6f6557; font-weight: 600; border-bottom: 1pt solid #b9ad97; padding: 3pt 6pt 3pt 0; }
   td { vertical-align: top; border-bottom: 0.5pt solid #ddd3c1; padding: 5pt 6pt 5pt 0; }
-  .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8pt; margin: 10pt 0; }
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8pt; margin: 10pt 0; }
   .fact { border: 0.5pt solid #cfc4b0; border-radius: 4pt; padding: 7pt 9pt; background: #faf6ee; }
   .fact b { display: block; font: 700 17pt/1.1 Georgia, serif; color: #7a5514; }
   .fact span { font-size: 8.4pt; color: #6f6557; }
@@ -48,7 +48,6 @@
   </div>
   <div class="facts">
     <div class="fact"><b>10</b><span>kit models, each one Lux3D text-to-3D task</span></div>
-    <div class="fact"><b>21 min</b><span>total generation time, one task at a time</span></div>
     <div class="fact"><b>145,016</b><span>triangles as generated</span></div>
     <div class="fact"><b>65,650</b><span>triangles after fitting for the realm</span></div>
   </div>
@@ -280,7 +279,7 @@
   </ul>
   <h2>8. What we would do next</h2>
   <ul>
-    <li><b>Theme packs.</b> A second <code>kit.json</code> (a desert kingdom, a frozen north) would rebuild the realm again in about 21 minutes of generation. The game already loads its buildings from a named set, so a second set is a small change.</li>
+    <li><b>Theme packs.</b> A second <code>kit.json</code> (a desert kingdom, a frozen north) would rebuild the realm again with one more run of the script. The game already loads its buildings from a named set, so a second set is a small change.</li>
     <li><b>Lux3D part-splitting</b> for walls and gates that can be broken in a siege, and <b>auto-rigging</b> to bring the characters into the same pipeline.</li>
   </ul>
 </section>
