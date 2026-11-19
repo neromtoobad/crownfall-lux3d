@@ -27,9 +27,9 @@ A playable 3D medieval realm in the browser where every castle, wall, tower, hou
 
 **Description**
 
-Crownfall is a 3D medieval realm you can walk, race chariots and scheme in. Its layout is code: it decides where every wall segment, tower and house goes and stretches one model into each slot, so the whole built world comes from six 3D models. For this hackathon all six were generated from text with Aholo Lux3D (G1-Turbo) through the Aholo API, then fitted and dropped into the game by one script. A switch in the header flips the same realm between the Lux3D models and the models they replaced, so you can compare the two worlds directly. Total generation time for the whole realm's architecture: 13 minutes. The market barrels, crates, wells and hay bales are Lux3D generations too, which makes 10 models and 21 minutes in all.
+Crownfall is a 3D medieval realm you can walk, race chariots and scheme in. Its layout is code: it decides where every wall segment, tower and house goes and stretches one model into each slot, so the whole built world comes from six 3D models. For this hackathon all six were generated from text with Aholo Lux3D (G1-Turbo) through the Aholo API, then fitted and dropped into the game by one script. The market barrels, crates, wells and hay bales are Lux3D generations too, which makes 10 models in all.
 
-Crownfall is our own game, started before this hackathon. For this event we rebuilt its world with Lux3D: the 10 models, the generation and fitting script, the model switch, the "how it was built" page and this report.
+Crownfall is our own game, started before this hackathon. For this event we rebuilt its world with Lux3D: the 10 models, the generation and fitting script, the "how it was built" page and this report.
 
 **Project report (required, PDF)**
 
@@ -49,7 +49,7 @@ The handbook asks for the project name, one sentence, and a video with real runn
 
 > Crownfall, rebuilt with Aholo Lux3D
 >
-> Every castle, wall, tower and house in this playable 3D realm was generated from text. 10 Lux3D models, 21 minutes.
+> Every castle, wall, tower and house in this playable 3D realm was generated from text with 10 Lux3D models.
 >
 > Play it, no sign-in: https://crownfall-lux3d.vercel.app
 >

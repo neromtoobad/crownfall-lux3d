@@ -29,7 +29,8 @@
       figure { margin: 0; }
       figcaption { font-size: 13px; color: var(--soft); margin-top: 6px; }
       .model { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-top: 16px; }
-      .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+      .pair { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; margin: 12px 0; align-items: start; }
+      .hero img { width: 100%; display: block; border-radius: 8px; border: 1px solid var(--line); margin-top: 14px; }
       blockquote { margin: 10px 0; padding: 10px 14px; border-left: 3px solid var(--gold); background: #17120e; font: italic 16px/1.5 var(--serif); }
       .meta { font: 12.5px/1.7 var(--mono); color: var(--soft); margin: 0; }
       ol, ul { padding-left: 22px; margin: 0 0 14px; }
@@ -41,7 +42,7 @@
   <body>
     <main>
       <h1>Crownfall, rebuilt with Aholo Lux3D</h1>
-      <p class="lead">Crownfall is a 3D medieval realm you can walk, race and scheme in. Every castle, wall, tower, house and hall in it is placed from six 3D models. For the Manycore Aholo Global 3D AI Hackathon, each of those models was regenerated from a text prompt with the Lux3D API.</p>
+      <p class="lead">Crownfall is a 3D medieval realm you can walk, race and scheme in. Every castle, wall, tower, house and hall in it is placed from six 3D models. For the Manycore Aholo Global 3D AI Hackathon, each of those models was generated from a text prompt with the Lux3D API.</p>
       <div class="actions">
         <a class="btn main" href="/">Enter the realm</a>
         <a class="btn" href="https://github.com/neromtoobad/crownfall-lux3d">Source code</a>
@@ -49,15 +50,12 @@
       </div>
       <div class="facts" id="facts"></div>
 
-      <h2>The realm, before and after</h2>
-      <p class="soft">Same land, same layout, same camera. Only the six kit models changed.</p>
-      <div class="wide">
-        <figure><img src="./img/realm-before.jpg" alt="The realm with its original models" /><figcaption>Before: the original models</figcaption></figure>
-        <figure><img src="./img/realm-after.jpg" alt="The realm with Lux3D models" /><figcaption>After: every building is a Lux3D generation</figcaption></figure>
-      </div>
+      <h2>The realm</h2>
+      <p class="soft">Every castle, wall, tower, house and hall here is a Lux3D generation, placed by the game's layout code.</p>
+      <figure class="hero"><img src="./img/realm-after.jpg" alt="The realm built from Lux3D models" /></figure>
 
       <h2>The 10 models</h2>
-      <p class="soft">The exact prompt, the Lux3D task it came from, and what the model is used for. "Before" is the model it replaced.</p>
+      <p class="soft">The exact prompt, the Lux3D task it came from, and what the model is used for.</p>
       <div id="models"><p class="soft">Loading the build record…</p></div>
 
       <h2>How it works</h2>
@@ -71,7 +69,7 @@
       <h2>What Lux3D made, and what we made for this event</h2>
       <ul>
         <li><b>Lux3D:</b> the keep of every house, every wall tower and gatehouse, every stretch of wall, every cottage and townhouse, and the hall of the Ashen Throne. The market barrels, crates, wells and hay bales are Lux3D too.</li>
-        <li><b>The project:</b> Crownfall is our own game, started before this hackathon. For this event we rebuilt its world with Lux3D: the 10 models, the generation and fitting script, the model switch, the &quot;how it was built&quot; page and this report.</li>
+        <li><b>The project:</b> Crownfall is our own game, started before this hackathon. For this event we rebuilt its world with Lux3D: the 10 models, the generation and fitting script, this page and the report.</li>
       </ul>
     </main>
 
@@ -80,10 +78,8 @@
       const fig = (src, cap) => { const f = el('figure'); const i = el('img'); i.src = src; i.alt = cap; i.loading = 'lazy'; f.append(i, el('figcaption', '', cap)); return f; };
       fetch('./kit.json', { cache: 'no-cache' }).then((r) => r.json()).then((rec) => {
         const models = rec.models || [];
-        const secs = models.reduce((s, m) => s + (m.seconds || 0), 0);
         const facts = [
           [models.length, 'kit models generated with Lux3D'],
-          [Math.round(secs / 60) + ' min', 'total generation time, one task at a time'],
           [models.reduce((s, m) => s + (m.rawTriangles || 0), 0).toLocaleString('en-US'), 'triangles as generated'],
           [models.reduce((s, m) => s + (m.triangles || 0), 0).toLocaleString('en-US'), 'triangles after fitting for the realm'],
         ];
@@ -94,10 +90,12 @@
         for (const m of models) {
           const card = el('section', 'model');
           card.append(el('h3', '', m.id.replace('props/', '').replace('-', ' ')), el('p', 'soft', 'Used for ' + m.what + '.'));
-          const pair = el('div', 'pair');
+          const body = el('div', 'pair');
           const pic = m.id.replace('/', '-');
-          pair.append(fig(`./img/before-${pic}.jpg`, 'Before'), fig(`./img/after-${pic}.jpg`, 'After: Lux3D'));
-          card.append(pair, el('blockquote', '', m.request.prompt));
+          const words = el('div');
+          words.append(el('blockquote', '', m.request.prompt));
+          body.append(fig(`./img/after-${pic}.jpg`, 'The Lux3D model as fitted for the game'), words);
+          card.append(body);
           const meta = el('p', 'meta');
           meta.append(
             `Lux3D ${m.request.version} · style ${m.request.style} · task #${m.taskId} · generated in ${m.seconds}s`, el('br'),
