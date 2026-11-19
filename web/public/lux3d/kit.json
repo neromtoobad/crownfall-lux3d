@@ -1,0 +1,168 @@
+{
+  "generator": "Aholo Lux3D text-to-3D",
+  "api": "https://api.aholo.ai/global",
+  "models": [
+    {
+      "id": "keep",
+      "what": "the castle keep at the heart of each of the eight houses",
+      "taskId": 8427584,
+      "request": {
+        "prompt": "A square medieval castle keep with four round corner towers topped with conical terracotta-red tiled roofs, crenellated battlements, an arched wooden gate and arrow slits, pale weathered limestone, single isolated building, game asset",
+        "style": "photorealistic",
+        "version": "G1-Turbo",
+        "faceCount": 30000,
+        "outputFormat": [
+          "glb"
+        ]
+      },
+      "seconds": 119,
+      "rawBytes": 11508932,
+      "finishedAt": "2026-11-19T09:35:36.757Z",
+      "rawTriangles": 43956,
+      "triangles": 20202,
+      "primitives": 1,
+      "box": [
+        1.795,
+        1.799,
+        1.76
+      ],
+      "bytes": 785300,
+      "turn": 0
+    },
+    {
+      "id": "tower",
+      "what": "every wall tower and gatehouse tower",
+      "taskId": 8427923,
+      "request": {
+        "prompt": "A round medieval castle tower of pale weathered limestone with crenellated battlements, arrow slits and a conical terracotta-red tiled roof, single isolated tower, game asset",
+        "style": "photorealistic",
+        "version": "G1-Turbo",
+        "faceCount": 10000,
+        "outputFormat": [
+          "glb"
+        ]
+      },
+      "seconds": 108,
+      "rawBytes": 8951356,
+      "finishedAt": "2026-11-19T09:37:30.615Z",
+      "rawTriangles": 8378,
+      "triangles": 3000,
+      "primitives": 1,
+      "box": [
+        0.982,
+        1.799,
+        0.963
+      ],
+      "bytes": 137992,
+      "turn": 0
+    },
+    {
+      "id": "wall",
+      "what": "every stretch of castle and city wall",
+      "taskId": 8428298,
+      "request": {
+        "prompt": "A straight section of medieval castle curtain wall, a long rectangular block of pale weathered limestone with crenellated battlements along the top and flat cut ends, single isolated wall segment, game asset",
+        "style": "photorealistic",
+        "version": "G1-Turbo",
+        "faceCount": 10000,
+        "outputFormat": [
+          "glb"
+        ]
+      },
+      "seconds": 127,
+      "rawBytes": 6356420,
+      "finishedAt": "2026-11-19T09:39:43.152Z",
+      "rawTriangles": 6510,
+      "triangles": 2500,
+      "primitives": 1,
+      "box": [
+        1.8,
+        0.806,
+        0.309
+      ],
+      "bytes": 103200,
+      "turn": 0
+    },
+    {
+      "id": "cottage",
+      "what": "the village cottages",
+      "taskId": 8428642,
+      "request": {
+        "prompt": "A small medieval village cottage with white plaster walls, dark timber framing, a steep thatched straw roof and a stone chimney, single isolated building, game asset",
+        "style": "photorealistic",
+        "version": "G1-Turbo",
+        "faceCount": 10000,
+        "outputFormat": [
+          "glb"
+        ]
+      },
+      "seconds": 130,
+      "rawBytes": 8663580,
+      "finishedAt": "2026-11-19T09:41:58.473Z",
+      "rawTriangles": 11120,
+      "triangles": 6186,
+      "primitives": 1,
+      "box": [
+        1.768,
+        1.8,
+        1.744
+      ],
+      "bytes": 223424,
+      "turn": 0
+    },
+    {
+      "id": "townhouse",
+      "what": "the town and capital houses",
+      "taskId": 8429112,
+      "request": {
+        "prompt": "A tall narrow two-storey medieval townhouse, half-timbered upper floor overhanging a stone ground floor, steep terracotta-red clay tile roof, single isolated building, game asset",
+        "style": "photorealistic",
+        "version": "G1-Turbo",
+        "faceCount": 10000,
+        "outputFormat": [
+          "glb"
+        ]
+      },
+      "seconds": 140,
+      "rawBytes": 7441964,
+      "finishedAt": "2026-11-19T09:44:24.156Z",
+      "rawTriangles": 9510,
+      "triangles": 3000,
+      "primitives": 1,
+      "box": [
+        0.98,
+        1.799,
+        0.951
+      ],
+      "bytes": 116344,
+      "turn": 0
+    },
+    {
+      "id": "throne-hall",
+      "what": "the great hall of the Ashen Throne in the capital",
+      "taskId": 8429371,
+      "request": {
+        "prompt": "A grand medieval great hall, a long pale limestone building with tall arched windows, buttresses and a steep dark slate roof, single isolated building, game asset",
+        "style": "photorealistic",
+        "version": "G1-Turbo",
+        "faceCount": 30000,
+        "outputFormat": [
+          "glb"
+        ]
+      },
+      "seconds": 157,
+      "rawBytes": 8744668,
+      "finishedAt": "2026-11-19T09:47:42.863Z",
+      "rawTriangles": 29728,
+      "triangles": 20000,
+      "primitives": 1,
+      "box": [
+        1.8,
+        1.159,
+        1.069
+      ],
+      "bytes": 542620,
+      "turn": 0
+    }
+  ]
+}
